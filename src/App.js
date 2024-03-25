@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import Register from "containers/Register";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import DashboardPage from "containers/DashboardPage";
+import Home from "containers/Home";
+import Login from "containers/Login";
+import NotFoundPage from "containers/NotFoundPage";
+import UserProfile from "containers/UserProfile";
+import EditProfile from "containers/EditProfile";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+import { checkAuth } from "features/user";
+
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(checkAuth());
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/dashboard' element={<DashboardPage/>}/>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/userProfile' element={<UserProfile/>}/>
+        <Route path='/editProfile' element={<EditProfile/>}/>
+        <Route path='*' element={<NotFoundPage/>}/> 
+      </Routes>
+    </Router>
   );
 }
 
