@@ -39,9 +39,18 @@ export const register = createAsyncThunk('user/register', async ({first_name, la
             return data;
         }
         else{
+            console.log("This is the error in else : ", data);
             return thunkAPI.rejectWithValue(data);
         }
     } catch (err) {
+        // console.log(
+        //     "This is the error in catch : err",
+        //     err,
+        //     "err.response",
+        //     err.response,
+        //     "err.response.data",
+        //     err.response.data
+        //     );
         return thunkAPI.rejectWithValue(err.response.data)
     }
 })
@@ -137,18 +146,32 @@ export const login = createAsyncThunk('user/login', async ({email, password}, th
 // );
 
 
-export const update = createAsyncThunk("users/update", async (payload) => {
-  const response = await axios.put(
-    `${REAL_API_URL}/api/users/updateUser/`,
-    payload,
-    {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
+export const update = createAsyncThunk("users/update", async (payload, thunkAPI) => {
+    try {
+        const response = await axios.put(
+        `${REAL_API_URL}/api/users/updateUser/`,
+        payload,
+        {
+            headers: {
+            "content-type": "multipart/form-data",
+            },
+        }
+        );
+
+        if (response.status === 200) {
+        const { dispatch } = thunkAPI;
+
+        dispatch(getUser());
+        return response.data;
+        } else {
+        return thunkAPI.rejectWithValue(response.data);
+        }
+    } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
     }
-  );
-  return response.data;
 });
+
+
 
 
 
@@ -219,8 +242,6 @@ export const checkAuth = createAsyncThunk(
 );
 
 
-
-
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -245,6 +266,7 @@ const userSlice = createSlice({
         .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        
         })
         .addCase(login.pending, (state) => {
         state.loading = true;
@@ -253,8 +275,10 @@ const userSlice = createSlice({
         state.loading = false;
         state.isAuthenticated = true;
         })
-        .addCase(login.rejected, (state) => {
+        .addCase(login.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload
+        console.log("this is the login error from thunk : ", state.error.detail);
         })
         .addCase(getUser.pending, (state) => {
         state.loading = true;
@@ -263,8 +287,9 @@ const userSlice = createSlice({
         state.loading = false;
         state.user = action.payload;
         })
-        .addCase(getUser.rejected, (state) => {
+        .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
         })
         .addCase(checkAuth.pending, (state) => {
         state.loading = true;

@@ -5,11 +5,20 @@ import img1 from 'assets/Login.jpg'
 import { Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from 'features/user'
+import Loader from 'components/Loader'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from 'react'
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { registered, loading } = useSelector(state => state.user);
-
+  const { registered, loading, error } = useSelector(state => state.user);
+  
+  useEffect(()=>{
+    const notify = () => toast.error(error?.error_message);
+    notify();
+    console.log("This is the error :->",error?.error_message)
+  }, [error])
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -32,49 +41,96 @@ const Register = () => {
   if (registered) return <Navigate to='/login' />;
 
   return (
-    <Layout title='Auth Site | Register' content='Register Page'>
-        <div className='w-full h-screen'>
-          <img className='hidden sm:block absolute w-full h-full object-cover' src={img1} alt="register" />
-          <div className='bg-black/60 fixed top-0 left-0 w-full h-screen'></div>
-          <div className='fixed w-full px-4 py-24 z-50'>
-              <div className='max-w-[450px] h-[600px] mx-auto bg-black/75 text-white'>
-                <div className='max-w-[320px] mx-auto py-16'>
-                  <h1 className='text-3xl font-blackops-one'>Sign UP</h1>
-                  <form className='text-black w-full flex flex-col py-4' onSubmit={onSubmit}>
-                    <div className="grid sm:grid-cols-2 sm:gap-4">
-                      <input className='p-3 my-2 bg-cyan-100 rounded' type="text" name="first_name" id="1" onChange={onChange} value={first_name} required placeholder='First Name'/>
-                      <input className='p-3 my-2 bg-cyan-100 rounded' type="text" name="last_name" id="2" onChange={onChange} value={last_name} required placeholder='Last Name'/>
-                    </div>
-                    <input className='p-3 my-2 bg-cyan-100 rounded' type="email" name="email" id="3" onChange={onChange} value={email} required placeholder='Email'/>
-                    <input className='p-3 my-2 bg-cyan-100 rounded' type="password" name="password" id="4" onChange={onChange} value={password} required placeholder='Password' />
-                    {/* <input className='p-3 my-2 bg-cyan-100 rounded' type="password" name="password2" id="" placeholder='Confirm Password'/> */}
+    <Layout title="Auth Site | Register" content="Register Page">
+      <div className="w-full h-screen">
+        <img
+          className="hidden sm:block absolute w-full h-full object-cover"
+          src={img1}
+          alt="register"
+        />
+        <div className="bg-black/60 fixed top-0 left-0 w-full h-screen"></div>
+        <div className="fixed w-full px-4 py-24 z-50">
+          <div className="max-w-[450px] h-[600px] mx-auto bg-black/75 text-white">
+            <div className="max-w-[320px] mx-auto py-16">
+              <ToastContainer className="mt-10" />
+              <h1 className="text-3xl font-blackops-one">Sign UP</h1>
+              <form
+                className="text-black w-full flex flex-col py-4"
+                onSubmit={onSubmit}
+              >
+                <div className="grid sm:grid-cols-2 sm:gap-4">
+                  <input
+                    className="p-3 my-2 bg-cyan-100 rounded"
+                    type="text"
+                    name="first_name"
+                    id="1"
+                    onChange={onChange}
+                    value={first_name}
+                    required
+                    placeholder="First Name"
+                  />
+                  <input
+                    className="p-3 my-2 bg-cyan-100 rounded"
+                    type="text"
+                    name="last_name"
+                    id="2"
+                    onChange={onChange}
+                    value={last_name}
+                    required
+                    placeholder="Last Name"
+                  />
+                </div>
+                <input
+                  className="p-3 my-2 bg-cyan-100 rounded"
+                  type="email"
+                  name="email"
+                  id="3"
+                  onChange={onChange}
+                  value={email}
+                  required
+                  placeholder="Email"
+                />
+                <input
+                  className="p-3 my-2 bg-cyan-100 rounded"
+                  type="password"
+                  name="password"
+                  id="4"
+                  onChange={onChange}
+                  value={password}
+                  required
+                  placeholder="Password"
+                />
 
-                    {loading ? (
-                      <div className='mt-5 ml-36' role="status">
-                      <svg aria-hidden="true" class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                          <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-                      </svg>
-                      <span class="sr-only">Loading...</span>
-                  </div>
-                    ):(
-                      <button className='bg-cyan-500 py-3 my-6 rounded font-bold'>Sign Up</button>
-                    )}
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <button
+                    className="bg-cyan-500 py-3 my-6 rounded font-bold"
                     
-                    {/* <div className='flex justify-between items-center text-sm text-gray-600'>
+                  >
+                    Sign Up
+                  </button>
+                )}
+
+                {/* <div className='flex justify-between items-center text-sm text-gray-600'>
                       <p>
                         <input className='mr-2' type="checkbox" name="" />
                         Keep me logged in.
                       </p>
                     </div> */}
-                    <p className='text-white py-4'><span className='text-gray-400'>Already Have an Account ?</span><Link to='/login'> Log In</Link></p>
-                  </form>
-                </div>
-              </div>
+                <p className="text-white py-4">
+                  <span className="text-gray-400">
+                    Already Have an Account ?
+                  </span>
+                  <Link to="/login"> Log In</Link>
+                </p>
+              </form>
+            </div>
           </div>
         </div>
+      </div>
     </Layout>
-  )
+  );
 }
 
 export default Register

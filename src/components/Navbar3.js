@@ -1,6 +1,6 @@
-import React, { useDebugValue, useState } from 'react';
+import React, { useState } from 'react';
 import logo from '../assets/Get-fit-Logo.png';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from 'features/user';
 
@@ -74,39 +74,94 @@ const Navbar = () => {
     };
 
     return (
-    <div className='flex flex-col md:flex-row items-start justify-between p-4 w-full z-[100] absolute'>
-        <Link to='/'>
-        <div className='flex items-center'>
-            <img className='h-12 md:h-10 mr-2' src={logo} alt="logo" />
-            <h1 className='text-white text-4xl cursor-pointer font-blackops-one md:block hidden'>GET-FIT</h1>
-        </div>
-        </Link>
-        <div className=' flex flex-auto items-end md:hidden'>
-        <button onClick={() => setIsOpen(!isOpen)} className='text-white focus:outline-none'>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-        </button>
-        </div>
-        <div className={`md:flex flex-grow items-center ${isOpen ? 'block' : 'hidden'}`}>
-        <div className='md:flex'>
-            <a className='mx-5 font-mono text-white' href="!#">Find trainers</a>
-            <a className='mx-5 font-mono text-white' href="!#">Programms</a>
-            <div className="relative inline-block">
-            <select className='mx-5 font-mono  text-white bg-transparent border-none' defaultValue="" onChange={handleDropdownChange}>
-                <option className='text-white' value="" disabled hidden>Community</option>
-                <option className=' text-black' value="option1">Login</option>
-                <option className=' text-black' value="option2">Sign up</option>
-                <option className=' text-black' value="option3">Option 3</option>
-                <option className=' text-black' value="option4">Option 4</option>
-                </select>
-                <svg className="absolute pointer-events-none top-0 right-0 m-2" width="12" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 4l2 2 2-2" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <div className="sticky top-0 z-[100] w-full">
+        <div className="flex flex-col md:flex-row items-start justify-between p-4 w-full z-[100] absolute">
+          <Link to="/">
+            <div className="flex items-center">
+              <img className="h-12 md:h-10 mr-2" src={logo} alt="logo" />
+              <h1 className="text-white text-4xl cursor-pointer font-blackops-one md:block hidden">
+                GET-FIT
+              </h1>
             </div>
+          </Link>
+          <div className=" flex flex-auto items-end md:hidden">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            className={`md:flex flex-grow items-center ${
+              isOpen ? "block" : "hidden"
+            }`}
+          >
+            <div className="md:flex">
+              <Link to="/findTrainer">
+                <a className="mx-5 font-mono text-white" href="!#">
+                  Find trainers
+                </a>
+              </Link>
+              <a className="mx-5 font-mono text-white" href="!#">
+                Programms
+              </a>
+              <div className="relative inline-block">
+                <select
+                  className="mx-5 font-mono  text-white bg-transparent border-none"
+                  defaultValue=""
+                  onChange={handleDropdownChange}
+                >
+                  <option className="text-white" value="" disabled hidden>
+                    Community
+                  </option>
+                  <option className=" text-black" value="option1">
+                    Login
+                  </option>
+                  <option className=" text-black" value="option2">
+                    Sign up
+                  </option>
+                  <option className=" text-black" value="option3">
+                    Option 3
+                  </option>
+                  <option className=" text-black" value="option4">
+                    Option 4
+                  </option>
+                </select>
+                <svg
+                  className="absolute pointer-events-none top-0 right-0 m-2"
+                  width="12"
+                  height="12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5 4l2 2 2-2"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </div>
+            {isAuthenticated ? authLinks : guestLinks}
+          </div>
         </div>
-        {isAuthenticated? authLinks: guestLinks}
-        </div>
-        </div>
-);
+      </div>
+    );
 };
 
 export default Navbar;

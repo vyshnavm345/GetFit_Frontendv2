@@ -7,6 +7,7 @@ import Modal from "components/EditModalForm";
 const UserProfile = () => {
   const { user, loading, isAuthenticated } = useSelector((state) => state.user);
   const backgroundImage = false;
+  
 
   if (!isAuthenticated && !loading && user === null){
     return <Navigate to='/login' />
@@ -93,9 +94,13 @@ const UserProfile = () => {
                 </div>{" "}
               </div>{" "}
               <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-                <button className="text-[#111] bg-transparent active:bg-blue-400 hover:bg-blue-500 hover:text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5">
+                <button className="text-[#111] border-2 bg-transparent active:bg-blue-400 hover:bg-blue-500 hover:text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5">
                   {" "}
-                  Message
+                  Feeds
+                </button>{" "}
+                <button className="text-[#111] bg-transparent border-2 active:bg-blue-400 hover:bg-blue-500 hover:text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5">
+                  {" "}
+                  My Posts
                 </button>{" "}
                 <Modal />
               </div>{" "}
@@ -108,13 +113,25 @@ const UserProfile = () => {
                   {user?.profile.age}
                 </span>
               </h1>{" "}
-              <p className="font-light text-gray-600 mt-3">
-                Bucharest, Romania
-              </p>{" "}
-              <p className="mt-8 text-gray-500">{user?.email}</p>{" "}
-              <p className="mt-2 text-gray-500">
-                University of Computer Science
-              </p>{" "}
+              <p className="font-light text-gray-600 mt-3">{user?.email}</p>{" "}
+              <div className="flex items-start justify-between p-4 w-[50%] ">
+                <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
+                  <span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0"></span>
+                  {user?.profile.height} CM
+                </span>
+                <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
+                  <span class="flex w-2.5 h-2.5 bg-purple-500 rounded-full me-1.5 flex-shrink-0"></span>
+                  {user?.profile.weight} KG
+                </span>
+                <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
+                  <span class="flex w-2.5 h-2.5 bg-indigo-500 rounded-full me-1.5 flex-shrink-0"></span>
+                  {user?.profile.body_fat} %
+                </span>
+                <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
+                  <span class="flex w-2.5 h-2.5 bg-teal-500 rounded-full me-1.5 flex-shrink-0"></span>
+                  +91-{user?.profile.phone}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -125,16 +142,3 @@ const UserProfile = () => {
 
 export default UserProfile;
 
-                  // <svg
-                  //   xmlns="http://www.w3.org/2000/svg"
-                  //   className="h-24 w-24"
-                  //   viewBox="0 0 20 20"
-                  //   fill="currentColor"
-                  // >
-                  //   {" "}
-                  //   <path
-                  //     fill-rule="evenodd"
-                  //     d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  //     clip-rule="evenodd"
-                  //   />
-                  // </svg>

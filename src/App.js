@@ -6,11 +6,11 @@ import Home from "containers/Home";
 import Login from "containers/Login";
 import NotFoundPage from "containers/NotFoundPage";
 import UserProfile from "containers/UserProfile";
-import EditProfile from "containers/EditProfile";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { checkAuth } from "features/user";
+import FindTrainers from "containers/FindTrainers";
 
 
 function App() {
@@ -23,13 +23,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/dashboard' element={<DashboardPage/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/register' element={<Register/>}/>
-        <Route path='/userProfile' element={<UserProfile/>}/>
-        <Route path='/editProfile' element={<EditProfile/>}/>
-        <Route path='*' element={<NotFoundPage/>}/> 
+        <Route path="/" element={<Home />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="/findTrainer" element={<FindTrainers/>} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

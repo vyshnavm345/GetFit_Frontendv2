@@ -2,6 +2,7 @@ import React from 'react'
 
 const NotFoundPage = () => {
   return (
+    
     <div className='container text-white mt-48'>
         <div class="flex flex-col items-center">
             <div class="text-indigo-500 font-bold text-7xl">
