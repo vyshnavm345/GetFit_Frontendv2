@@ -9,7 +9,7 @@ const FindTrainers = () => {
     const navigate = useNavigate();
     return (
       <Layout>
-        <div className="w-full h-[650px] text-white">
+        <div className="w-full h-[650px] text-white ">
           <div className="w-full h-full">
             <div className="absolute w-full h-[650px] bg-gradient-to-r from-black xl:h-[712px]"></div>
             <img className="w-full h-full object-cover" src={img1} alt="" />
@@ -20,7 +20,7 @@ const FindTrainers = () => {
                 className="w-full h-[650px] self-end md:self-end object-cover"
               />
             </div>
-            <div className="top-[50%] absolute w-full sm:top-[28%] md:top-[30%] p-4 md:p-4 md:ml-10 lg:left-10 ">
+            <div className="top-[45%] absolute w-full sm:top-[28%] md:top-[30%] p-4 md:p-4 md:pl-10 lg:pl-10 ">
               <h1 className="text-3xl md:text-5xl lg:text-7xl font-blackops-one">
                 Meet Trainers THat Push You
                 <br /> To Your LImit
@@ -58,8 +58,7 @@ const FindTrainers = () => {
                 mieux s'en sortir.
               </p>
             </div>
-            <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4">
-
+            <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
               <div className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto">
                 <div
                   className="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center"
@@ -77,7 +76,43 @@ const FindTrainers = () => {
                     <div className="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-purple-100">
                       <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
                     </div>
-                    <div className="category-title flex-1 text-sm"> Bodybuilde and Fitness Expert</div>
+                    <div className="category-title flex-4 font-blackops-one text-sm">
+                      {" "}
+                      Bodybuilde and Fitness Expert
+                    </div>
+                  </div>
+                  <div className="title-post text-blue-800 opacity-70 font-bold">Krris Gethin</div>
+
+                  <div className="summary-post text-base text-justify">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Perspiciatis veritatis vel suscipit ex dolore possimus iure.
+                    <button className="bg-blue-100 text-blue-500 mt-4 block rounded p-2 text-sm ">
+                      <span className="">View</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto">
+                <div
+                  className="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center"
+                  style={{
+                    backgroundImage:
+                      "url(https://miro.medium.com/v2/da:true/resize:fill:1200:632/g:fp:0.49:0.32/0*zOEo8IEJN37f5K7P)",
+                  }}
+                ></div>
+
+                <div
+                  className="w-70 bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5"
+                  style={{ width: "20rem" }}
+                >
+                  <div className="header-content inline-flex ">
+                    <div className="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-purple-100">
+                      <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
+                    </div>
+                    <div className="category-title flex-4 font-blackops-one text-sm">
+                      {" "}
+                      Bodybuilde and Fitness Expert
+                    </div>
                   </div>
                   <div className="title-post font-medium">Krris Gethin</div>
 
@@ -107,7 +142,10 @@ const FindTrainers = () => {
                     <div className="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-purple-100">
                       <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
                     </div>
-                    <div className="category-title flex-1 text-sm"> Bodybuilde and Fitness Expert</div>
+                    <div className="category-title flex-4 font-blackops-one text-sm">
+                      {" "}
+                      Bodybuilde and Fitness Expert
+                    </div>
                   </div>
                   <div className="title-post font-medium">Krris Gethin</div>
 
@@ -137,7 +175,10 @@ const FindTrainers = () => {
                     <div className="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-purple-100">
                       <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
                     </div>
-                    <div className="category-title flex-1 text-sm"> Bodybuilde and Fitness Expert</div>
+                    <div className="category-title flex-4 font-blackops-one text-sm">
+                      {" "}
+                      Bodybuilde and Fitness Expert
+                    </div>
                   </div>
                   <div className="title-post font-medium">Krris Gethin</div>
 
@@ -167,7 +208,10 @@ const FindTrainers = () => {
                     <div className="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-purple-100">
                       <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
                     </div>
-                    <div className="category-title flex-1 text-sm"> Bodybuilde and Fitness Expert</div>
+                    <div className="category-title flex-4 font-blackops-one text-sm">
+                      {" "}
+                      Bodybuilde and Fitness Expert
+                    </div>
                   </div>
                   <div className="title-post font-medium">Krris Gethin</div>
 
@@ -197,37 +241,10 @@ const FindTrainers = () => {
                     <div className="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-purple-100">
                       <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
                     </div>
-                    <div className="category-title flex-1 text-sm"> Bodybuilde and Fitness Expert</div>
-                  </div>
-                  <div className="title-post font-medium">Krris Gethin</div>
-
-                  <div className="summary-post text-base text-justify">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Perspiciatis veritatis vel suscipit ex dolore possimus iure.
-                    <button className="bg-blue-100 text-blue-500 mt-4 block rounded p-2 text-sm ">
-                      <span className="">View</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto">
-                <div
-                  className="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center"
-                  style={{
-                    backgroundImage:
-                      "url(https://miro.medium.com/v2/da:true/resize:fill:1200:632/g:fp:0.49:0.32/0*zOEo8IEJN37f5K7P)",
-                  }}
-                ></div>
-
-                <div
-                  className="w-70 bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5"
-                  style={{ width: "20rem" }}
-                >
-                  <div className="header-content inline-flex ">
-                    <div className="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-purple-100">
-                      <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
+                    <div className="category-title flex-4 font-blackops-one text-sm">
+                      {" "}
+                      Bodybuilde and Fitness Expert
                     </div>
-                    <div className="category-title flex-1 text-sm"> Bodybuilde and Fitness Expert</div>
                   </div>
                   <div className="title-post font-medium">Krris Gethin</div>
 

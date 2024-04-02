@@ -11,7 +11,7 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const authLinks = (
-      <div className="md:ml-auto md:mr-4 flex items-center cursor-pointer">
+      <div className="md:ml-auto md:mr-4 flex items-center cursor-pointer ">
         <button
           className="bg-white rounded-md mr-2 text-sm px-4 py-1 h-8 mt-2 hover:bg-cyan-400"
           onClick={() => {
@@ -74,8 +74,8 @@ const Navbar = () => {
     };
 
     return (
-      <div className="sticky top-0 z-[100] w-full">
-        <div className="flex flex-col md:flex-row items-start justify-between p-4 w-full z-[100] absolute">
+      <div className="sticky top-0 z-[100] w-full ">
+        <div className="flex flex-col md:flex-row items-start justify-between p-4 w-full z-[100] absolute bg-gray-800 bg-opacity-40">
           <Link to="/">
             <div className="flex items-center">
               <img className="h-12 md:h-10 mr-2" src={logo} alt="logo" />

@@ -11,6 +11,7 @@ import { useEffect } from "react";
 
 import { checkAuth } from "features/user";
 import FindTrainers from "containers/FindTrainers";
+import Test from "containers/Test";
 
 
 function App() {
@@ -28,8 +29,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/userProfile" element={<UserProfile />} />
-        <Route path="/findTrainer" element={<FindTrainers/>} />
+        <Route path="/findTrainer" element={<FindTrainers />} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
     </Router>
   );

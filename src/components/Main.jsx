@@ -15,7 +15,7 @@ const Main = () => {
         <div className='absolute  top-[325px] transform -translate-y-1/2 sm:left-[400px] md:left-[500px] lg:left-[650px] xl:left-[750px] lg:object-contain self-end'>
           <img src={img4} alt="hero" className='w-full h-[650px] self-end md:self-end object-cover' />
         </div>
-        <div className='top-[50%] absolute w-full sm:top-[28%] md:top-[30%] p-4 md:p-4 md:ml-10 lg:left-10 ' >
+        <div className='top-[50%] absolute w-full sm:top-[28%] md:top-[30%] p-4 md:p-4 md:pl-10 lg:pl-10 ' >
           <h1 className='text-3xl md:text-5xl lg:text-7xl font-blackops-one'>Discover Your Fitness<br/> Journey with Us</h1>
           <p className='text-sm md:text-md md:mt-2 lg:text-3xl'>Join our community of like-minded individuals and achieve your <br/> fitness goals with the help of expert trainers.</p>
           <div className='my-4 ml-1 md:ml-16'>
