@@ -20,40 +20,15 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use(async req =>{
-  if (!authToken) {
+    console.log("inside interceptor");
+  
     authToken = Cookies.get("accessToken") || null;
     req.headers.Authorization = `Bearer ${authToken}`;
-  }
+
   const user = jwtDecode(authToken);
   const isExpired = dayjs.unix(user.exp).diff(dayjs()) < 1;
   console.log("Is expired ", isExpired);
-//   if (req.url === "/api/token/verify/") {
-//     req = {
-//       ...req,
-//       data: {
-//         token: Cookies.get("accessToken"),
-//       },
-//     };
-//   }
-  // if(!isExpired) return req
 
-  // const response = await axios.post(`${baseURL}/api/token/refresh/`, {
-  //     refresh: refreshToken
-  // });
-  // Cookies.remove("accessToken");
-  // console.log("previous token deleted");
-  // Cookies.set("accessToken", response.data.access, { expires: 7 });
-  // console.log("new token saved");
-  // req.headers.Authorization = `Bearer ${response.data.access}`;
-  // if (req.url === "/api/token/verify/") {
-  //     req = {
-  //       ...req,
-  //       data: {
-  //         token: Cookies.get("accessToken"),
-  //       },
-  //     };
-  // }
-  // return req
   if (isExpired){
 
       const response = await axios.post(`${baseURL}/api/token/refresh/`, {
@@ -76,5 +51,4 @@ axiosInstance.interceptors.request.use(async req =>{
   }
   return req
 })
-// console.log("This is the axios instance inside axiosInstance: ", axiosInstance);
 export default axiosInstance;

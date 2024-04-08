@@ -227,9 +227,12 @@ export const logout = createAsyncThunk(
             
             Cookies.remove('accessToken');
             Cookies.remove('refreshToken');
+            console.log("tokens removed");
+            
 
             const {dispatch} = thunkAPI;
             dispatch(resetUser());
+            console.log("user reset");
             toast.success("Logged Out");
 
             return 'Logout successful';
@@ -327,6 +330,8 @@ const userSlice = createSlice({
         resetUser: state => {
             state.isAuthenticated = false;
             state.user = null;
+            Cookies.remove("accessToken");
+            Cookies.remove("refreshToken");
         },
     },
     extraReducers: builder => {
