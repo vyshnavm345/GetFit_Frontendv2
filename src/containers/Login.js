@@ -5,8 +5,8 @@ import img1 from 'assets/Login.jpg'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetRegistered, login } from 'features/user'
 import Loader from 'components/Loader'
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const Login = () => {
 
   useEffect(() => {
     if (registered) dispatch(resetRegistered());
-  }, [registered, dispatch]);
+  }, [registered]);
 
   useEffect(() => {
     const notify = () => toast.error(error?.detail);
@@ -58,7 +58,7 @@ const Login = () => {
         <div className="fixed w-full px-4 py-24 z-50">
           <div className="max-w-[450px] h-[600px] mx-auto bg-black/75 text-white">
             <div className="max-w-[320px] mx-auto py-16">
-              <ToastContainer className="mt-10" />
+              {/* <ToastContainer className="mt-10" /> */}
               <h1 className="text-3xl font-blackops-one">Log In</h1>
               <form
                 className="text-black w-full flex flex-col py-4"

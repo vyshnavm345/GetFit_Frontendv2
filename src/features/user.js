@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_URL } from "config/index";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+import axiosInstance from "utils/axiosInstance";
 
 
 const REAL_API_URL = 'http://127.0.0.1:8000'
@@ -11,7 +13,8 @@ const initialState = {
     loading: false,
     registered: false,
     error: null,
-    message: null
+    message: null,
+    verified:false
 }
 
 export const register = createAsyncThunk('user/register', async ({first_name, last_name, email, password}, thunkAPI)=>{
@@ -36,6 +39,7 @@ export const register = createAsyncThunk('user/register', async ({first_name, la
         // console.log("this is the response ", data)
 
         if (res.status === 201){
+            toast.success(data.message);
             return data;
         }
         else{
@@ -56,31 +60,100 @@ export const register = createAsyncThunk('user/register', async ({first_name, la
 })
 
 
+
+export const verifyEmail = createAsyncThunk(
+  "users/verifyEmail",
+  async ({token}, thunkAPI) => {
+    const body = JSON.stringify({
+      token
+    });
+    console.log("this is the body inside verifyEmail ", body);
+    try {
+      const res = await fetch(`${REAL_API_URL}/api/users/email_verification/`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body,
+      });
+
+      const data = await res.json();
+      if (res.status === 201) {
+        toast.success(data.Message);
+        // console.log("this is the message from verify email",data.Message);
+        // toast.success('Success');
+
+
+        return data;
+      } else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+
+
 const getUser = createAsyncThunk(
 	'user/me',
 	async(_, thunkAPI) =>{
-		const access =  Cookies.get('accessToken')
 		try{
-			const res = await fetch(`${REAL_API_URL}/api/users/me/`,{
-				method: 'GET',
-				headers: {
-					Accept: 'application/json',
-					Authorization: `Bearer ${access}`
-				}
-			});
+            // console.log("This is the axios instance: ", axiosInstance);
+            console.dir(axiosInstance);
+            console.log("Base URL:", axiosInstance.defaults.baseURL);
+            console.log("Headers:", axiosInstance.defaults.headers);
+            const response = await axiosInstance.get('/api/users/me/')
 
-			const data = await res.json();
 
-			if (res.status === 200){
-				return data;
-			} else {
-				return thunkAPI.rejectWithValue(data);
+			if (response.status === 200){
+                
+				return response.data;
 			}
+            else {
+                return thunkAPI.rejectWithValue(response.data);
+            }
 		} catch(err) {
+            console.log(
+            "This is the error in catch : err",
+            err,
+            "err.response",
+            err.response,
+            "err.response.data",
+            err.response.data
+            );
 			return thunkAPI.rejectWithValue(err.response.data);
 		}
 	}
 	)
+
+
+
+// const getUser = createAsyncThunk("user/me", async (_, thunkAPI) => {
+//   const access = Cookies.get("accessToken");
+//   try {
+//     const res = await fetch(`${REAL_API_URL}/api/users/me/`, {
+//       method: "GET",
+//       headers: {
+//         Accept: "application/json",
+//         Authorization: `Bearer ${access}`,
+//       },
+//     });
+//     // const response = await axiosInstance.get('/api/users/me/')
+
+//     const data = await res.json();
+
+//     if (res.status === 200) {
+//       return data;
+//     } else {
+//       return thunkAPI.rejectWithValue(res.data);
+//     }
+//   } catch (err) {
+//     return thunkAPI.rejectWithValue(err.response.data);
+//   }
+// });
 
 export const login = createAsyncThunk('user/login', async ({email, password}, thunkAPI)=>{
     const body = JSON.stringify({
@@ -106,6 +179,7 @@ export const login = createAsyncThunk('user/login', async ({email, password}, th
             const {dispatch} = thunkAPI;
 
             dispatch(getUser());
+            toast.success("Successfully Logged In");
 
             return data;
         }
@@ -117,33 +191,6 @@ export const login = createAsyncThunk('user/login', async ({email, password}, th
     }
 })
 
-
-// export const update = createAsyncThunk(
-//   "user/update",
-//   async (formData, thunkAPI) => {
-//     const access = Cookies.get("accessToken");
-    
-//     try {
-//       const res = await fetch(`${REAL_API_URL}/api/users/updateUser/`, {
-//         method: "PUT",
-//         headers: {
-//           Authorization: `Bearer ${access}`,
-//         },
-//         body: formData,
-//       });
-
-//       const data = await res.json();
-
-//       if (res.status === 200) {
-//         return data;
-//       } else {
-//         return thunkAPI.rejectWithValue(data);
-//       }
-//     } catch (err) {
-//       return thunkAPI.rejectWithValue(err.response.data);
-//     }
-//   }
-// );
 
 
 export const update = createAsyncThunk("users/update", async (payload, thunkAPI) => {
@@ -173,20 +220,6 @@ export const update = createAsyncThunk("users/update", async (payload, thunkAPI)
 
 
 
-
-
-// export const register = createAsyncThunk(
-// 	"users/register",
-// 	async (payload) => {
-// 	const response = await axios.post(`${API_URL}/api/users/register/`, payload, {
-// 		headers: {
-// 		"content-type": "multipart/form-data",
-// 		},
-// 	});
-// 	  return response.data;
-// 	}
-// );
-
 export const logout = createAsyncThunk(
     'users/logout',
     async (_, thunkAPI) => {
@@ -197,6 +230,7 @@ export const logout = createAsyncThunk(
 
             const {dispatch} = thunkAPI;
             dispatch(resetUser());
+            toast.success("Logged Out");
 
             return 'Logout successful';
         } catch (err) {
@@ -210,36 +244,77 @@ export const logout = createAsyncThunk(
 export const checkAuth = createAsyncThunk(
     "users/verify",
     async (_, thunkAPI) => {
-        const access = Cookies.get("accessToken");
-        const body = JSON.stringify({
-        token: access,
-        });
-
         try {
-        const res = await fetch(`${REAL_API_URL}/api/token/verify/`, {
-            method: "POST",
-            headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            },
-            body,
-        });
+            console.dir(axiosInstance);
+            console.log("Base URL:", axiosInstance.defaults.baseURL);
+            console.log("Headers:", axiosInstance.defaults.headers);
+            // const access = Cookies.get("accessToken");
+            // const body = {
+            //     token: access,
+            // };
+          const response = await axiosInstance.post("/api/token/verify/");
 
-        const data = await res.json();
-        if (res.status === 200) {
+          if (response.status === 200) {
+            console.log("verified");
             const { dispatch } = thunkAPI;
 
             dispatch(getUser());
 
-            return data;
-        } else {
-            return thunkAPI.rejectWithValue(data);
-        }
+            return response.data;
+          } else {
+            return thunkAPI.rejectWithValue(response.data);
+          }
         } catch (err) {
+            console.log(
+            "This is the error in catch : err",
+            err,
+            "err.response",
+            err.response,
+            "err.response.data",
+            err.response.data
+            );
         return thunkAPI.rejectWithValue(err.response.data);
         }
     }
 );
+
+
+// export const checkAuth = createAsyncThunk(
+//   "users/verify",
+//   async (_, thunkAPI) => {
+//     // const access = Cookies.get("accessToken");
+//     // const body = JSON.stringify({
+//     // token: access,
+//     // });
+
+//     try {
+//       // const res = await fetch(`${REAL_API_URL}/api/token/verify/`, {
+//       //     method: "POST",
+//       //     headers: {
+//       //     Accept: "application/json",
+//       //     "Content-Type": "application/json",
+//       //     },
+//       //     body,
+//       // });
+//       const response = await axiosInstance.get("/api/token/verify/");
+
+//       // const data = await res.json();
+//       if (response.status === 200) {
+//         console.log("verified");
+//         const { dispatch } = thunkAPI;
+
+//         dispatch(getUser());
+
+//         return response.data;
+//       } else {
+//         return thunkAPI.rejectWithValue(response.data);
+//       }
+//     } catch (err) {
+//       return thunkAPI.rejectWithValue(err.response.data);
+//     }
+//   }
+// );
+
 
 
 const userSlice = createSlice({
@@ -252,7 +327,7 @@ const userSlice = createSlice({
         resetUser: state => {
             state.isAuthenticated = false;
             state.user = null;
-        }
+        },
     },
     extraReducers: builder => {
         builder
@@ -290,6 +365,9 @@ const userSlice = createSlice({
         .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        toast.error("request rejected");
+        // Cookies.remove("accessToken");
+        // Cookies.remove("refreshToken");
         })
         .addCase(checkAuth.pending, (state) => {
         state.loading = true;
@@ -313,9 +391,23 @@ const userSlice = createSlice({
         .addCase(update.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+        toast.error("request rejected");
+        })
+        .addCase(verifyEmail.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+        })
+        .addCase(verifyEmail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.message = action.payload;
+        state.verified = true;
+        })
+        .addCase(verifyEmail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
         });
     }
 });
 
-export const {resetRegistered, resetUser} = userSlice.actions
+export const { resetRegistered, resetUser} = userSlice.actions;
 export default userSlice.reducer

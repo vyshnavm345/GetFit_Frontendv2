@@ -6,13 +6,13 @@ import { Link, Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { register } from 'features/user'
 import Loader from 'components/Loader'
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from 'react'
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { registered, loading, error } = useSelector(state => state.user);
+  const { registered, loading, error, isAuthenticated } = useSelector(state => state.user);
   
   useEffect(()=>{
     const notify = () => toast.error(error?.error_message);
@@ -40,6 +40,10 @@ const Register = () => {
 
   if (registered) return <Navigate to='/login' />;
 
+  if (isAuthenticated) {
+    return <Navigate to="/userProfile" />;
+  }
+
   return (
     <Layout title="Auth Site | Register" content="Register Page">
       <div className="w-full h-screen">
@@ -52,7 +56,7 @@ const Register = () => {
         <div className="fixed w-full px-4 py-24 z-50">
           <div className="max-w-[450px] h-[600px] mx-auto bg-black/75 text-white">
             <div className="max-w-[320px] mx-auto py-16">
-              <ToastContainer className="mt-10" />
+              {/* <ToastContainer className="mt-10" /> */}
               <h1 className="text-3xl font-blackops-one">Sign UP</h1>
               <form
                 className="text-black w-full flex flex-col py-4"

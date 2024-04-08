@@ -12,7 +12,10 @@ import { useEffect } from "react";
 import { checkAuth } from "features/user";
 import FindTrainers from "containers/FindTrainers";
 import Test from "containers/Test";
-
+import ProgrammesPage from "containers/ProgrammesPage";
+import TrainerHomePage from "containers/TrainerHomePage";
+import VerifyEmail from 'components/VerifyEmail'
+import ProtectedRoute from "components/ProtectedRoutes";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,13 +28,25 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/userProfile" element={<UserProfile />} />
+        <Route
+          path="/userProfile"
+          element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          }
+        />
+        {/* <Route path="/userProfile" element={<UserProfile />} /> */}
         <Route path="/findTrainer" element={<FindTrainers />} />
+        <Route path="/programmes" element={<ProgrammesPage />} />
+        <Route path="/trainer/profile" element={<TrainerHomePage />} />
         <Route path="*" element={<NotFoundPage />} />
-        <Route path="/test" element={<Test />} />
+        {/* <Route path="/test" element={<Test />} /> */}
+        {/* <Route path="/verify" element={<VerifyEmail />} /> */}
+        <Route path="/verify/:token" element={<VerifyEmail />} />
       </Routes>
     </Router>
   );

@@ -9,7 +9,7 @@ const FindTrainers = () => {
     const navigate = useNavigate();
     return (
       <Layout>
-        <div className="w-full h-[650px] text-white ">
+        <div className="w-full h-[650px] text-white no-scrollbar ">
           <div className="w-full h-full">
             <div className="absolute w-full h-[650px] bg-gradient-to-r from-black xl:h-[712px]"></div>
             <img className="w-full h-full object-cover" src={img1} alt="" />

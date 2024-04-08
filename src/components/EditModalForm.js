@@ -108,26 +108,21 @@ export default function Modal() {
                       className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                       onClick={() => setShowModal(false)}
                     >
-                      <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                        ×
-                      </span>
+                      <h6 className="text-black">×</h6>
+                      
                     </button>
                   </div>
                   {/*body*/}
                   <div className="p-8  rounded border border-gray-200">
-                    {" "}
                     <form onSubmit={onSubmit} encType="multipart/form-data">
-                      {" "}
                       <div className="mt-8 grid lg:grid-cols-2 gap-4">
-                        {" "}
                         <div>
-                          {" "}
                           <label
                             htmlFor="first_name"
                             className="text-sm text-gray-700 block mb-1 font-medium"
                           >
                             First Name
-                          </label>{" "}
+                          </label>
                           <input
                             type="text"
                             name="first_name"
@@ -136,16 +131,15 @@ export default function Modal() {
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Enter your first_name"
                             required
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                         <div>
-                          {" "}
                           <label
                             htmlFor="last_name"
                             className="text-sm text-gray-700 block mb-1 font-medium"
                           >
                             Last Name
-                          </label>{" "}
+                          </label>
                           <input
                             type="text"
                             name="last_name"
@@ -154,16 +148,16 @@ export default function Modal() {
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Enter your last_name"
                             required
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                         {/* <div>
-                        {" "}
+                        
                         <label
                         htmlFor="email"
                         className="text-sm text-gray-700 block mb-1 font-medium"
                         >
                         Email Address
-                        </label>{" "}
+                        </label>
                         <input
                         type="text"
                         name="email"
@@ -171,16 +165,22 @@ export default function Modal() {
                         value={email}
                         className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                         placeholder="yourmail@provider.com"
-                        />{" "}
-                    </div>{" "} */}
+                        />
+                    </div> */}
                         <div>
-                          {" "}
                           <label
                             htmlFor="profile-picture"
                             className="text-sm text-gray-700 block mb-1 font-medium"
                           >
                             Profile Picture
-                          </label>{" "}
+                          </label>
+                          {profile_picture instanceof File && (
+                            <img
+                              className="h-14"
+                              src={URL.createObjectURL(profile_picture)}
+                              alt="img"
+                            />
+                          )}
                           <input
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             type="file"
@@ -188,16 +188,15 @@ export default function Modal() {
                               setProfilePicture(e.target.files[0])
                             }
                             name="profile_picture"
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                         <div>
-                          {" "}
                           <label
                             htmlFor="weight"
                             className="text-sm text-gray-700 block mb-1 font-medium"
                           >
                             Weight
-                          </label>{" "}
+                          </label>
                           <input
                             type="text"
                             name="profile.weight"
@@ -206,16 +205,15 @@ export default function Modal() {
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your weight in Kg"
                             required
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                         <div>
-                          {" "}
                           <label
                             htmlFor="height"
                             className="text-sm text-gray-700 block mb-1 font-medium"
                           >
                             Height
-                          </label>{" "}
+                          </label>
                           <input
                             type="text"
                             name="profile.height"
@@ -224,16 +222,15 @@ export default function Modal() {
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your height in cm"
                             required
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                         <div>
-                          {" "}
                           <label
                             htmlFor="age"
                             className="text-sm text-gray-700 block mb-1 font-medium"
                           >
                             Age
-                          </label>{" "}
+                          </label>
                           <input
                             type="text"
                             name="profile.age"
@@ -242,16 +239,15 @@ export default function Modal() {
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your Age"
                             required
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                         <div>
-                          {" "}
                           <label
                             htmlFor="body_fat"
                             className="text-sm text-gray-700 block mb-1 font-medium"
                           >
                             Body Fat
-                          </label>{" "}
+                          </label>
                           <input
                             type="text"
                             name="profile.body_fat"
@@ -259,16 +255,15 @@ export default function Modal() {
                             value={body_fat}
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your body fat in %"
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                         <div>
-                          {" "}
                           <label
                             htmlFor="phone"
                             className="text-sm text-gray-700 block mb-1 font-medium"
                           >
                             Phone
-                          </label>{" "}
+                          </label>
                           <input
                             type="text"
                             name="profile.phone"
@@ -277,25 +272,25 @@ export default function Modal() {
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your Phone number"
                             required
-                          />{" "}
-                        </div>{" "}
+                          />
+                        </div>
                         {/* <div>
-                    {" "}
+                    
                     <label
                     for="brithday"
                     className="text-sm text-gray-700 block mb-1 font-medium"
                     >
                     Birthday
-                    </label>{" "}
+                    </label>
                     <input
                     type="text"
                     name="brithday"
                     id="brithday"
                     className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                     placeholder="(01/01/1993)"
-                    />{" "}
-                </div>{" "} */}
-                      </div>{" "}
+                    />
+                </div> */}
+                      </div>
                       <div className="space-x-4 mt-8"> </div> {/*footer*/}
                       <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                         <button
@@ -313,7 +308,7 @@ export default function Modal() {
                           Save Changes
                         </button>
                       </div>
-                    </form>{" "}
+                    </form>
                   </div>
                 </div>
               </div>

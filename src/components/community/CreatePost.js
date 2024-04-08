@@ -19,7 +19,7 @@ export default function CreatePost() {
           />
         </div>
         <div className="border border-fGray border-opacity-10 mt-4" />
-        <div className="flex justify-between">
+        <div className="flex md:justify-evenly ">
           <button className="flex justify-center items-center w-1/3 focus:outline-none mt-4 py-2">
             <Image />
             <span className="text-fGrey text-opacity-80 font-medium ml-2">
