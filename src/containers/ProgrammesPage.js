@@ -61,7 +61,10 @@ const ProgrammesPage = () => {
             </p>
           </div>
           <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
-            <div className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto">
+            <div
+              onClick={()=>{navigate("/programDetails")}}
+              className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto cursor-pointer"
+            >
               <div
                 className="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center"
                 style={{
@@ -88,8 +91,8 @@ const ProgrammesPage = () => {
 
                 <div className="summary-post text-base text-justify">
                   12 weeks of intense workouts to transform you body.
-                  <br/>
-                  // add text truncation here to avoid text overflow 
+                  <br />
+                  // add text truncation here to avoid text overflow
                   <button className="bg-blue-100 text-blue-500 mb-2 mt-4 block rounded p-2 text-sm ">
                     <span className="">View</span>
                   </button>

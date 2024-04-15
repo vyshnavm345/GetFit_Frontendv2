@@ -20,10 +20,10 @@ const FindTrainers = () => {
                 className="w-full h-[650px] self-end md:self-end object-cover"
               />
             </div>
-            <div className="top-[45%] absolute w-full sm:top-[28%] md:top-[30%] p-4 md:p-4 md:pl-10 lg:pl-10 ">
+            <div className="lg:top-[18%] top-[45%] absolute w-full sm:top-[28%] md:top-[30%] p-4 md:p-4 md:pl-10 lg:pl-10 ">
               <h1 className="text-3xl md:text-5xl lg:text-7xl font-blackops-one">
-                Meet Trainers THat Push You
-                <br /> To Your LImit
+                Meet Trainers That Push You
+                <br /> To Your LImits
               </h1>
               <p className="text-sm md:text-md md:mt-2 lg:text-3xl">
                 Find the ideal triainer who will guide you thoughtout <br />{" "}
@@ -58,8 +58,8 @@ const FindTrainers = () => {
                 mieux s'en sortir.
               </p>
             </div>
-            <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
-              <div className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto">
+            <div className="flex ml-2 flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
+              <div onClick={()=>{navigate("/trainerPage");}} className="p-4 md:w-1/3 md:mb-0 mb-6 flex flex-col justify-center items-center max-w-sm mx-auto">
                 <div
                   className="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center"
                   style={{

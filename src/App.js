@@ -16,6 +16,10 @@ import ProgrammesPage from "containers/ProgrammesPage";
 import TrainerHomePage from "containers/TrainerHomePage";
 import VerifyEmail from 'components/VerifyEmail'
 import ProtectedRoute from "components/ProtectedRoutes";
+import TrainerRegister from "containers/TrainerRegister";
+import ProgramDetails from "containers/ProgramDetails";
+import ProgramLesson from "containers/ProgramLesson";
+import TrainerDashboard from "containers/TrainerDashboard";
 
 function App() {
   const dispatch = useDispatch();
@@ -28,7 +32,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
+        <Route path="/trainerPage" element={<DashboardPage />} />
+        <Route path="/trainerDashboard" element={<TrainerDashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
@@ -39,7 +44,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route path="/userProfile" element={<UserProfile />} /> */}
+
+        <Route path="/trainerRegister" element={<TrainerRegister />} />
         <Route path="/findTrainer" element={<FindTrainers />} />
         <Route path="/programmes" element={<ProgrammesPage />} />
         <Route path="/trainer/profile" element={<TrainerHomePage />} />
@@ -47,6 +53,8 @@ function App() {
         {/* <Route path="/test" element={<Test />} /> */}
         {/* <Route path="/verify" element={<VerifyEmail />} /> */}
         <Route path="/verify/:token" element={<VerifyEmail />} />
+        <Route path="/programDetails" element={<ProgramDetails />} />
+        <Route path="/programLesson" element={<ProgramLesson />} />
       </Routes>
     </Router>
   );

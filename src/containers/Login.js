@@ -22,7 +22,7 @@ const Login = () => {
   useEffect(() => {
     const notify = () => toast.error(error?.detail);
     notify();
-    console.log("This is the error :->", error?.detail);
+    // console.log("This is the error :->", error?.detail);
   }, [error]);
 
   const [formData, setFormData] = useState({

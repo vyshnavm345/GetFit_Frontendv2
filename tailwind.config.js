@@ -22,5 +22,6 @@ module.exports = {
 
       addUtilities(newUtilities);
     },
+    require('@tailwindcss/aspect-ratio'),
   ],
 };

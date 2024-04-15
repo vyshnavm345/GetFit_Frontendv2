@@ -74,12 +74,15 @@ const Navbar = () => {
     } else if (selectedOption === 'option3'){
       toast.success('Navigated to test success')
       navigate('/test')
+    } else if (selectedOption === 'option4'){
+      // toast.success('Navigated to test success')
+      navigate('/dashboard')
     }
     };
 
     return (
-      <div className="sticky top-0 z-[100] w-full ">
-        <div className="flex flex-col md:flex-row items-start justify-between p-4 w-full z-[100] absolute bg-gray-800 bg-opacity-40">
+      <div className=" sticky top-0 z-[100] w-full ">
+        <div className="flex h-20 flex-col md:flex-row items-start justify-between p-2 md:p-6 w-full z-[100] absolute bg-gray-600 bg-opacity-40">
           <Link to="/">
             <div className="flex items-center">
               <img className="h-12 md:h-10 mr-2" src={logo} alt="logo" />
@@ -115,9 +118,6 @@ const Navbar = () => {
               isOpen ? "block" : "hidden"
             }`}
           >
-
-
-            
             <div className="flex ml-auto flex-col md:flex-row ">
               <Link to="/findTrainer">
                 <div className="h-10 mt-5 md:mt-0 md:h-0 ">
@@ -139,6 +139,16 @@ const Navbar = () => {
                   </a>
                 </div>
               </Link>
+              <Link to="/trainerRegister">
+                <div className=" h-10 mt-5 md:mt-0 md:h-0">
+                  <a
+                    className=" hover:text-cyan-400 mx-5 font-mono text-white"
+                    href="!#"
+                  >
+                    Join as Trainer
+                  </a>
+                </div>
+              </Link>
               <div className=" h-10 mt-5 md:mt-0 md:h-0">
                 <div className="relative inline-block">
                   <select
@@ -156,10 +166,10 @@ const Navbar = () => {
                       Sign up
                     </option>
                     <option className=" text-black" value="option3">
-                      Option 3
+                      test
                     </option>
                     <option className=" text-black" value="option4">
-                      Option 4
+                      dashboard
                     </option>
                   </select>
                   <svg
@@ -179,8 +189,6 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-
-
 
             <div className="h-10 mt-5 md:mt-0 md:h-0 ml-auto">
               {isAuthenticated ? authLinks : guestLinks}

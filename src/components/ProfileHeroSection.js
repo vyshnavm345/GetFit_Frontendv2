@@ -2,17 +2,18 @@ import React from 'react'
 import Modal from "components/EditModalForm";
 
 import { API_URL } from "config/index";
+import TrainerDetails from './trainer/TrainerDetails';
 
 const ProfileHeroSection = ({user}) => {
     const backgroundImage = false;
   return (
     <>
-      <div className="p-16">
+      <div className="p-1 lg:p-16">
         <div
           className={
             backgroundImage
               ? "p-8 bg-black shadow mt-24"
-              : "p-8  shadow mt-24 bg-white"
+              : "p-8  shadow mt-40 bg-white"
           }
         >
           <div className="grid grid-cols-1 md:grid-cols-3">
@@ -54,15 +55,19 @@ const ProfileHeroSection = ({user}) => {
                 )}
               </div>
             </div>
-            <div className="space-x-8 flex justify-between mt-32 md:mt-0 md:justify-center">
-              <button className="text-[#111] border-2 bg-transparent active:bg-blue-400 hover:bg-blue-500 hover:text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5">
+            <div className="lg:mr-10 lg:pr-5 space-x-8 md:space-x-1 flex justify-between mt-32 md:mt-0 md:justify-center">
+              <button className="text-[#111] border-2 bg-transparent active:bg-blue-400 hover:bg-blue-500 hover:text-white font-bold uppercase text-xs lg:text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none lg:mr-1 lg:mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5">
                 Feeds
               </button>
-              <button className="text-[#111] bg-transparent border-2 active:bg-blue-400 hover:bg-blue-500 hover:text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5">
+              <button className="text-[#111] bg-transparent border-2 active:bg-blue-400 hover:bg-blue-500 hover:text-white font-bold uppercase text-xs lg:text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5">
                 My Posts
               </button>
+              {/* <button className=' text-xs mx-5 px-5 py-5'>My Posts</button> */}
               <Modal />
             </div>
+          </div>
+          <div className="md:w-[50%] pt-5 flex justify-center">
+            {/* {user.is_trainer && <TrainerDetails />} */}
           </div>
           <div className="mt-20 text-center border-b pb-12">
             <h1 className="text-4xl font-medium text-gray-700">
@@ -92,6 +97,9 @@ const ProfileHeroSection = ({user}) => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="bg-white flex flex-col justify-center md:items-start md:pl-32">
+        {user.is_trainer && <TrainerDetails />}
       </div>
     </>
   );

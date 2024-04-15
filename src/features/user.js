@@ -130,31 +130,6 @@ const getUser = createAsyncThunk(
 	)
 
 
-
-// const getUser = createAsyncThunk("user/me", async (_, thunkAPI) => {
-//   const access = Cookies.get("accessToken");
-//   try {
-//     const res = await fetch(`${REAL_API_URL}/api/users/me/`, {
-//       method: "GET",
-//       headers: {
-//         Accept: "application/json",
-//         Authorization: `Bearer ${access}`,
-//       },
-//     });
-//     // const response = await axiosInstance.get('/api/users/me/')
-
-//     const data = await res.json();
-
-//     if (res.status === 200) {
-//       return data;
-//     } else {
-//       return thunkAPI.rejectWithValue(res.data);
-//     }
-//   } catch (err) {
-//     return thunkAPI.rejectWithValue(err.response.data);
-//   }
-// });
-
 export const login = createAsyncThunk('user/login', async ({email, password}, thunkAPI)=>{
     const body = JSON.stringify({
         email,
@@ -282,41 +257,6 @@ export const checkAuth = createAsyncThunk(
 );
 
 
-// export const checkAuth = createAsyncThunk(
-//   "users/verify",
-//   async (_, thunkAPI) => {
-//     // const access = Cookies.get("accessToken");
-//     // const body = JSON.stringify({
-//     // token: access,
-//     // });
-
-//     try {
-//       // const res = await fetch(`${REAL_API_URL}/api/token/verify/`, {
-//       //     method: "POST",
-//       //     headers: {
-//       //     Accept: "application/json",
-//       //     "Content-Type": "application/json",
-//       //     },
-//       //     body,
-//       // });
-//       const response = await axiosInstance.get("/api/token/verify/");
-
-//       // const data = await res.json();
-//       if (response.status === 200) {
-//         console.log("verified");
-//         const { dispatch } = thunkAPI;
-
-//         dispatch(getUser());
-
-//         return response.data;
-//       } else {
-//         return thunkAPI.rejectWithValue(response.data);
-//       }
-//     } catch (err) {
-//       return thunkAPI.rejectWithValue(err.response.data);
-//     }
-//   }
-// );
 
 
 
@@ -370,7 +310,7 @@ const userSlice = createSlice({
         .addCase(getUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        toast.error("request rejected");
+        // toast.error("request rejected");
         // Cookies.remove("accessToken");
         // Cookies.remove("refreshToken");
         })

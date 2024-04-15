@@ -17,7 +17,6 @@ const Register = () => {
   useEffect(()=>{
     const notify = () => toast.error(error?.error_message);
     notify();
-    console.log("This is the error :->",error?.error_message)
   }, [error])
   const [formData, setFormData] = useState({
     first_name: '',
