@@ -1,27 +1,56 @@
-import React from 'react'
-import img1 from 'assets/yoga.jpg'
+import React, { useEffect } from 'react'
 import CardList from 'components/CardList';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProgramme } from 'features/trainer';
+import { getLessonsList } from 'features/lessons';
+import { API_URL } from 'config';
+import { followedProgram } from 'features/program';
+import { toast } from 'react-toastify';
 
 const CourseDescription = () => {
-    const navigate = useNavigate()
+  const dispatch = useDispatch()
+    const { programme } = useSelector((state) => state.trainer);
+    const { lessonsList } = useSelector((state) => state.lesson);
+    const { isAuthenticated, user } = useSelector((state) => state.user);
+    const { id } = useParams();
+    const navigate = useNavigate();
+    useEffect(()=>{
+      console.log('mounting course description')
+      dispatch(getProgramme(id));
+      // add the subscriber logic here that is only subscribed users should be able to see the lesson contents
+      if (isAuthenticated){
+        dispatch(getLessonsList(id));
+      } 
+    }, [])
+    const handleClick = ()=>{
+      if (user){
+        dispatch(followedProgram(programme.id));
+      } else {
+        toast.error("Please Login First !")
+      }
+    }
   return (
     <>
       <div className=" lg:mx-32 mx-auto px-4  py-24 bg-black/15 ">
         <div
           className="bg-cover bg-no-repeat bg-center h-64 lg:h-[450px] object-cover rounded mb-8"
-          style={{ backgroundImage: `url(${img1})` }}
+          style={{
+            backgroundImage: `url(${API_URL}/${programme?.cover_image})`,
+          }}
         ></div>
 
         <div className="mx-5 flex justify-between items-center pb-8">
           <h1 className="text-3xl font-blackops-one text-[#f5f5f5]">
-            Seek Health with Yoga Sadhana
+            {programme?.program_name}
           </h1>
+          {!user?.is_trainer &&
           <div className="flex items-center">
-            <button className="px-4 py-2 bg-blue-500 text-white font-bold rounded-md shadow hover:bg-blue-700">
-              Get Started
+            <button onClick={()=>{handleClick()}} className="px-4 py-2 bg-blue-500 text-white font-bold rounded-md shadow hover:bg-blue-700">
+              Follow this Program
             </button>
           </div>
+          }
         </div>
 
         <div className="flex flex-col   justify-between pb-8">
@@ -30,21 +59,13 @@ const CourseDescription = () => {
               Program Description
             </h3>
             <p className="text-blue-200 text-base px-4 py-2   rounded-md">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-              consectetur velit nec nulla porta tincidunt. Sed euismod risus sit
-              amet quam semper laoreet. Donec sed odio dui. Vivamus at risus
-              magna. Morbi leo risus, porta ac consectetur ac, vestibulum at
-              eros. Fusce dapibus, tellus quis fringilla tincidunt, tellus
-              imperdiet volutpat odio, in laoreet libero justo eu risus. Cras
-              justo odio, dapibus ac facilisis in, egestas eget quam. Donec sed
-              odio dui. Vivamus at risus magna. Morbi leo risus, porta ac
-              consectetur ac.
+              {programme?.description}
             </p>
           </div>
           <div className="flex flex-col lg:flex-row">
             <div className="mx-5 w-full mb-4 lg:mb-1 lg:w-1/2">
               <h3 className="text-xl font-bold text-[#f5f5f5] mb-4">
-                Key Concepts
+                Key Benifits
               </h3>
               <ul className="list-disc pl-4 text-blue-200">
                 <li className=" text-base">Improve Your Stamina</li>
@@ -58,7 +79,7 @@ const CourseDescription = () => {
               <h3 className="text-xl  font-bold text-[#f5f5f5] mb-4">
                 User Testimonial
               </h3>
-              <div className="bg-blue-100 no-scrollbar w-[97%]  lg:w-[400px] h-48 overflow-y-auto border rounded-md shadow-md my-4">
+              <div className="bg-blue-100 no-scrollbar w-[97%]  lg:w-[540px] h-48 overflow-y-auto border rounded-md shadow-md my-4">
                 <CardList />
               </div>
             </div>
@@ -88,24 +109,29 @@ const CourseDescription = () => {
               </div>
             </div>
           </div> */}
-          <div className="w-full mx-5 ">
-            <h3 className="text-xl mb font-bold text-[#f5f5f5] mb-4 mt-4">
-              Course Content
-            </h3>
-            <ul className="list-disc text-blue-200 pl-4  ">
-              <li
-                onClick={() => {
-                  navigate("/programLesson");
-                }}
-                className="text-base border rounded p-4 w-[97%] my-2 "
-              >
-                <button>Effective Ways of Building Stamina</button>
-              </li>
-              <li className="text-base w-[97%] border rounded p-4 my-2">
-                Types of Yoga Positions
-              </li>
-            </ul>
-          </div>
+          {isAuthenticated ? (
+            <div className="w-full mx-5 ">
+              <h3 className="text-xl mb font-bold text-[#f5f5f5] mb-4 mt-4">
+                Course Content
+              </h3>
+              <ul className="list-disc text-blue-200 pl-4  ">
+                {lessonsList?.map((lesson) => (
+                  <li
+                    onClick={() => {
+                      navigate(`/programLesson/${programme?.id}`);
+                    }}
+                    className="text-base border rounded p-4 w-[97%] my-2 "
+                  >
+                    <button>{lesson?.title}</button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className=" ml-10 text-4xl text-white font-mono">
+              Login to view the lessons
+            </div>
+          )}
         </div>
       </div>
     </>

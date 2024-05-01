@@ -19,13 +19,14 @@ const Register = () => {
     notify();
   }, [error])
   const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: ''
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    password2: "",
   });
 
-  const {first_name, last_name, email, password} = formData;
+  const { first_name, last_name, email, password, password2 } = formData;
 
   const onChange = e => {
     setFormData({...formData, [e.target.name]: e.target.value});
@@ -56,7 +57,9 @@ const Register = () => {
           <div className="max-w-[450px] h-[600px] mx-auto bg-black/75 text-white">
             <div className="max-w-[320px] mx-auto py-16">
               {/* <ToastContainer className="mt-10" /> */}
-              <h1 className="text-3xl font-blackops-one">Sign UP</h1>
+              <h1 className="text-3xl font-blackops-one text-blue-600 underline">
+                Sign UP
+              </h1>
               <form
                 className="text-black w-full flex flex-col py-4"
                 onSubmit={onSubmit}
@@ -103,14 +106,25 @@ const Register = () => {
                   required
                   placeholder="Password"
                 />
-
+                <input
+                  className="p-3 my-2 bg-cyan-100 rounded"
+                  type="password"
+                  name="password2"
+                  id="4"
+                  onChange={onChange}
+                  value={password2}
+                  required
+                  placeholder="Re-enter Password"
+                />
+                {password !== password2 && (
+                  <div className="text-red-500 font-bold">
+                    Passwords don't match
+                  </div>
+                )}
                 {loading ? (
                   <Loader />
                 ) : (
-                  <button
-                    className="bg-cyan-500 py-3 my-6 rounded font-bold"
-                    
-                  >
+                  <button className="bg-cyan-500 py-3 my-6 rounded font-bold">
                     Sign Up
                   </button>
                 )}

@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 
 import Navbar3 from './Navbar3';
 import Footer from './Footer';
-import Navbar2 from './Navbar2';
 import ScrollToTop from './ScrollToTop';
 
 

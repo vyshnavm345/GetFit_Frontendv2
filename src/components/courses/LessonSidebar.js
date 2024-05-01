@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LessonSidebar = ({isOpen, setIsOpen}) => {
+const LessonSidebar = ({lessonsList, setLessonNo, isOpen, setIsOpen}) => {
 
     const toggleDrawer = () => {
       setIsOpen(!isOpen);
@@ -35,26 +35,13 @@ const LessonSidebar = ({isOpen, setIsOpen}) => {
       </div>
       <nav className="mt-4">
         <ul className="space-y-2">
-          <li className="px-4 py-2 hover:bg-gray-700">
+          {lessonsList?.map((lesson, index)=>(
+          <li onClick={()=>{setLessonNo(index)}} className="px-4 py-2 hover:bg-gray-700">
             <a href="#" className="text-base font-medium">
-              Lesson 1
+              {lesson?.title}
             </a>
           </li>
-          <li className="px-4 py-2 hover:bg-gray-700">
-            <a href="#" className="text-base font-medium">
-              Lesson 2
-            </a>
-          </li>
-          <li className="px-4 py-2 hover:bg-gray-700">
-            <a href="#" className="text-base font-medium">
-              Lesson 3
-            </a>
-          </li>
-          <li className="px-4 py-2 hover:bg-gray-700">
-            <a href="#" className="text-base font-medium">
-              Lesson 4
-            </a>
-          </li>
+          ))}
         </ul>
       </nav>
     </div>

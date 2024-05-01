@@ -2,13 +2,16 @@ import React from 'react'
 import { useState } from 'react';
 import countries from "../resources.js";
 import { specialized } from "../resources.js";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addTrainer } from 'features/trainer.js';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 const TrainerRegisterForm = () => {
+    const { user } = useSelector((state) => state.user);
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isValidPhone, setIsValidPhone] = useState(true);
+    const [profile_picture, setProfilePicture] = useState(null);
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
@@ -19,11 +22,11 @@ const TrainerRegisterForm = () => {
       experience_years: 0,
       country: "",
       about: "",
+      profile_picture: user.profile_picture,
     });
 
     const {
       specalized,
-      phone,
       certifications,
       experience_years,
       country,
@@ -55,6 +58,7 @@ const TrainerRegisterForm = () => {
                 experience_years,
                 country,
                 about,
+                profile_picture,
               })
             );
             navigate("/userProfile");
@@ -65,7 +69,11 @@ const TrainerRegisterForm = () => {
 
   return (
     <div className="mx-1  md:mx-20 py-20 bg-black/25 text-white">
-      <form onSubmit={onSubmit} className="px-5 py-5">
+      <form
+        onSubmit={onSubmit}
+        className="px-5 py-5"
+        encType="multipart/form-data"
+      >
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 ">
             <h2 className="  leading-7 font-blackops-one text-3xl mb-2">
@@ -97,6 +105,27 @@ const TrainerRegisterForm = () => {
                     className="pl-3 block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
+              </div>
+              <div >
+                <label
+                  htmlFor="profile-picture"
+                  className="text-sm text-gray-700 block mb-1 font-medium "
+                >
+                  Profile Picture
+                </label>
+                {profile_picture instanceof File && (
+                  <img
+                    className="h-28 ml-10"
+                    src={URL.createObjectURL(profile_picture)}
+                    alt="img"
+                  />
+                )}
+                <input
+                  className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
+                  type="file"
+                  onChange={(e) => setProfilePicture(e.target.files[0])}
+                  name="profile_picture"
+                />
               </div>
 
               <div className="sm:col-span-3">

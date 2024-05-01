@@ -20,6 +20,8 @@ import TrainerRegister from "containers/TrainerRegister";
 import ProgramDetails from "containers/ProgramDetails";
 import ProgramLesson from "containers/ProgramLesson";
 import TrainerDashboard from "containers/TrainerDashboard";
+import Test1 from 'containers/Test1';
+import ChatWindow from "containers/ChatWindow";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,8 +34,16 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/trainerPage" element={<DashboardPage />} />
-        <Route path="/trainerDashboard" element={<TrainerDashboard />} />
+        <Route path="/trainerPage/:id" element={<DashboardPage />} />
+        {/* <Route path="/trainerDashboard" element={<TrainerDashboard />} /> */}
+        <Route
+          path="/trainerDashboard"
+          element={
+            <ProtectedRoute>
+              <TrainerDashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
@@ -44,17 +54,16 @@ function App() {
             </ProtectedRoute>
           }
         />
-
         <Route path="/trainerRegister" element={<TrainerRegister />} />
         <Route path="/findTrainer" element={<FindTrainers />} />
         <Route path="/programmes" element={<ProgrammesPage />} />
         <Route path="/trainer/profile" element={<TrainerHomePage />} />
         <Route path="*" element={<NotFoundPage />} />
-        {/* <Route path="/test" element={<Test />} /> */}
-        {/* <Route path="/verify" element={<VerifyEmail />} /> */}
+        {/* <Route path="/chat" element={<Test />} /> */}
         <Route path="/verify/:token" element={<VerifyEmail />} />
-        <Route path="/programDetails" element={<ProgramDetails />} />
-        <Route path="/programLesson" element={<ProgramLesson />} />
+        <Route path="/programDetails/:id" element={<ProgramDetails />} />
+        <Route path="/programLesson/:id" element={<ProgramLesson />} />
+        <Route path="/chat" element={<ChatWindow />} />
       </Routes>
     </Router>
   );

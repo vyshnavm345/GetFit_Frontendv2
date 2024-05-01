@@ -5,17 +5,10 @@ import { API_URL } from "config/index";
 import TrainerDetails from './trainer/TrainerDetails';
 
 const ProfileHeroSection = ({user}) => {
-    const backgroundImage = false;
   return (
     <>
       <div className="p-1 lg:p-16">
-        <div
-          className={
-            backgroundImage
-              ? "p-8 bg-black shadow mt-24"
-              : "p-8  shadow mt-40 bg-white"
-          }
-        >
+        <div className="p-8  shadow mt-4 bg-white">
           <div className="grid grid-cols-1 md:grid-cols-3">
             <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
               <div>
@@ -33,7 +26,7 @@ const ProfileHeroSection = ({user}) => {
             </div>
             <div className="relative">
               <div className="bg-indigo-100 mx-auto rounded-full shadow-2xl w-48 h-48 absolute inset-x-0 top-0 -mt-24 flex items-center justify-center text-indigo-500">
-                {user.profile_picture ? (
+                {user?.profile_picture ? (
                   <img
                     className="rounded-full object-cover w-48 h-48"
                     src={`${API_URL}${user?.profile_picture}`}
@@ -77,30 +70,51 @@ const ProfileHeroSection = ({user}) => {
               </span>
             </h1>
             <p className="font-light text-gray-600 mt-3">{user?.email}</p>
-            <div className="flex items-start justify-between p-4 w-[50%] ">
+            <div className="flex items-start justify-between p-4 m-4 w-[55%] ">
               <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
                 <span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0"></span>
-                {user?.profile.height} CM
+                Height- {user?.profile.height} CM
               </span>
               <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
                 <span class="flex w-2.5 h-2.5 bg-purple-500 rounded-full me-1.5 flex-shrink-0"></span>
-                {user?.profile.weight} KG
+               Weight- {user?.profile.weight} KG
               </span>
               <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
                 <span class="flex w-2.5 h-2.5 bg-indigo-500 rounded-full me-1.5 flex-shrink-0"></span>
-                {user?.profile.body_fat} %
+               Body-Fat- {user?.profile.body_fat} %
               </span>
               <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
                 <span class="flex w-2.5 h-2.5 bg-teal-500 rounded-full me-1.5 flex-shrink-0"></span>
-                +91-{user?.profile.phone}
+               Mobile- +91-{user?.profile.phone}
               </span>
             </div>
           </div>
         </div>
       </div>
-      <div className="bg-white flex flex-col justify-center md:items-start md:pl-32">
-        {user.is_trainer && <TrainerDetails />}
-      </div>
+      {/* <div className="bg-white flex flex-col justify-evenly md:items-start md:pl-32">
+        <button className="bg-green-700 justify-end text-white text-xs p-2 hover:opacity-80 font-bold rounded mt-1">
+          + add credentials
+        </button>
+        <div className="flex flex-row ">
+          {user?.is_trainer && <TrainerDetails />}
+          {user?.is_trainer && <TrainerDetails />}
+          {user?.is_trainer && <TrainerDetails />}
+        </div>
+        <button className="bg-green-700 text-white text-xs p-2 hover:opacity-80 font-bold rounded mt-1 md:mt-0">
+          + Add Credentials
+        </button>
+      </div> */}
+      {user.is_trainer && (
+        <div className="bg-white flex flex-col md:flex-row justify-between items-start md:pl-32">
+          <div className="flex flex-row ">
+            {user?.is_trainer && <TrainerDetails />}
+            {user?.is_trainer && <TrainerDetails />}
+          </div>
+          <button className="bg-green-700 text-white text-xs p-2 hover:opacity-80 font-bold rounded m-4">
+            + Add Credentials
+          </button>
+        </div>
+      )}
     </>
   );
 }

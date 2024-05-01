@@ -17,7 +17,7 @@ const Login = () => {
 
   useEffect(() => {
     if (registered) dispatch(resetRegistered());
-  }, [registered]);
+  }, [registered, dispatch]);
 
   useEffect(() => {
     const notify = () => toast.error(error?.detail);
@@ -43,7 +43,7 @@ const Login = () => {
   }
 
   if (isAuthenticated){
-    return <Navigate to="/userProfile" />;
+    return <Navigate to="/trainerDashboard" />;
   }
 
   return (
@@ -59,13 +59,15 @@ const Login = () => {
           <div className="max-w-[450px] h-[600px] mx-auto bg-black/75 text-white">
             <div className="max-w-[320px] mx-auto py-16">
               {/* <ToastContainer className="mt-10" /> */}
-              <h1 className="text-3xl font-blackops-one">Log In</h1>
+              <h1 className="text-3xl font-blackops-one text-blue-600 underline">
+                Log In
+              </h1>
               <form
                 className="text-black w-full flex flex-col py-4"
                 onSubmit={onSubmit}
               >
                 <input
-                  className="p-3 my-2 bg-cyan-100 rounded"
+                  className="peer p-3 my-2 bg-cyan-100 rounded"
                   type="email"
                   name="email"
                   id="3"
@@ -74,6 +76,9 @@ const Login = () => {
                   required
                   placeholder="Email"
                 />
+                {email.length > 0 && <div className="hidden text-red-500 peer-invalid:block ">
+                  ! invalid email
+                </div>}
                 <input
                   className="p-3 my-2 bg-cyan-100 rounded"
                   type="password"

@@ -1,7 +1,5 @@
 import Layout from "components/Layout";
 import React from "react";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
 import Modal from "components/EditModalForm";
 import headshot from "assets/kris-gethin-coach-square-headshot.jpg"
 

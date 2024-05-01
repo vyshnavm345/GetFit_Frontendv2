@@ -1,12 +1,78 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { IoIosAddCircle } from "react-icons/io";
 import { IoIosArrowDropleft } from "react-icons/io";
 import profile_picture from "assets/kris gethin.jpg";
 import { SiTicktick } from "react-icons/si";
 import { TiTick } from "react-icons/ti";
+import { useSelector } from "react-redux";
+import { API_URL } from "config";
 
 export default function Sidebar({isOpen, setIsOpen, setOption}) {
+      const { user } = useSelector((state) => state.user);
+      const { trainer } = useSelector((state) => state.trainer);
+
+      const handleOptionClick = (option) => {
+        console.log("this is the option", option);
+        setOption(option);
+      };
+
+      const trainerOptions = (
+        <>
+          <ul className="space-y-2">
+            <li className="px-4 py-2 hover:bg-gray-700">
+              <div
+                onClick={() => handleOptionClick(2)}
+                className="text-base cursor-pointer font-medium"
+              >
+                Programmes
+              </div>
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-700">
+              <div
+                onClick={() => handleOptionClick(5)}
+                className="text-base cursor-pointer font-medium"
+              >
+                Subscribers
+              </div>
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
+              <a href="#" className="text-base font-medium">
+                other
+              </a>
+            </li>
+          </ul>
+        </>
+      );
+      const userOptions = (
+        <>
+          <ul className="space-y-2">
+            <li className="px-4 py-2 hover:bg-gray-700">
+              <div
+                onClick={() => handleOptionClick(3)}
+                className="text-base cursor-pointer font-medium"
+              >
+                Subscribed Programmes
+              </div>
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-700">
+              <div
+                onClick={() => handleOptionClick(4)}
+                className="text-base cursor-pointer font-medium"
+              >
+                Communities
+              </div>
+            </li>
+            <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer ">
+              <a href="#" className="text-base font-medium">
+                other
+              </a>
+            </li>
+          </ul>
+        </>
+      );
+
+  const navigate = useNavigate()
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -25,42 +91,27 @@ export default function Sidebar({isOpen, setIsOpen, setOption}) {
           <IoIosArrowDropleft />
         </button>
       </div>
-      <div onClick={()=>{setOption(1)}} className="flex border-collapse border p-2 rounded mx-4">
-        <img
-          src={profile_picture}
-          alt="Profile"
-          className="rounded-full w-20 object-cover  h-20"
-        />
+      <div
+        onClick={() => handleOptionClick(1)}
+        className="flex border-collapse border p-2 rounded mx-4 cursor-pointer"
+      >
+        {user?.profile_picture && (
+          <img
+            src={`${API_URL}/${user?.profile_picture}`}
+            alt="Profile"
+            className="rounded-full w-20 object-cover  h-20"
+          />
+        )}
         <h3 className="mx-4 my-2 font-mono">
-          Kris Gethin <br />{" "}
+          {user?.first_name} {user?.last_name} <br />
+          {console.log(user?.profile_picture)}
           <h5 className="text-sm flex">
-            Verified <TiTick  className="ml-2"/>
+            Verified <TiTick className="ml-2" />
           </h5>
         </h3>
       </div>
       <nav className="mt-4">
-        <ul className="space-y-2">
-          <li className="px-4 py-2 hover:bg-gray-700">
-            <div onClick={()=>{setOption(2)}} className="text-base font-medium">
-              Programmes
-            </div>
-          </li>
-          <li className="px-4 py-2 hover:bg-gray-700">
-            <div onClick={()=>{setOption(3)}} className="text-base font-medium">
-              Users
-            </div>
-          </li>
-          <li className="px-4 py-2 hover:bg-gray-700">
-            <a href="#" className="text-base font-medium">
-              Lesson 3
-            </a>
-          </li>
-          <li className="px-4 py-2 hover:bg-gray-700">
-            <a href="#" className="text-base font-medium">
-              Lesson 4
-            </a>
-          </li>
-        </ul>
+        {user?.is_trainer ? trainerOptions : userOptions}
       </nav>
     </div>
   );

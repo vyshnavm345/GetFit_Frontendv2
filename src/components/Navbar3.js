@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from 'features/user';
 import { toast } from 'react-toastify';
+import { API_URL } from 'config';
 
 const Navbar = () => {
     const dispatch = useDispatch()
@@ -21,16 +22,12 @@ const Navbar = () => {
         >
           Logout
         </button>
-        <button
-          onClick={() => {
-            navigate("/userProfile");
-          }}
-        >
+        <button onClick={() => {navigate("/TrainerDashboard")}} >
           <div className="text-white font-mono flex ml-4 items-center ">
             {user?.profile_picture ? (
               <img
                 className="w-8 h-8 mr-2 rounded-full object-cover"
-                src={`http://localhost:8000${user?.profile_picture}`}
+                src={`${API_URL}/${user?.profile_picture}`}
                 alt="user"
               />
             ) : (
@@ -40,7 +37,6 @@ const Navbar = () => {
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
-                {" "}
                 <path
                   fill-rule="evenodd"
                   d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
@@ -86,7 +82,7 @@ const Navbar = () => {
           <Link to="/">
             <div className="flex items-center">
               <img className="h-12 md:h-10 mr-2" src={logo} alt="logo" />
-              <h1 className="text-white text-4xl cursor-pointer font-blackops-one md:block hidden">
+              <h1 className="text-white text-4xl cursor-pointer font-blackops-one  md:block hidden">
                 GET-FIT
               </h1>
             </div>
@@ -139,16 +135,19 @@ const Navbar = () => {
                   </a>
                 </div>
               </Link>
-              <Link to="/trainerRegister">
-                <div className=" h-10 mt-5 md:mt-0 md:h-0">
-                  <a
-                    className=" hover:text-cyan-400 mx-5 font-mono text-white"
-                    href="!#"
-                  >
-                    Join as Trainer
-                  </a>
-                </div>
-              </Link>
+              {!user?.is_trainer && (
+                <Link to="/trainerRegister">
+                  <div className=" h-10 mt-5 md:mt-0 md:h-0">
+                    <a
+                      className=" hover:text-cyan-400 mx-5 font-mono text-white"
+                      href="!#"
+                    >
+                      Join as Trainer
+                    </a>
+                  </div>
+                </Link>
+              )}
+             
               <div className=" h-10 mt-5 md:mt-0 md:h-0">
                 <div className="relative inline-block">
                   <select

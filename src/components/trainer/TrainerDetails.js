@@ -17,10 +17,10 @@ const TrainerDetails = () => {
     }, []);
 
   return (
-    <div className="m-6 p-10 sm:ml-[-350px] md:ml-[-78px] shadow-lg border-spacing-4">
+    <div className="m-6 mr-24 p-10 sm:ml-[-350px] md:ml-[-78px] shadow-lg border-spacing-4">
       <h1 className="mx-[25%] text-3xl">Trainer</h1>
       <h2>Trainer ID : {trainer?.id}</h2>
-      <p>
+      <p>``
         Specialized in <strong>{trainer?.specalized}</strong>
       </p>
       <p>

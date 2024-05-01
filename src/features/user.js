@@ -4,6 +4,7 @@ import { API_URL } from "config/index";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import axiosInstance from "utils/axiosInstance";
+import { getTrainer } from "./trainer";
 
 
 const REAL_API_URL = 'http://127.0.0.1:8000'
@@ -14,7 +15,8 @@ const initialState = {
     registered: false,
     error: null,
     message: null,
-    verified:false
+    verified:false,
+    selectedUser:null,
 }
 
 export const register = createAsyncThunk('user/register', async ({first_name, last_name, email, password}, thunkAPI)=>{
@@ -62,40 +64,59 @@ export const register = createAsyncThunk('user/register', async ({first_name, la
 
 
 export const verifyEmail = createAsyncThunk(
-  "users/verifyEmail",
-  async ({token}, thunkAPI) => {
-    const body = JSON.stringify({
-      token
-    });
-    console.log("this is the body inside verifyEmail ", body);
-    try {
-      const res = await fetch(`${REAL_API_URL}/api/users/email_verification/`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body,
-      });
+    "users/verifyEmail",
+    async ({token}, thunkAPI) => {
+        const body = JSON.stringify({
+        token
+        });
+        console.log("this is the body inside verifyEmail ", body);
+        try {
+        const res = await fetch(`${REAL_API_URL}/api/users/email_verification/`, {
+            method: "POST",
+            headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            },
+            body,
+        });
 
-      const data = await res.json();
-      if (res.status === 201) {
-        toast.success(data.Message);
-        // console.log("this is the message from verify email",data.Message);
-        // toast.success('Success');
+        const data = await res.json();
+        if (res.status === 201) {
+            toast.success(data.Message);
+            // console.log("this is the message from verify email",data.Message);
+            // toast.success('Success');
 
 
-        return data;
-      } else {
-        return thunkAPI.rejectWithValue(data);
-      }
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response.data);
+            return data;
+        } else {
+            return thunkAPI.rejectWithValue(data);
+        }
+        } catch (err) {
+        return thunkAPI.rejectWithValue(err.response.data);
+        }
     }
-  }
 );
 
-
+export const getUserById = createAsyncThunk(
+    'user/getUserById',
+    async(id, thunkAPI) =>{
+        try {
+            const response = await axiosInstance.get(
+                `/api/users/getUserById/${id}/`
+            );
+            if (response.status === 200) {
+                console.log("received data", response.data)
+                return response.data;
+            } else {
+                console.log("received error in else", response.data);
+                return thunkAPI.rejectWithValue(response.data);
+            }
+        } catch (err) {
+            console.log("received error in catch", err.response.data);
+            return thunkAPI.rejectWithValue(err.response.data);
+        }
+    }
+)
 
 const getUser = createAsyncThunk(
 	'user/me',
@@ -109,8 +130,15 @@ const getUser = createAsyncThunk(
 
 
 			if (response.status === 200){
-                
-				return response.data;
+                console.log(
+                    "The user is a trainer : ",
+                    response.data.is_trainer
+                );
+                if (response.data.is_trainer){
+                    const { dispatch } = thunkAPI;
+                    dispatch(getTrainer());
+                } 
+                return response.data;
 			}
             else {
                 return thunkAPI.rejectWithValue(response.data);
@@ -230,18 +258,18 @@ export const checkAuth = createAsyncThunk(
             // const body = {
             //     token: access,
             // };
-          const response = await axiosInstance.post("/api/token/verify/");
+            const response = await axiosInstance.post("/api/token/verify/");
 
-          if (response.status === 200) {
+            if (response.status === 200) {
             console.log("verified");
             const { dispatch } = thunkAPI;
 
             dispatch(getUser());
 
             return response.data;
-          } else {
+            } else {
             return thunkAPI.rejectWithValue(response.data);
-          }
+            }
         } catch (err) {
             console.log(
             "This is the error in catch : err",
@@ -257,9 +285,6 @@ export const checkAuth = createAsyncThunk(
 );
 
 
-
-
-
 const userSlice = createSlice({
     name: 'user',
     initialState,
@@ -273,6 +298,9 @@ const userSlice = createSlice({
             Cookies.remove("accessToken");
             Cookies.remove("refreshToken");
         },
+        resetSelectedUser: state =>{
+            state.selectedUser= null;
+        }
     },
     extraReducers: builder => {
         builder
@@ -286,7 +314,6 @@ const userSlice = createSlice({
         .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        
         })
         .addCase(login.pending, (state) => {
         state.loading = true;
@@ -297,8 +324,11 @@ const userSlice = createSlice({
         })
         .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload
-        console.log("this is the login error from thunk : ", state.error.detail);
+        state.error = action.payload;
+        console.log(
+            "this is the login error from thunk : ",
+            state.error.detail
+        );
         })
         .addCase(getUser.pending, (state) => {
         state.loading = true;
@@ -350,9 +380,20 @@ const userSlice = createSlice({
         .addCase(verifyEmail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+        })
+        .addCase(getUserById.pending, (state) => {
+        state.loading = true;
+        })
+        .addCase(getUserById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedUser = action.payload;
+        })
+        .addCase(getUserById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
         });
     }
 });
 
-export const { resetRegistered, resetUser} = userSlice.actions;
+export const { resetRegistered, resetUser, resetSelectedUser } = userSlice.actions;
 export default userSlice.reducer

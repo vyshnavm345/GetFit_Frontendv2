@@ -1,16 +1,55 @@
 import Layout from "components/Layout";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TrainerData from "components/trainer/TrainerData";
 import CoursesSectionLevels from "components/CoursesSectionLevels";
+import { useDispatch, useSelector } from "react-redux";
+import { getTrainerprogrammesList } from "features/trainer";
+import { useParams } from "react-router-dom";
 
 const DashboardPage = () => {
+    const dispatch = useDispatch()
+    const { trainersProgrammes } = useSelector((state) => state.trainer);
+    const { id } = useParams();
+
+    const [beginnerPrograms, setBeginnerPrograms] = useState([]);
+    const [intermediatePrograms, setIntermediatePrograms] = useState([]);
+    const [advancedPrograms, setAdvancedPrograms] = useState([]);
+
+    useEffect(() => {
+      dispatch(getTrainerprogrammesList(id));
+      
+    }, []);
+
+    const splitPrograms = () => {
+      const beginners = trainersProgrammes?.filter(
+        (program) => program.level === "Beginner"
+      );
+      const intermediates = trainersProgrammes?.filter(
+        (program) => program.level === "Intermediate"
+      );
+      const advanceds = trainersProgrammes?.filter(
+        (program) => program.level === "Advanced"
+      );
+
+      setBeginnerPrograms(beginners);
+      setIntermediatePrograms(intermediates);
+      setAdvancedPrograms(advanceds);
+    };
+
+    useEffect(() => {
+      splitPrograms();
+    }, [trainersProgrammes]);
+
   return (
     <Layout title="Auth Site | Dashboard" content="Dashboard Page">
-      <TrainerData />
-      <div></div>
-      <CoursesSectionLevels key={1} />
-      {/* <CoursesSectionLevels key={2}/>
-      <CoursesSectionLevels key={3}/> */}
+      <div className="mx-2">
+        <h2 className="">{console.log("testing inside thr dashboard", trainersProgrammes)}</h2>
+        <TrainerData />
+        <div></div>
+        {beginnerPrograms?.length > 0 && <CoursesSectionLevels rowId={1} title={"Beginner"} programs={beginnerPrograms} /> }
+        {intermediatePrograms?.length > 0 && <CoursesSectionLevels rowId={2} title={"Intermediate"} programs={intermediatePrograms} /> }
+        {advancedPrograms?.length > 0 && <CoursesSectionLevels rowId={3} title={"Advanced"} programs={advancedPrograms} /> }
+      </div>
     </Layout>
   );
 };
