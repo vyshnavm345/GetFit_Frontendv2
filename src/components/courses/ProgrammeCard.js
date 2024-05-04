@@ -9,7 +9,12 @@ const ProgrammeCard = ({ programme }) => {
 
   return (
     <>
-      <div onClick={()=>{navigate(`/programDetails/${programme?.id}`);}} className="w-[60px] sm:w-[200px] md:w-[240px] lg:w-[400px] inline-block cursor-pointer relative p-2">
+      <div
+        onClick={() => {
+          navigate(`/programDetails/${programme?.id}`);
+        }}
+        className="w-[60px] sm:w-[200px] md:w-[240px] lg:w-[400px] inline-block cursor-pointer relative p-2"
+      >
         <img
           className="w-full block h-64 object-cover"
           src={
@@ -21,7 +26,7 @@ const ProgrammeCard = ({ programme }) => {
         />
         <div className="absolute top-0 left-0 w-full h-full hover:bg-black/30 opacity-0 hover:opacity-100 text-white">
           <p className="white-space-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center">
-            test
+            {programme?.program_name}
           </p>
         </div>
         <div className="service-link">

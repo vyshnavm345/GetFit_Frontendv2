@@ -70,22 +70,25 @@ const ProfileHeroSection = ({user}) => {
               </span>
             </h1>
             <p className="font-light text-gray-600 mt-3">{user?.email}</p>
-            <div className="flex items-start justify-between p-4 m-4 w-[55%] ">
+            <div
+              
+              className="flex  items-start justify-between p-4 m-4 w-[65%] "
+            >
               <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
                 <span class="flex w-2.5 h-2.5 bg-blue-600 rounded-full me-1.5 flex-shrink-0"></span>
                 Height- {user?.profile.height} CM
               </span>
               <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
                 <span class="flex w-2.5 h-2.5 bg-purple-500 rounded-full me-1.5 flex-shrink-0"></span>
-               Weight- {user?.profile.weight} KG
+                Weight- {user?.profile.weight} KG
               </span>
               <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
                 <span class="flex w-2.5 h-2.5 bg-indigo-500 rounded-full me-1.5 flex-shrink-0"></span>
-               Body-Fat- {user?.profile.body_fat} %
+                Body-Fat- {user?.profile.body_fat} %
               </span>
               <span class="flex items-center text-sm font-medium text-gray-900 dark:text-white me-3">
                 <span class="flex w-2.5 h-2.5 bg-teal-500 rounded-full me-1.5 flex-shrink-0"></span>
-               Mobile- +91-{user?.profile.phone}
+                Mobile- +91-{user?.profile.phone}
               </span>
             </div>
           </div>

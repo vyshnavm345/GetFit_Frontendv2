@@ -10,16 +10,6 @@ import ProgrammeCard from "./courses/ProgrammeCard";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const CoursesSectionLevels = ({ title, rowId, programs }) => {
-  // const { trainersProgrammes } = useSelector((state) => state.trainer);
-  // const dispatch = useDispatch();
-  // const { id } = useParams();
-
-  // useEffect(() => {
-  //   dispatch(getTrainerprogrammesList(id));
-  //   return () => {
-  //     dispatch(resetTrainersProgrammes());
-  //   };
-  // }, []);
 
   const slideLeft = () => {
     var slider = document.getElementById("slider" + rowId);

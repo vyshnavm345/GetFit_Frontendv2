@@ -44,7 +44,7 @@ const DashboardPage = () => {
     <Layout title="Auth Site | Dashboard" content="Dashboard Page">
       <div className="mx-2">
         <h2 className="">{console.log("testing inside thr dashboard", trainersProgrammes)}</h2>
-        <TrainerData />
+        <TrainerData id={id}/>
         <div></div>
         {beginnerPrograms?.length > 0 && <CoursesSectionLevels rowId={1} title={"Beginner"} programs={beginnerPrograms} /> }
         {intermediatePrograms?.length > 0 && <CoursesSectionLevels rowId={2} title={"Intermediate"} programs={intermediatePrograms} /> }

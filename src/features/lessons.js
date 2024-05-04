@@ -47,7 +47,7 @@ export const addLesson = createAsyncThunk(
 
 
 
-// get the programmes of individual trainers by id
+// get the lessons of individual programms by id
 export const getLessonsList = createAsyncThunk(
   "lessons/getLessonsList",
   async (id, thunkAPI) => {
@@ -73,6 +73,26 @@ export const getLessonsList = createAsyncThunk(
 
 
 
+// Delete the lesson of an individual programm by id
+export const deleteLesson = createAsyncThunk(
+  "lessons/deleteLesson",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axiosInstance.delete(
+        `/api/fitness_programs/DeleteLesson/${id}/`
+      );
+
+      if (response.status === 204) {
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 
 const lessonSlice = createSlice({
   name: "lessons",
@@ -88,23 +108,33 @@ const lessonSlice = createSlice({
       .addCase(addLesson.fulfilled, (state, action) => {
         state.loading = false;
         toast.success(action.payload.message);
-        console.log("This is the payload", action.payload)
+        console.log("This is the payload", action.payload);
       })
       .addCase(addLesson.rejected, (state, action) => {
         state.loading = false;
         // toast.error(action.payload);
-        console.log("This is the returned response ; ", action.payload)
-
+        console.log("This is the returned response ; ", action.payload);
       })
       .addCase(getLessonsList.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(getLessonsList.fulfilled, (state, action) => {
-        console.log("lesson is fulfilled")
+        console.log("lesson is fulfilled");
         state.loading = false;
-        state.lessonsList = action.payload
+        state.lessonsList = action.payload;
       })
       .addCase(getLessonsList.rejected, (state, action) => {
+        state.loading = false;
+        toast.error("error");
+      })
+      .addCase(deleteLesson.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(deleteLesson.fulfilled, (state, action) => {
+        state.loading = false;
+        toast.success(action.payload.message)
+      })
+      .addCase(deleteLesson.rejected, (state, action) => {
         state.loading = false;
         toast.error("error");
       });

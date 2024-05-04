@@ -36,24 +36,11 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/trainerPage/:id" element={<DashboardPage />} />
         {/* <Route path="/trainerDashboard" element={<TrainerDashboard />} /> */}
-        <Route
-          path="/trainerDashboard"
-          element={
-            <ProtectedRoute>
-              <TrainerDashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/trainerDashboard" element={<ProtectedRoute><TrainerDashboard /></ProtectedRoute>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route
-          path="/userProfile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/userProfile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>}/>
+        <Route path="/programLesson/:id" element={<ProtectedRoute><ProgramLesson /></ProtectedRoute>} />
         <Route path="/trainerRegister" element={<TrainerRegister />} />
         <Route path="/findTrainer" element={<FindTrainers />} />
         <Route path="/programmes" element={<ProgrammesPage />} />
@@ -62,7 +49,6 @@ function App() {
         {/* <Route path="/chat" element={<Test />} /> */}
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/programDetails/:id" element={<ProgramDetails />} />
-        <Route path="/programLesson/:id" element={<ProgramLesson />} />
         <Route path="/chat" element={<ChatWindow />} />
       </Routes>
     </Router>

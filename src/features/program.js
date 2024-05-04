@@ -34,6 +34,31 @@ export const followedProgram = createAsyncThunk(
 );
 
 
+
+//Lets user unfollow a program
+export const unfollowProgram = createAsyncThunk(
+  "program/unfollowProgram",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/users/unfollowProgram/${id}/`
+      );
+
+      if (response.status === 200) {
+        console.log("unfollowed successfull : ", response.data);
+        return response.data;
+      } else {
+        console.log("the error : ", response.data);
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (error) {
+      console.log("the catched error : ", error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 // get the list of followed programs
 export const getFollowedPrograms = createAsyncThunk(
   "program/getFollowedPrograms",
@@ -82,6 +107,17 @@ const programSlice = createSlice({
         toast.success(action.payload?.message);
       })
       .addCase(followedProgram.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload?.message);
+      })
+      .addCase(unfollowProgram.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(unfollowProgram.fulfilled, (state, action) => {
+        state.loading = false;
+        toast.success(action.payload?.message);
+      })
+      .addCase(unfollowProgram.rejected, (state, action) => {
         state.loading = false;
         toast.error(action.payload?.message);
       });

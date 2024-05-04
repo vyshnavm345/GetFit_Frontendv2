@@ -7,72 +7,73 @@ import { SiTicktick } from "react-icons/si";
 import { TiTick } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import { API_URL } from "config";
+import logo from "assets/Get-fit-Logo.png";
 
-export default function Sidebar({isOpen, setIsOpen, setOption}) {
-      const { user } = useSelector((state) => state.user);
-      const { trainer } = useSelector((state) => state.trainer);
+export default function Sidebar({ isOpen, setIsOpen, setOption }) {
+  const { user } = useSelector((state) => state.user);
+  const { trainer } = useSelector((state) => state.trainer);
 
-      const handleOptionClick = (option) => {
-        console.log("this is the option", option);
-        setOption(option);
-      };
+  const handleOptionClick = (option) => {
+    console.log("this is the option", option);
+    setOption(option);
+  };
 
-      const trainerOptions = (
-        <>
-          <ul className="space-y-2">
-            <li className="px-4 py-2 hover:bg-gray-700">
-              <div
-                onClick={() => handleOptionClick(2)}
-                className="text-base cursor-pointer font-medium"
-              >
-                Programmes
-              </div>
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700">
-              <div
-                onClick={() => handleOptionClick(5)}
-                className="text-base cursor-pointer font-medium"
-              >
-                Subscribers
-              </div>
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
-              <a href="#" className="text-base font-medium">
-                other
-              </a>
-            </li>
-          </ul>
-        </>
-      );
-      const userOptions = (
-        <>
-          <ul className="space-y-2">
-            <li className="px-4 py-2 hover:bg-gray-700">
-              <div
-                onClick={() => handleOptionClick(3)}
-                className="text-base cursor-pointer font-medium"
-              >
-                Subscribed Programmes
-              </div>
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700">
-              <div
-                onClick={() => handleOptionClick(4)}
-                className="text-base cursor-pointer font-medium"
-              >
-                Communities
-              </div>
-            </li>
-            <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer ">
-              <a href="#" className="text-base font-medium">
-                other
-              </a>
-            </li>
-          </ul>
-        </>
-      );
+  const trainerOptions = (
+    <>
+      <ul className="space-y-2">
+        <li className="px-4 py-2 hover:bg-gray-700">
+          <div
+            onClick={() => handleOptionClick(2)}
+            className="text-base cursor-pointer font-medium"
+          >
+            Programmes
+          </div>
+        </li>
+        <li className="px-4 py-2 hover:bg-gray-700">
+          <div
+            onClick={() => handleOptionClick(5)}
+            className="text-base cursor-pointer font-medium"
+          >
+            Subscribers
+          </div>
+        </li>
+        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
+          <a href="#" className="text-base font-medium">
+            other
+          </a>
+        </li>
+      </ul>
+    </>
+  );
+  const userOptions = (
+    <>
+      <ul className="space-y-2">
+        <li className="px-4 py-2 hover:bg-gray-700">
+          <div
+            onClick={() => handleOptionClick(3)}
+            className="text-base cursor-pointer font-medium"
+          >
+            Subscribed Programmes
+          </div>
+        </li>
+        <li className="px-4 py-2 hover:bg-gray-700">
+          <div
+            onClick={() => handleOptionClick(4)}
+            className="text-base cursor-pointer font-medium"
+          >
+            Communities
+          </div>
+        </li>
+        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer ">
+          <a href="#" className="text-base font-medium">
+            other
+          </a>
+        </li>
+      </ul>
+    </>
+  );
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -95,18 +96,18 @@ export default function Sidebar({isOpen, setIsOpen, setOption}) {
         onClick={() => handleOptionClick(1)}
         className="flex border-collapse border p-2 rounded mx-4 cursor-pointer"
       >
-        {user?.profile_picture && (
-          <img
-            src={`${API_URL}/${user?.profile_picture}`}
-            alt="Profile"
-            className="rounded-full w-20 object-cover  h-20"
-          />
-        )}
+        <img
+          src={
+            user?.profile_picture ? `${API_URL}/${user?.profile_picture}` : logo
+          }
+          alt="Profile"
+          className="rounded-full w-20 object-cover h-20"
+        />
         <h3 className="mx-4 my-2 font-mono">
           {user?.first_name} {user?.last_name} <br />
           {console.log(user?.profile_picture)}
-          <h5 className="text-sm flex">
-            Verified <TiTick className="ml-2" />
+          <h5 style={{ fontSize: "0.70rem" }} className=" flex">
+            {user?.email}
           </h5>
         </h3>
       </div>

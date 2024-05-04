@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import AddLessonModal from './AddLessonModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { getLessonsList } from 'features/lessons';
+import { deleteLesson, getLessonsList } from 'features/lessons';
 
 const LessonsTable = ({ programmeId, setShowLessons }) => {
-    const diapatch = useDispatch();
+    const dispatch = useDispatch();
     const { lessonsList } = useSelector((state) => state.lesson);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [lessonToEdit, setLessonToEdit] = useState(null);
@@ -14,17 +14,18 @@ const LessonsTable = ({ programmeId, setShowLessons }) => {
     };
 
     const openModal = (lesson) => {
-      setLessonToEdit(lesson);
+      setLessonToEdit(lesson)
       setIsModalOpen(true);
     };
     useEffect(() => {
-        diapatch(getLessonsList(programmeId));
+        dispatch(getLessonsList(programmeId));
     }, [isModalOpen]);
     
 
     if (lessonsList !== null){
         console.log("in useeffect", lessonsList);
     }
+    
         return (
           <div className="h-screen">
             <div>
@@ -124,7 +125,9 @@ const LessonsTable = ({ programmeId, setShowLessons }) => {
                       >
                         Edit
                       </button>
-                      <button className="font-medium m-1 p-2 px-3 bg-red-500 rounded text-white dark:text-red-500 hover:underline">
+                      <button onClick={()=>{dispatch(deleteLesson(lesson.id)).then(() => {
+                        dispatch(getLessonsList(programmeId));
+                      });}} className="font-medium m-1 p-2 px-3 bg-red-500 rounded text-white dark:text-red-500 hover:underline">
                         Delete
                       </button>
                     </td>

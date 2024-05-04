@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../assets/Get-fit-Logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -75,6 +75,7 @@ const Navbar = () => {
       navigate('/dashboard')
     }
     };
+    
 
     return (
       <div className=" sticky top-0 z-[100] w-full ">

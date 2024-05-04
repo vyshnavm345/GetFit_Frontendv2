@@ -10,6 +10,7 @@ const initialState = {
   error: null,
   message: null,
   trainer: null,
+  selectedTrainer:null,
   created: false,
   programmes: null,
   programme: null,
@@ -206,6 +207,31 @@ export const getTrainer = createAsyncThunk(
 );
 
 
+// retrive trainer by ID
+export const getTrainerByID = createAsyncThunk(
+  "trainer/getTrainerByID",
+  async (id, thunkAPI) => {
+    try {
+      console.log("getTrainer  dispatched inside slice");
+      const response = await axios.get(
+        `${baseURL}/api/trainers/retrieveTrainer/${id}/`
+      );
+
+      if (response.status === 200) {
+        console.log("the retrived trainer by id is : ", response.data);
+        return response.data;
+      } else {
+        console.log("the error : ", response.data);
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (error) {
+      console.log("the catched error : ", error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 // retrive all trainers
 export const getTrainerList = createAsyncThunk(
   "trainer/getTrainerList",
@@ -339,6 +365,17 @@ const trainerSlice = createSlice({
         state.loading = false;
         console.log("This is the error message", action.payload);
         toast.error(action.payload);
+      })
+      .addCase(getTrainerByID.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getTrainerByID.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedTrainer = action.payload;
+      })
+      .addCase(getTrainerByID.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload.message);
       });
   },
 });
