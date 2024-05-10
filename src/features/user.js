@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_URL } from "config/index";
+// import { API_URL } from "config/index";
+import { API_URL } from "config";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import axiosInstance from "utils/axiosInstance";
 import { getTrainer } from "./trainer";
+import { closeWebSocket } from "./webSocketSlice";
 
 
 const REAL_API_URL = 'http://127.0.0.1:8000'
@@ -26,7 +28,6 @@ export const register = createAsyncThunk('user/register', async ({first_name, la
         email,
         password
     })
-    console.log("This is the api url",API_URL)
     try {
         const res = await fetch(`${REAL_API_URL}/api/users/register/`, {
             method: "POST",
@@ -45,7 +46,6 @@ export const register = createAsyncThunk('user/register', async ({first_name, la
             return data;
         }
         else{
-            console.log("This is the error in else : ", data);
             return thunkAPI.rejectWithValue(data);
         }
     } catch (err) {
@@ -69,7 +69,6 @@ export const verifyEmail = createAsyncThunk(
         const body = JSON.stringify({
         token
         });
-        console.log("this is the body inside verifyEmail ", body);
         try {
         const res = await fetch(`${REAL_API_URL}/api/users/email_verification/`, {
             method: "POST",
@@ -105,14 +104,11 @@ export const getUserById = createAsyncThunk(
                 `/api/users/getUserById/${id}/`
             );
             if (response.status === 200) {
-                console.log("received data", response.data)
                 return response.data;
             } else {
-                console.log("received error in else", response.data);
                 return thunkAPI.rejectWithValue(response.data);
             }
         } catch (err) {
-            console.log("received error in catch", err.response.data);
             return thunkAPI.rejectWithValue(err.response.data);
         }
     }
@@ -122,18 +118,10 @@ const getUser = createAsyncThunk(
 	'user/me',
 	async(_, thunkAPI) =>{
 		try{
-            // console.log("This is the axios instance: ", axiosInstance);
-            console.dir(axiosInstance);
-            console.log("Base URL:", axiosInstance.defaults.baseURL);
-            console.log("Headers:", axiosInstance.defaults.headers);
             const response = await axiosInstance.get('/api/users/me/')
 
 
 			if (response.status === 200){
-                console.log(
-                    "The user is a trainer : ",
-                    response.data.is_trainer
-                );
                 if (response.data.is_trainer){
                     const { dispatch } = thunkAPI;
                     dispatch(getTrainer());
@@ -144,14 +132,14 @@ const getUser = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data);
             }
 		} catch(err) {
-            console.log(
-            "This is the error in catch : err",
-            err,
-            "err.response",
-            err.response,
-            "err.response.data",
-            err.response.data
-            );
+            // console.log(
+            // "This is the error in catch : err",
+            // err,
+            // "err.response",
+            // err.response,
+            // "err.response.data",
+            // err.response.data
+            // );
 			return thunkAPI.rejectWithValue(err.response.data);
 		}
 	}
@@ -227,18 +215,24 @@ export const logout = createAsyncThunk(
     'users/logout',
     async (_, thunkAPI) => {
         try {
-            
-            Cookies.remove('accessToken');
-            Cookies.remove('refreshToken');
-            console.log("tokens removed");
-            
+            const response = await axiosInstance.post(`/api/users/logout/`);
 
-            const {dispatch} = thunkAPI;
-            dispatch(resetUser());
-            console.log("user reset");
-            toast.success("Logged Out");
+            if (response.status === 200) {
+                 Cookies.remove("accessToken");
+                 Cookies.remove("refreshToken");
 
-            return 'Logout successful';
+                 const { dispatch } = thunkAPI;
+                 dispatch(resetUser());
+                 dispatch(closeWebSocket());
+                //  toast.success("Logged Out");
+                 toast.success(response.data);
+
+                 return "Logout successful";
+            } else {
+              return thunkAPI.rejectWithValue(response.data);
+            }
+            
+           
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data);
         }
@@ -251,9 +245,6 @@ export const checkAuth = createAsyncThunk(
     "users/verify",
     async (_, thunkAPI) => {
         try {
-            console.dir(axiosInstance);
-            console.log("Base URL:", axiosInstance.defaults.baseURL);
-            console.log("Headers:", axiosInstance.defaults.headers);
             // const access = Cookies.get("accessToken");
             // const body = {
             //     token: access,
@@ -261,7 +252,6 @@ export const checkAuth = createAsyncThunk(
             const response = await axiosInstance.post("/api/token/verify/");
 
             if (response.status === 200) {
-            console.log("verified");
             const { dispatch } = thunkAPI;
 
             dispatch(getUser());
@@ -271,14 +261,6 @@ export const checkAuth = createAsyncThunk(
             return thunkAPI.rejectWithValue(response.data);
             }
         } catch (err) {
-            console.log(
-            "This is the error in catch : err",
-            err,
-            "err.response",
-            err.response,
-            "err.response.data",
-            err.response.data
-            );
         return thunkAPI.rejectWithValue(err.response.data);
         }
     }
@@ -325,10 +307,6 @@ const userSlice = createSlice({
         .addCase(login.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        console.log(
-            "this is the login error from thunk : ",
-            state.error.detail
-        );
         })
         .addCase(getUser.pending, (state) => {
         state.loading = true;

@@ -20,7 +20,6 @@ export const followedProgram = createAsyncThunk(
       );
 
       if (response.status === 200) {
-        console.log("the followed program : ", response.data);
         return response.data;
       } else {
         console.log("the error : ", response.data);
@@ -45,7 +44,6 @@ export const unfollowProgram = createAsyncThunk(
       );
 
       if (response.status === 200) {
-        console.log("unfollowed successfull : ", response.data);
         return response.data;
       } else {
         console.log("the error : ", response.data);

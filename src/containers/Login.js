@@ -1,16 +1,18 @@
 import Layout from 'components/Layout'
 import React, { useEffect, useState } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import img1 from 'assets/Login.jpg'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetRegistered, login } from 'features/user'
 import Loader from 'components/Loader'
 import { toast } from "react-toastify";
+import { initializeWebSocket } from 'features/webSocketSlice'
 // import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loading, isAuthenticated, registered, error} = useSelector(
+  const navigate = useNavigate();
+  const { loading, isAuthenticated, registered, error, user} = useSelector(
     (state) => state.user
   );
 
@@ -41,10 +43,13 @@ const Login = () => {
 
     dispatch(login({email, password}));
   }
-
-  if (isAuthenticated){
-    return <Navigate to="/trainerDashboard" />;
-  }
+  useEffect(()=>{
+    if (isAuthenticated && user){
+      // ws.global = new WebSocket(`${WS_link}/ws/notification/link${user.id}/`);
+      dispatch(initializeWebSocket(user.id))
+      navigate("/trainerDashboard");
+    }
+  }, [isAuthenticated, user])
 
   return (
     <Layout title="Auth Site | Login" content="Login Page">

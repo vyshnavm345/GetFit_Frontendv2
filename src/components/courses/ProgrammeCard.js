@@ -19,7 +19,7 @@ const ProgrammeCard = ({ programme }) => {
           className="w-full block h-64 object-cover"
           src={
             programme?.cover_image
-              ? `${API_URL}/${programme?.cover_image}`
+              ? `${API_URL}${programme?.cover_image}`
               : default_img
           }
           alt="testImg"

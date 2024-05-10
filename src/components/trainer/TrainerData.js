@@ -19,7 +19,7 @@ const TrainerData = ({id}) => {
         <div className="mt-8 lg:flex grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div className="h-96 lg:h-auto w-full md:w-[39rem]">
             <img
-              src={`${API_URL}/${selectedTrainer?.profile_picture}`}
+              src={`${API_URL}${selectedTrainer?.profile_picture}`}
               className="object-cover w-full h-full"
               alt="Image"
             />

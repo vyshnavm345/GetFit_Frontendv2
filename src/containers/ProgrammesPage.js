@@ -2,23 +2,23 @@ import Layout from "components/Layout";
 import React, { useEffect } from "react";
 import img1 from "../assets/heroImage.jpg";
 import img4 from "../assets/Register.jpg";
-import programme1 from "assets/programmes/gethin-12-week-hardcore-logo-header-640xh.jpg";
-import programme2 from "assets/programmes/gethin-8-week-hardcore-logo-header-640xh.jpg";
-import programme3 from "assets/programmes/gethin-dtp-logo-header-640xh.jpg";
-import programme4 from "assets/programmes/gethin-muscle-building-logo-header-640xh.jpg";
+import programme1 from 'assets/programmes/gethin-12-week-hardcore-logo-header-640xh.jpg'
+import programme2 from 'assets/programmes/gethin-8-week-hardcore-logo-header-640xh.jpg'
+import programme3 from 'assets/programmes/gethin-dtp-logo-header-640xh.jpg'
+import programme4 from 'assets/programmes/gethin-muscle-building-logo-header-640xh.jpg'
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getprogrammeslist } from "features/trainer";
 import { API_URL } from "config";
 
 const ProgrammesPage = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getprogrammeslist());
-  }, []);
-  const { programmes } = useSelector((state) => state.trainer);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    
+    useEffect(() => {
+      dispatch(getprogrammeslist());
+    }, []);
+    const { programmes } = useSelector((state) => state.trainer);
   return (
     <Layout>
       <div className="w-full h-[650px] text-white ">
@@ -83,7 +83,7 @@ const ProgrammesPage = () => {
                     <div
                       className="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center"
                       style={{
-                        backgroundImage: `url(http://127.0.0.1:8000/${programme?.cover_image})`,
+                        backgroundImage: `url(${API_URL}${programme?.cover_image})`,
                       }}
                     ></div>
 
@@ -139,3 +139,5 @@ const ProgrammesPage = () => {
 };
 
 export default ProgrammesPage;
+
+

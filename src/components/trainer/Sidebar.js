@@ -37,11 +37,11 @@ export default function Sidebar({ isOpen, setIsOpen, setOption }) {
             Subscribers
           </div>
         </li>
-        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
+        {/* <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer">
           <a href="#" className="text-base font-medium">
-            other
+            Chat
           </a>
-        </li>
+        </li> */}
       </ul>
     </>
   );
@@ -64,11 +64,11 @@ export default function Sidebar({ isOpen, setIsOpen, setOption }) {
             Communities
           </div>
         </li>
-        <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer ">
+        {/* <li className="px-4 py-2 hover:bg-gray-700 cursor-pointer ">
           <a href="#" className="text-base font-medium">
-            other
+            Chat
           </a>
-        </li>
+        </li> */}
       </ul>
     </>
   );
@@ -98,7 +98,7 @@ export default function Sidebar({ isOpen, setIsOpen, setOption }) {
       >
         <img
           src={
-            user?.profile_picture ? `${API_URL}/${user?.profile_picture}` : logo
+            user?.profile_picture ? `${API_URL}${user?.profile_picture}` : logo
           }
           alt="Profile"
           className="rounded-full w-20 object-cover h-20"
@@ -106,14 +106,15 @@ export default function Sidebar({ isOpen, setIsOpen, setOption }) {
         <h3 className="mx-4 my-2 font-mono">
           {user?.first_name} {user?.last_name} <br />
           {console.log(user?.profile_picture)}
-          <h5 style={{ fontSize: "0.70rem" }} className=" flex">
-            {user?.email}
-          </h5>
+          <h5 className="text-xs flex">{user?.email}</h5>
         </h3>
       </div>
       <nav className="mt-4">
         {user?.is_trainer ? trainerOptions : userOptions}
       </nav>
+      <div onClick={()=>{navigate("/chat");}} className="px-4 py-2 hover:bg-gray-700 cursor-pointer text-base font-medium">
+        Chat
+      </div>
     </div>
   );
 }

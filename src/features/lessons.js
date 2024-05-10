@@ -14,8 +14,6 @@ export const addLesson = createAsyncThunk(
   "lessons/add",
   async ({ formData, programmeId }, thunkAPI) => {
     try {
-      console.log("addLessons dispatched");
-      console.log("the payload : ", formData);
       const response = await axiosInstance.post(
         `/api/fitness_programs/createLesson/${programmeId}/`,
         formData,
@@ -27,7 +25,6 @@ export const addLesson = createAsyncThunk(
       );
 
       if (response.status === 200) {
-        console.log("the response : ", response.data);
         return response.data;
       } else if (response.status === 201) {
         return response.data;
@@ -57,8 +54,6 @@ export const getLessonsList = createAsyncThunk(
       );
 
       if (response.status === 200) {
-        // console.log("the response of programmes list : ", response.data);
-        console.log("the response for lesson : ", response.data);
         return response.data;
       } else {
         console.log("the error : ", response.data);
@@ -108,18 +103,15 @@ const lessonSlice = createSlice({
       .addCase(addLesson.fulfilled, (state, action) => {
         state.loading = false;
         toast.success(action.payload.message);
-        console.log("This is the payload", action.payload);
       })
       .addCase(addLesson.rejected, (state, action) => {
         state.loading = false;
         // toast.error(action.payload);
-        console.log("This is the returned response ; ", action.payload);
       })
       .addCase(getLessonsList.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(getLessonsList.fulfilled, (state, action) => {
-        console.log("lesson is fulfilled");
         state.loading = false;
         state.lessonsList = action.payload;
       })

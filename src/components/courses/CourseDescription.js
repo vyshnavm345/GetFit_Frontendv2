@@ -76,7 +76,7 @@ const CourseDescription = () => {
         <div
           className="bg-cover bg-no-repeat bg-center h-64 lg:h-[450px] object-cover rounded mb-8"
           style={{
-            backgroundImage: `url(${API_URL}/${programme?.cover_image})`,
+            backgroundImage: `url(${API_URL}${programme?.cover_image})`,
           }}
         ></div>
 

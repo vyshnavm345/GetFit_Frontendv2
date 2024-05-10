@@ -12,11 +12,10 @@ const FollowedPrograms = () => {
   useEffect(() => {
     dispatch(getFollowedPrograms());
   }, []);
-  
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {/* Card  */}
-      {followedPrograms && console.log("this is the retrived data : ", followedPrograms)}
       {followedPrograms?.map((programGroup) =>
         programGroup.program.map((program) => (
           <div
@@ -29,7 +28,7 @@ const FollowedPrograms = () => {
             <img
               src={
                 program?.cover_image
-                  ? `${API_URL}/${program.cover_image}`
+                  ? `${API_URL}${program.cover_image}`
                   : logo
               }
               alt="Card"

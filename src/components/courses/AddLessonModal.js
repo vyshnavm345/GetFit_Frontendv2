@@ -129,7 +129,7 @@ const AddLessonModal = ({ lesson, programmeId, setIsModalOpen }) => {
                     className="h-14"
                     src={
                       lesson?.image
-                        ? `${API_URL}/${image}`
+                        ? `${API_URL}${image}`
                         : URL.createObjectURL(image)
                     }
                     alt="img"

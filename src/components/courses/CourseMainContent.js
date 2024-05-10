@@ -1,6 +1,7 @@
 import React from "react";
 import VideoPage from "components/courses/VideoPage";
 // import React, { useState } from "react";
+import { API_URL } from "config";
 
 const CourseMainContent = ({lesson, isOpen }) => {
   return (
@@ -16,7 +17,7 @@ const CourseMainContent = ({lesson, isOpen }) => {
       <div
         className="bg-cover bg-no-repeat bg-center w-full aspect-w-16 aspect-h-9 rounded-lg mb-8"
         style={{
-          backgroundImage: `url(http://127.0.0.1:8000/${lesson?.image})`,
+          backgroundImage: `url(${API_URL}${lesson?.image})`,
         }}
       ></div>
       <div className="flex flex-col items-start justify-between pb-8">

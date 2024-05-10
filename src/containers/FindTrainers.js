@@ -80,10 +80,10 @@ const FindTrainers = () => {
                     style={{
                       backgroundImage:
                         // "url(https://miro.medium.com/v2/da:true/resize:fill:1200:632/g:fp:0.49:0.32/0*zOEo8IEJN37f5K7P)",
-                        // {trainer?.profile_picture ? `url(${API_URL}/${trainer.profile_picture})`: `url(${img1})`},
+                        // {trainer?.profile_picture ? `url(${API_URL}${trainer.profile_picture})`: `url(${img1})`},
                         `url(${
                           trainer?.profile_picture
-                            ? `${API_URL}/${trainer.profile_picture}`
+                            ? `${API_URL}${trainer.profile_picture}`
                             : img1
                         })`,
                     }}

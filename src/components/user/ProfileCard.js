@@ -19,7 +19,7 @@ const ProfileCard = ({ user_id }) => {
         <div className="flex items-center justify-center">
           <img
             className="h-60 w-60 rounded object-cover"
-            src={`${API_URL}/${selectedUser?.profile_picture}`}
+            src={`${API_URL}${selectedUser?.profile_picture}`}
             alt={selectedUser?.first_name}
           />
         </div>
