@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   message: null,
   conversation: null,
+  pendingNotifications:[],
 };
 
 //get all the messages of a chat room
@@ -33,6 +34,24 @@ export const getMessages = createAsyncThunk(
   }
 );
 
+// retrive pending notificaions upon login
+export const getNotifications = createAsyncThunk(
+  "chat/getNotifications",
+  async (_, thunkAPI) => {
+    try {
+      console.log("get notifications triggered")
+      const response = await axiosInstance.get("/api/chat/getNotifications");
+      if (response.status === 200){
+        return response.data
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+)
+
 
 const chatSlice = createSlice({
   name: "chat",
@@ -48,6 +67,17 @@ const chatSlice = createSlice({
         state.conversation = action.payload;
       })
       .addCase(getMessages.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload);
+      })
+      .addCase(getNotifications.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getNotifications.fulfilled, (state, action) => {
+        state.loading = false;
+        state.pendingNotifications = action.payload;
+      })
+      .addCase(getNotifications.rejected, (state, action) => {
         state.loading = false;
         toast.error(action.payload);
       });

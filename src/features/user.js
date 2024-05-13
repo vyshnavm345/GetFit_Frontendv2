@@ -118,6 +118,7 @@ const getUser = createAsyncThunk(
 	'user/me',
 	async(_, thunkAPI) =>{
 		try{
+            console.log("get user triggered")
             const response = await axiosInstance.get('/api/users/me/')
 
 
@@ -152,6 +153,7 @@ export const login = createAsyncThunk('user/login', async ({email, password}, th
         password
     })
     try {
+        console.log("login triggered")
         const res = await fetch(`${REAL_API_URL}/api/token/`, {
             method: "POST",
             headers: {

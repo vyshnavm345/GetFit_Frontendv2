@@ -20,7 +20,10 @@ const SubscribersData = () => {
     // })
 
     useEffect(() => {
+      if (programSubscribers.length === 0) {
+        console.log("getting subscribers", programSubscribers)
         dispatch(getSubscribers());
+      } 
     }, []);
 
     const handleRowClick = (user) => {

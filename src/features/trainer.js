@@ -28,6 +28,7 @@ export const getSubscribers = createAsyncThunk(
   "trainer/getSubscribers",
   async (_, thunkAPI) => {
     try {
+      console.log("inside getsubscribers")
       const response = await axiosInstance.get(
         `${baseURL}/api/trainers/get_subscribers/`
       );

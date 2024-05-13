@@ -44,8 +44,6 @@ const TrainerDashboard = () => {
     case 5:
       content = <SubscribersData />;
       break;
-    // default:
-    // content = user?.first_name ? <ProfileHeroSection user={user} /> : null;
   }
   return (
     <Layout

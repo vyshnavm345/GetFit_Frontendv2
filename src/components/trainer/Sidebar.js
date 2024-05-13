@@ -11,7 +11,7 @@ import logo from "assets/Get-fit-Logo.png";
 
 export default function Sidebar({ isOpen, setIsOpen, setOption }) {
   const { user } = useSelector((state) => state.user);
-  const { trainer } = useSelector((state) => state.trainer);
+  // const { trainer } = useSelector((state) => state.trainer);
 
   const handleOptionClick = (option) => {
     console.log("this is the option", option);
@@ -105,7 +105,7 @@ export default function Sidebar({ isOpen, setIsOpen, setOption }) {
         />
         <h3 className="mx-4 my-2 font-mono">
           {user?.first_name} {user?.last_name} <br />
-          {console.log(user?.profile_picture)}
+          
           <h5 className="text-xs flex">{user?.email}</h5>
         </h3>
       </div>

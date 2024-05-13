@@ -29,7 +29,7 @@ export default function CardTable() {
     if (trainer?.id) {
       dispatch(getTrainerprogrammesList(trainer?.id));
     }
-  }, [trainer]);
+  }, [trainer, addProgramme]);
 
   return (
     <>
@@ -66,7 +66,7 @@ export default function CardTable() {
                   </thead>
                   <tbody>
                     {trainersProgrammes?.map((programme) => (
-                      <tr
+                      <tr key={programme.id}
                         onClick={() => {
                           setSelectedProgramId(programme.id);
                         }}

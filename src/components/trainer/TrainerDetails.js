@@ -1,5 +1,5 @@
 import { getTrainer } from 'features/trainer';
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,14 +7,15 @@ const TrainerDetails = () => {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
     const { trainer } = useSelector((state) => state.trainer);
+    const prevIsTrainerRef = useRef(user?.is_trainer);
 
     useEffect(() => {
-      if (user?.is_trainer) {
-        console.log("dispatching GetTrainer");
+      if (user?.is_trainer !== prevIsTrainerRef.current) {
+        console.log("Dispatching getTrainer");
         dispatch(getTrainer());
-        console.log("dispatched GetTrainer");
+        prevIsTrainerRef.current = user?.is_trainer;
       }
-    }, []);
+    }, [user]);
 
   return (
     <div className="m-6 mr-24 p-10 sm:ml-[-350px] md:ml-[-78px] shadow-lg border-spacing-4">

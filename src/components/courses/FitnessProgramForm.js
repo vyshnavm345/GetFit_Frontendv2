@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createProgramme } from "features/trainer";
 
@@ -20,7 +20,12 @@ const FitnessProgramForm = ({ setAddProgramme, addProgramme }) => {
     setAddProgramme(!addProgramme);
   };
   
-  if(created){handleClick()};
+  // if(created){handleClick()};
+  useEffect(() => {
+    if (created) {
+      handleClick();
+    }
+  }, [created]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

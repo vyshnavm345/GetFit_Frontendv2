@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import AddLessonModal from './AddLessonModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteLesson, getLessonsList } from 'features/lessons';
+import { API_URL } from 'config';
 
 const LessonsTable = ({ programmeId, setShowLessons }) => {
     const dispatch = useDispatch();
@@ -18,13 +19,14 @@ const LessonsTable = ({ programmeId, setShowLessons }) => {
       setIsModalOpen(true);
     };
     useEffect(() => {
-        dispatch(getLessonsList(programmeId));
+        if(isModalOpen){
+
+          dispatch(getLessonsList(programmeId));
+        }
+        // console.log("in useeffect", lessonsList);
     }, [isModalOpen]);
     
 
-    if (lessonsList !== null){
-        console.log("in useeffect", lessonsList);
-    }
     
         return (
           <div className="h-screen">
@@ -83,7 +85,7 @@ const LessonsTable = ({ programmeId, setShowLessons }) => {
               </thead>
               <tbody>
                 {lessonsList?.map((lesson) => (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr key={lesson?.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     {/* <td className="w-4 p-4">
                             <div className="flex items-center">
                                 <input id="checkbox-table-search-1" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -97,7 +99,7 @@ const LessonsTable = ({ programmeId, setShowLessons }) => {
                       {lesson?.image && (
                         <img
                           className="w-10 h-10 rounded-full object-cover"
-                          src={`http://127.0.0.1:8000/${lesson?.image}`}
+                          src={`${API_URL}${lesson?.image}`}
                           alt="Jese image"
                         />
                       )}

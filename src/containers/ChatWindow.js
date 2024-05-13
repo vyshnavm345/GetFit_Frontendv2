@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoSend } from "react-icons/io5";
 import logo from "assets/Get-fit-Logo.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,8 +8,7 @@ import ChatBubble from "components/layouts/ChatBubble";
 import { getTrainerContacts, getUserContacts } from "features/trainer";
 import Cookies from "js-cookie";
 import { getMessages } from "features/chat";
-import NotificationComponent from "components/layouts/NotificationComponent";
-import { toast } from "react-toastify";
+import { MdOnlinePrediction } from "react-icons/md";
 
 const ChatWindow = () => {
   const [room, setRoom] = useState("");
@@ -18,16 +17,40 @@ const ChatWindow = () => {
   const { userContacts, trainerContacts } = useSelector(
     (state) => state.trainer
   );
+  const { pendingNotifications } = useSelector((state) => state.chat);
+  // const [notification, setNotification] = useState([])
   const { conversation, loading } = useSelector((state) => state.chat);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [contacts, setcontacts] = useState(trainerContacts || userContacts);
   const [messageList, setMessageList] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messageInput, setMessageInput] = useState("");
-  const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
+  const [groupedNotifications, setGroupedNotifications] = useState(null);
+  const { onlineusers } = useSelector((state) => state.websocket);
 
   const messageListRef = useRef(null);
+
+  useEffect(()=>{
+    console.log("the online users are", onlineusers)
+  }, [onlineusers])
+  useEffect(() => {
+    if (pendingNotifications) {
+      const grouped = pendingNotifications.reduce((acc, notification) => {
+        if (!acc[notification.sender_id]) {
+          acc[notification.sender_id] = {
+            sender_id: notification.sender_id,
+            count: 1,
+          };
+        } else {
+          acc[notification.sender_id].count++;
+        }
+        return acc;
+      }, {});
+      setGroupedNotifications(grouped); // <-- Setting the state variable
+    }
+  }, [pendingNotifications]);
+
 
   useEffect(() => {
     // Scroll to the bottom of the message list whenever messages or loading state changes
@@ -35,7 +58,7 @@ const ChatWindow = () => {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
     // console.log("The message list is : ",messageList)
-  }, [messages, loading, messageList]);
+  }, [ loading, messageList]);
 
   useEffect(() => {
     if (user?.is_trainer) {
@@ -95,6 +118,9 @@ const ChatWindow = () => {
 
   const handleClickConversation = (conver) => {
     setCurrentChat(conver);
+    setMessageList([]);
+    const { [conver?.id]: _, ...rest } = groupedNotifications;
+    setGroupedNotifications(rest)
     console.log("THe current one is", conver, currentChat);
     // setMessage(""); // Clear message input on chat change
   };
@@ -141,9 +167,8 @@ const ChatWindow = () => {
   // console.log("The trainer contact ", trainerContacts);
   // console.log("The conversation ", conversation);
   // console.log("The contacts ", contacts);
-  console.log("The currentchat ", currentChat);
+  // console.log("The currentchat ", currentChat);
   return (
-    // <NotificationComponent></NotificationComponent>
     <div className="flex h-screen">
       {/* Sidebar */}
       <div
@@ -190,22 +215,54 @@ const ChatWindow = () => {
           </h1>
           {contacts.map((conver) => (
             <div
-              key={conver.id}
-              className={`conversation-item p-2 hover:opacity-60 cursor-pointer ${
-                currentChat?.id === conver?.id ? "bg-green-700" : ""
+              key={conver?.id}
+              className={`flex-col  conversation-item p-2 hover:opacity-60 cursor-pointer ${
+                currentChat?.id === conver?.id ? "bg-green-500" : ""
               }`}
               onClick={() => handleClickConversation(conver)}
             >
-              <h1 className="text-lg font-bold">
-                {conver.username ||
-                  `${conver.first_name}   ${conver.last_name}`}
-              </h1>
+              <div className="flex justify-between">
+                <h1 className="text-lg font-bold">
+                  {conver.username ||
+                    `${conver.first_name}   ${conver.last_name}`}
+                </h1>
+
+                {groupedNotifications &&
+                  groupedNotifications[`${conver?.id}`] && (
+                    <span className="flex font-bold text-xs items-center justify-center h-6 w-6 rounded-full bg-green-500 text-white transition-opacity transform hover:scale-105">
+                      {groupedNotifications[`${conver?.id}`]?.count}
+                    </span>
+                  )}
+              </div>
+              <div className="flex  justify-end  ">
+                <span>
+                  {console.log("The online users are : ", onlineusers)}
+                  {console.log("The conver id : ", conver?.id)}
+                  {console.log("The contacts id : ", contacts)}
+                  {onlineusers.includes(conver?.id) ||
+                  onlineusers.includes(conver?.user_id) ? (
+                    <div className="flex">
+                      <MdOnlinePrediction className="mr-1 text-green-700" />
+                      <span className="text-green-400 text-xs font-bold">
+                        Online
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center">
+                      <MdOnlinePrediction className="mr-1 text-red-700 " />
+                      <span className="text-red-600 text-xs font-bold">
+                        Offline
+                      </span>
+                    </div>
+                  )}
+                </span>
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Chat area */}
+      {/* Chat area  */}
       <div
         className={
           isSidebarOpen
@@ -221,8 +278,30 @@ const ChatWindow = () => {
               src={`${API_URL}${currentChat?.profile_picture}`}
               alt="Avatar"
             />
-            {currentChat?.username ||
-              `${currentChat?.first_name}  ${currentChat?.last_name}`}
+            <div>
+              <p>
+                {currentChat?.username ||
+                  `${currentChat?.first_name}  ${currentChat?.last_name}`}
+              </p>
+              <div className="flex items-center">
+                {onlineusers.includes(currentChat?.id) ||
+                onlineusers.includes(currentChat?.user_id) ? (
+                  <>
+                    <MdOnlinePrediction className="ml-2 text-green-600" />
+                    <p className="text-xs text-green-600 font-bold ml-1 ">
+                      Online
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <MdOnlinePrediction className="ml-2 text-red-600" />
+                    <p className="text-xs text-red-600 font-bold ml-1 ">
+                      Offline
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
           </h2>
           <button
             className=" absolute right-4 top-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full"
@@ -233,12 +312,12 @@ const ChatWindow = () => {
         </div>
 
         {/* Chat messages */}
-        <div
+        {/* <div
           ref={messageListRef}
           className="flex-1 overflow-y-auto p-4 no-scrollbar"
         >
           {loading ? (
-            <p>Loading messages...</p>
+            <p className="flex mt-72 justify-center object-center text-white">Loading messages...</p>
           ) : (
             messageList?.map((message) => (
               <div
@@ -265,6 +344,44 @@ const ChatWindow = () => {
                 </div>
               </div>
             ))
+          )}
+        </div> */}
+        <div
+          ref={messageListRef}
+          className="flex-1 overflow-y-auto p-4 no-scrollbar"
+        >
+          {loading ? (
+            <p className="flex mt-72 justify-center object-center text-white">
+              Loading messages...
+            </p>
+          ) : (
+            <>
+              {messageList.map((message) => (
+                <div
+                  key={message?.id}
+                  className={` flex mb-4 ${
+                    message?.sender === user?.id
+                      ? " justify-start ml-2"
+                      : "justify-end mr-2"
+                  }`}
+                >
+                  <div>
+                    <ChatBubble
+                      user={user}
+                      username={
+                        message.sender === user?.id
+                          ? user.first_name
+                          : currentChat?.username || currentChat?.first_name
+                      }
+                      key={message?.id}
+                      message={message}
+                      trainer_id={user?.id}
+                      profile_picture={currentChat?.profile_picture}
+                    />
+                  </div>
+                </div>
+              ))}
+            </>
           )}
         </div>
 

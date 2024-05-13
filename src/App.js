@@ -24,13 +24,16 @@ import Test1 from "containers/Test1";
 import ChatWindow from "containers/ChatWindow";
 import RoomSelection from "components/test/RoomSelection";
 import ChatRoom2 from "components/test/ChatRoom2";
-import { addNotification, closeWebSocket, initializeWebSocket } from "features/webSocketSlice";
+import { addNotification, addOnlineusers, closeWebSocket, getOnlineUserIds, initializeWebSocket, removeOnlineusers } from "features/webSocketSlice";
 import { toast } from "react-toastify";
+import { getNotifications } from "features/chat";
+
 
 function App() {
   const dispatch = useDispatch();
   const { wsUrl } = useSelector((state) => state.websocket);
   const { user } = useSelector((state) => state.user);
+  const { pendingNotifications } = useSelector((state) => state.chat);
   
   useEffect(() => {
     if (wsUrl) {
@@ -41,11 +44,25 @@ function App() {
       globalws.onmessage = (event) => {
         const notification = JSON.parse(event.data);
         console.log("the notificaion", notification)
-        toast.success(`${notification.sender}: ${notification.payload}`)
-        dispatch(addNotification(notification));
+        if (notification.category === "message") {
+          console.log("the notification is a message");
+          toast.success(`${notification.sender}: ${notification.payload}`);
+          dispatch(addNotification(notification));
+        } else if (notification.category === "status") {
+          console.log("the notification is a message");
+          toast.success(`${notification.sender}: ${notification.payload}`);
+          if (notification.payload === "user Online") {
+            console.log("User online", notification.message);
+            dispatch(addOnlineusers(notification.sender));
+          } else if (notification.payload === "user Offline") {
+            console.log("User offline", notification.message);
+            dispatch(removeOnlineusers(notification.sender));
+          }
+
+        }
       };
       globalws.onclose = () => {
-        console.log("WebSocket disconnected");
+        console.log("Global WebSocket disconnected");
         dispatch(closeWebSocket());
       };
       return () => {
@@ -55,11 +72,41 @@ function App() {
   }, [wsUrl]);
 
   useEffect(() => {
+    // console.log("checking authenticaion")
     dispatch(checkAuth());
-    
   }, []);
+  
+  useEffect(() => {
+    console.log("dispatching online users")
+    dispatch(getOnlineUserIds());
+  }, []);
+
+  useEffect(() => {
+    // console.log("about to trigger getNotification")
+    dispatch(getNotifications());
+  }, [user]);
+  
+  useEffect(()=>{
+    if (pendingNotifications) {
+      console.log("this is the pending notificaions : ", pendingNotifications);
+      if (pendingNotifications.length <= 3) {
+        
+       pendingNotifications.forEach((notification, index) => {
+         setTimeout(() => {
+           toast.success(`${notification.sender}: ${notification.message}`);
+         }, index * 500); // Display each toast half a second after the previous one
+       });
+      } else {
+        toast.success(`You received ${pendingNotifications?.length} messages`);
+      }
+    }
+  }, [pendingNotifications])
+
+  
+
   useEffect(()=>{
     if (user) {
+      //setting the url for the websocket
       dispatch(initializeWebSocket(user?.id));
       console.log("global websocket initializing");
     }
