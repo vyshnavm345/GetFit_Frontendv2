@@ -26,7 +26,7 @@ import RoomSelection from "components/test/RoomSelection";
 import ChatRoom2 from "components/test/ChatRoom2";
 import { addNotification, addOnlineusers, closeWebSocket, getOnlineUserIds, initializeWebSocket, removeOnlineusers } from "features/webSocketSlice";
 import { toast } from "react-toastify";
-import { getNotifications } from "features/chat";
+import { addToPendingNotifications, getNotifications } from "features/chat";
 
 
 function App() {
@@ -48,6 +48,7 @@ function App() {
           console.log("the notification is a message");
           toast.success(`${notification.sender}: ${notification.payload}`);
           dispatch(addNotification(notification));
+          // dispatch(addToPendingNotifications(notification));
         } else if (notification.category === "status") {
           console.log("the notification is a message");
           toast.success(`${notification.sender}: ${notification.payload}`);
@@ -80,6 +81,7 @@ function App() {
     console.log("dispatching online users")
     dispatch(getOnlineUserIds());
   }, []);
+  
 
   useEffect(() => {
     // console.log("about to trigger getNotification")

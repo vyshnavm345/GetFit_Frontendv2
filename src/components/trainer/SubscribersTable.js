@@ -33,7 +33,7 @@ const SubscribersTable = ({ programName, data, onRowClick }) => {
                     }
                 >
                     <td className="text-left py-2 px-3 border-b border-gray-300">
-                    {row.user_name}
+                    {row.username}
                     </td>
                     <td className="text-left py-2 px-3 border-b border-gray-300">
                     {row.created_on}

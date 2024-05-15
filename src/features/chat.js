@@ -56,7 +56,14 @@ export const getNotifications = createAsyncThunk(
 const chatSlice = createSlice({
   name: "chat",
   initialState,
-  reducers: {},
+  reducers: {
+    addToPendingNotifications: (state, action) => {
+      state.pendingNotifications = [
+        ...state.pendingNotifications,
+        action.payload,
+      ];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getMessages.pending, (state, action) => {
@@ -84,5 +91,5 @@ const chatSlice = createSlice({
   },
 });
 
-// export const {  } = programSlice.actions;
+export const { addToPendingNotifications } = chatSlice.actions;
 export default chatSlice.reducer;

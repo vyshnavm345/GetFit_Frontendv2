@@ -9,8 +9,18 @@ import { getTrainerContacts, getUserContacts } from "features/trainer";
 import Cookies from "js-cookie";
 import { getMessages } from "features/chat";
 import { MdOnlinePrediction } from "react-icons/md";
+import ForwardMessageModal from "components/chat/ForwardMessageModal";
+import { RiImageAddFill } from "react-icons/ri";
+import ImageChatBubble from "components/chat/ImageChatBubble";
 
 const ChatWindow = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+  };
+
   const [room, setRoom] = useState("");
   const ws = useRef(null);
   const { user } = useSelector((state) => state.user);
@@ -28,12 +38,17 @@ const ChatWindow = () => {
   const dispatch = useDispatch();
   const [groupedNotifications, setGroupedNotifications] = useState(null);
   const { onlineusers } = useSelector((state) => state.websocket);
+  const [isForwardModalOpen, setIsForwardModalOpen] = useState(false);
+  const [ forwardingMessage, setForwardingMessage] = useState(null)
+  const [messageType, setMessageType] = useState('text')
 
   const messageListRef = useRef(null);
+  const [imageData, setImageData] = useState(null);
+  const imageInputRef = useRef(null);
 
-  useEffect(()=>{
-    console.log("the online users are", onlineusers)
-  }, [onlineusers])
+  useEffect(() => {
+    console.log("the online users are", onlineusers);
+  }, [onlineusers]);
   useEffect(() => {
     if (pendingNotifications) {
       const grouped = pendingNotifications.reduce((acc, notification) => {
@@ -51,14 +66,13 @@ const ChatWindow = () => {
     }
   }, [pendingNotifications]);
 
-
   useEffect(() => {
     // Scroll to the bottom of the message list whenever messages or loading state changes
     if (messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
     // console.log("The message list is : ",messageList)
-  }, [ loading, messageList]);
+  }, [loading, messageList]);
 
   useEffect(() => {
     if (user?.is_trainer) {
@@ -94,7 +108,8 @@ const ChatWindow = () => {
     setCurrentChat(contacts[0]);
   }, [contacts]);
 
-  useEffect(() => {
+  const createNewRoom = ()=>{
+    console.log("the current chat changed and new room is being created");
     if (user?.is_trainer && trainerContacts && currentChat) {
       const idList = [currentChat?.id, user?.id].sort();
       setRoom(`chat${idList[0]}${idList[1]}`);
@@ -102,10 +117,27 @@ const ChatWindow = () => {
       const idList = [currentChat?.user, user?.id].sort();
       setRoom(`chat${idList[0]}${idList[1]}`);
     }
-  }, [currentChat]);
+    console.log("the new room is ", room);
+  }
+
+
+
+  const makeNewNewRoom = (id1, id2)=>{
+      const idList = [id1, id2].sort();
+      return `chat${idList[0]}${idList[1]}`;
+    }
+   
 
   useEffect(() => {
-    if(room){
+    createNewRoom();
+  }, [currentChat]);
+
+  
+
+  useEffect(() => {
+    console.log("a new room is being connected")
+    if (room) {
+      console.log("the newly connected room is ", room)
       ws.current = new WebSocket(`${WS_link}/ws/chat/${room}/`);
       ws.current.onopen = handleOpen;
       ws.current.onclose = handleClose;
@@ -114,14 +146,179 @@ const ChatWindow = () => {
         ws.current.close();
       };
     }
+    console.log('success fully set up the connection to forward messages')
   }, [room]);
+
+
+  // const handleImageInputChange = (event) => {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       setImageData(e.target.result);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  //   console.log("the image data is ", imageData)
+  // };
+
+
+  const handleImageInputChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64StringWithPrefix = e.target.result;
+        const base64String = base64StringWithPrefix.split(",")[1];
+        setImageData(base64String); // e.target.result contains the base64 representation of the selected image
+      };
+      reader.readAsDataURL(file);
+    }
+    setMessageType('image');
+  };
+
+  const handleImageUpload = (e) => {
+    e.preventDefault();
+    imageInputRef.current.click();
+  };
+
+
+
+
+  // Function to open the forward message modal
+  const openForwardModal = () => {
+    setIsForwardModalOpen(true);
+  };
+
+  // Function to close the forward message modal
+  const closeForwardModal = () => {
+    setIsForwardModalOpen(false);
+  };
+
+  const updateCurrentChat = (contact) => {
+    setCurrentChat(contact);
+    console.log("The current chat is now:", currentChat);
+  };
+
+
+  //   const handleForwardMessage = (selectedUsers) => {
+
+  //   //Retrieves access token
+  //   console.log("the forwardingMessage.image : ", forwardingMessage.image);
+    
+  //   const accessToken = Cookies.get("accessToken") || null; // Retrieve access token
+
+
+  //   const logoBase64 = await loadImageAndConvertToBase64(forwardingMessage.image);
+  //   console.log("the logoBase64 : ", logoBase64);
+
+  //   // reusable function to send the message
+  //   const sendMessage = (userId) => {
+  //     const newRoom = makeNewNewRoom(user?.id, userId);
+  //     const ws = new WebSocket(`${WS_link}/ws/chat/${newRoom}/`);
+
+  //     ws.onopen = () => {
+  //       const message = {
+  //         message: forwardingMessage.message,
+  //         access_token: accessToken, // Include access token
+  //         receiver: userId,
+  //         type: forwardingMessage.type,
+  //         data: logoBase64,
+  //       };
+
+  //       console.log("The message being forwarded is:", message);
+  //       ws.send(JSON.stringify(message));
+  //       ws.close(); // The WebSocket closes after sending the message
+  //     };
+
+  //     ws.onerror = (error) => {
+  //       console.error("WebSocket encountered an error:", error);
+  //     };
+  //   };
+
+  //   //Iterates through selected users and send the message
+  //   selectedUsers.forEach(sendMessage);
+
+  //   // The modal closes after forwarding the message
+  //   closeForwardModal();
+  // };
+
+  const handleForwardMessage = async (selectedUsers) => {
+    console.log("the forwardingMessage.image : ", forwardingMessage.image);
+
+    // Retrieve access token
+    const accessToken = Cookies.get("accessToken") || null;
+
+    // Load image and convert to base64
+    const logoBase64 = await loadImageAndConvertToBase64(
+      forwardingMessage.image
+    );
+    console.log("the logoBase64 : ", logoBase64);
+
+    // Reusable function to send the message
+    const sendMessage = (userId) => {
+      const newRoom = makeNewNewRoom(user?.id, userId);
+      const ws = new WebSocket(`${WS_link}/ws/chat/${newRoom}/`);
+
+      ws.onopen = () => {
+        const message = {
+          message: forwardingMessage.message,
+          access_token: accessToken, // Include access token
+          receiver: userId,
+          type: forwardingMessage.type,
+          data: logoBase64,
+        };
+
+        console.log("The message being forwarded is:", message);
+        ws.send(JSON.stringify(message));
+        ws.close(); // The WebSocket closes after sending the message
+      };
+
+      ws.onerror = (error) => {
+        console.error("WebSocket encountered an error:", error);
+      };
+    };
+
+    // Iterate through selected users and send the message
+    selectedUsers.forEach(sendMessage);
+
+    // The modal closes after forwarding the message
+    closeForwardModal();
+  };
+
+  // const loadImageAndConvertToBase64 = async (url) => {
+  //   const response = await fetch(url);
+  //   const blob = await response.blob();
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(blob);
+
+  //   return new Promise((resolve, reject) => {
+  //     reader.onloadend = () => {
+  //       const base64String = reader.result.split(",")[1]; // Extract base64 data
+  //       resolve(base64String);
+  //     };
+  //     reader.onerror = reject;
+  //   });
+  // };
+
+
+
+  const handleOnForward = (data) => {
+    setForwardingMessage(data);
+    openForwardModal();
+
+  }
+
+  // const onDelete = ()=>{
+
+  // }
 
   const handleClickConversation = (conver) => {
     setCurrentChat(conver);
     setMessageList([]);
     const { [conver?.id]: _, ...rest } = groupedNotifications;
-    setGroupedNotifications(rest)
-    console.log("THe current one is", conver, currentChat);
+    setGroupedNotifications(rest);
+    // console.log("THe current one is", conver, currentChat);
     // setMessage(""); // Clear message input on chat change
   };
 
@@ -142,25 +339,145 @@ const ChatWindow = () => {
     setMessageList((prevMessages) => [...prevMessages, data.message]);
   };
 
-  const handleSendMessage = (e) => {
-    e.preventDefault();
-    if (messageInput) {
-      const accessToken = Cookies.get("accessToken") || null; // Retrieve access token
 
-      // Ensure ws.current is not null and connection is open before sending
-      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-        const message = {
-          message: messageInput,
-          access_token: accessToken, // Include access token in message object
-          receiver: currentChat?.user_id,
-        };
-        ws.current.send(JSON.stringify(message));
-        setMessageInput("");
-      } else {
-        console.error("WebSocket connection not yet established");
+  // const loadImageAndConvertToBase64 = async (url) => {
+  //   const response = await fetch(url);
+  //   const blob = await response.blob();
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(blob);
+  //   return new Promise((resolve, reject) => {
+  //     reader.onloadend = () => {
+  //       const base64String = reader.result; // Extract base64 data
+  //       console.log("the string", base64String);
+  //       resolve(base64String);
+  //       console.log("The  string after resolve",base64String);
+  //     };
+  //     reader.onerror = reject;
+  //   });
+  // };
+
+
+  const loadImageAndConvertToBase64 = async (url) => {
+    const fullUrl = `${API_URL}${url}`
+    const response = await fetch(fullUrl);
+    const blob = await response.blob();
+
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => {
+        const base64StringWithPrefix = reader.result; // Complete base64 string with MIME type prefix
+        const base64String = base64StringWithPrefix.split(",")[1];
+        console.log("the string", base64String);
+        resolve(base64String);
+        console.log("The string after resolve", base64String);
+      };
+      reader.onerror = reject;
+    });
+  };
+
+
+  
+
+  const handleSendMessage = async (e) => {
+    console.log("the forwarded message is being sent");
+    if (e) {
+      e.preventDefault();
+    }
+    // let logoBase64;
+    // const formData = new FormData();
+    // formData.append("image", img1);
+
+    // const logoURL = "/static/media/Get-fit-Logo.ef91b83babfa52916f17.png";
+    try {
+      // logoBase64 = await loadImageAndConvertToBase64(logoURL);
+      // console.log("the form logoBase64 : ", logoBase64);
+      // Use the base64 string here
+
+      // if (messageInput.length < 1 && messageType !== "text") {
+      //   console.log("the state is being updated")
+      //   setMessageInput((prevInput) => `Message from ${user?.first_name}`);
+      // }
+      const sendingMessage =
+      messageInput.length < 1 &&
+      messageType !== "text" ?
+      `Message from ${user?.first_name}` : messageInput;
+      console.log("The sending message : ", sendingMessage);
+      if (messageInput || sendingMessage) {
+        const accessToken = Cookies.get("accessToken") || null; // Retrieve access token
+        console.log("The access token", accessToken);
+        // Ensure ws.current is not null and connection is open before sending
+        if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+          const message = {
+            message: sendingMessage,
+            access_token: accessToken, // Include access token in message object
+            receiver: currentChat?.user_id,
+            type: messageType,
+            data: imageData ? imageData : null,
+            // data: formData,
+          };
+          console.log("The message being forwarded is  : ", message);
+          ws.current.send(JSON.stringify(message));
+          setMessageInput("");
+        } else {
+          console.error("WebSocket connection not yet established");
+        }
+        setMessageType('text')
       }
+    } catch (error) {
+      console.error("Error loading image:", error);
     }
   };
+
+  // const handleSendMessage = (e) => {
+  //   if (e) {
+  //     e.preventDefault();
+  //   }
+  //   console.log("the forwarded message is being sent");
+  //   // const formData = new FormData();
+  //   // formData.append("image", selectedImage);
+  //   // console.log("the form data : ", formData);
+  //   console.log("the input message is ; ", messageInput)
+  //   if (messageInput) {
+  //     console.log("the input message is ; ", ws.current, ws.current.readyState === WebSocket.OPEN)
+  //     const accessToken = Cookies.get("accessToken") || null;
+
+  //     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+  //       console.log("sending message")
+  //       // Read the image file asynchronously
+  //       const reader = new FileReader();
+  //       reader.onload = (event) => {
+  //         // Append the image data to the FormData object
+  //         // formData.append("image", event.target.result);
+
+  //         // Create the message object with image data
+  //         const message = {
+  //           message: messageInput,
+  //           access_token: accessToken,
+  //           receiver: currentChat?.user_id,
+  //           type: "text",
+  //           // data: formData,
+  //         };
+  //         console.log("The message being forwarded is  : ", message);
+  //         // Send the message over WebSocket
+  //         ws.current.send(JSON.stringify(message));
+  //       };
+
+  //       // Read the image as a data URL
+  //       // reader.readAsDataURL(selectedImage);
+
+  //       setMessageInput("");
+  //     } else {
+  //       console.error("WebSocket connection not yet established");
+  //     }
+  //   }
+  // };
+
+
+
+  
+  // console.log("The image data is ", imageData)
   // console.log("This is the room", room)
   // console.log("The user is ", user)
   // console.log("The user contact ", userContacts);
@@ -227,6 +544,10 @@ const ChatWindow = () => {
                     `${conver.first_name}   ${conver.last_name}`}
                 </h1>
 
+                {/* {console.log(
+                  "The groupedNotifications are : ",
+                  groupedNotifications
+                )} */}
                 {groupedNotifications &&
                   groupedNotifications[`${conver?.id}`] && (
                     <span className="flex font-bold text-xs items-center justify-center h-6 w-6 rounded-full bg-green-500 text-white transition-opacity transform hover:scale-105">
@@ -236,9 +557,9 @@ const ChatWindow = () => {
               </div>
               <div className="flex  justify-end  ">
                 <span>
-                  {console.log("The online users are : ", onlineusers)}
+                  {/* {console.log("The online users are : ", onlineusers)}
                   {console.log("The conver id : ", conver?.id)}
-                  {console.log("The contacts id : ", contacts)}
+                  {console.log("The contacts id : ", contacts)} */}
                   {onlineusers.includes(conver?.id) ||
                   onlineusers.includes(conver?.user_id) ? (
                     <div className="flex">
@@ -312,40 +633,6 @@ const ChatWindow = () => {
         </div>
 
         {/* Chat messages */}
-        {/* <div
-          ref={messageListRef}
-          className="flex-1 overflow-y-auto p-4 no-scrollbar"
-        >
-          {loading ? (
-            <p className="flex mt-72 justify-center object-center text-white">Loading messages...</p>
-          ) : (
-            messageList?.map((message) => (
-              <div
-                key={message.id}
-                className={` flex mb-4 ${
-                  message.sender === user.id
-                    ? " justify-start ml-2"
-                    : "justify-end mr-2"
-                }`}
-              >
-                <div>
-                  <ChatBubble
-                    user={user}
-                    username={
-                      message.sender === user.id
-                        ? user.first_name
-                        : currentChat.username || currentChat.first_name
-                    }
-                    key={message.id}
-                    message={message}
-                    trainer_id={user.id}
-                    profile_picture={currentChat.profile_picture}
-                  />
-                </div>
-              </div>
-            ))
-          )}
-        </div> */}
         <div
           ref={messageListRef}
           className="flex-1 overflow-y-auto p-4 no-scrollbar"
@@ -361,12 +648,23 @@ const ChatWindow = () => {
                   key={message?.id}
                   className={` flex mb-4 ${
                     message?.sender === user?.id
-                      ? " justify-start ml-2"
-                      : "justify-end mr-2"
+                      ? "justify-end mr-2"
+                      : " justify-start ml-2"
                   }`}
                 >
                   <div>
-                    <ChatBubble
+                    {message?.type === 'image' ? (
+                    <ImageChatBubble user={user}
+                      username={
+                        message.sender === user?.id
+                          ? user.first_name
+                          : currentChat?.username || currentChat?.first_name
+                      }
+                      key={message?.id}
+                      message={message}
+                      trainer_id={user?.id}
+                      profile_picture={currentChat?.profile_picture}
+                      onForward={handleOnForward}/>) : (<ChatBubble
                       user={user}
                       username={
                         message.sender === user?.id
@@ -377,7 +675,10 @@ const ChatWindow = () => {
                       message={message}
                       trainer_id={user?.id}
                       profile_picture={currentChat?.profile_picture}
-                    />
+                      onForward={handleOnForward}
+                      // onDelete={onDelete}
+                    />)}
+                    
                   </div>
                 </div>
               ))}
@@ -386,22 +687,67 @@ const ChatWindow = () => {
         </div>
 
         {/* Chat input */}
-        <form
-          className="p-4 border-t flex items-center"
-          onSubmit={handleSendMessage}
-        >
-          <input
-            type="text"
-            className="flex-1 border rounded-full px-4 py-2 mr-4"
-            placeholder="Type your message..."
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
+        {/* <div>
+          <input type="file" onChange={handleFileChange} />
+          <button className="bg-red-500 hover:opacity-35 text-white font-bold" onClick={handleSendMessage}>Send Image</button>
+        </div> */}
+        <div className="flex-row">
+          {/* <input
+            type="file"
+            ref={imageInputRef}
+            onChange={handleImageInputChange}
+            accept="image/*"
+            className="hidden"
           />
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full">
-            <IoSend />
-          </button>
-        </form>
+          <button
+            onClick={handleImageUpload}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full mr-2"
+          >
+            Upload Image
+          </button> */}
+          <form
+            className="p-4 border-t flex items-center"
+            onSubmit={handleSendMessage}
+          >
+            <div>
+              <input
+                type="file"
+                ref={imageInputRef}
+                onChange={handleImageInputChange}
+                accept="image/*"
+                className="hidden"
+              />
+              <button
+                onClick={handleImageUpload}
+                type="button"
+                className="bg-green-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full flex items-center justify-center mr-2"
+              >
+                <RiImageAddFill />
+              </button>
+            </div>
+            <input
+              type="text"
+              className="flex-1 border rounded-full px-4 py-2 mr-4"
+              placeholder="Type your message..."
+              value={messageInput}
+              onChange={(e) => setMessageInput(e.target.value)}
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full"
+            >
+              <IoSend />
+            </button>
+          </form>
+        </div>
       </div>
+      {isForwardModalOpen && (
+        <ForwardMessageModal
+          onClose={closeForwardModal}
+          onForward={handleForwardMessage}
+          users={contacts} // Pass the users to select from
+        />
+      )}
     </div>
   );
 };
