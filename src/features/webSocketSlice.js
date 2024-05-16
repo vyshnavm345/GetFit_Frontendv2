@@ -10,7 +10,7 @@ const initialState = {
   onlineusers: [],
 };
 
-
+// get the ids of online users
 export const getOnlineUserIds = createAsyncThunk(
   "user/getOnlineUserIds",
   async (_, thunkAPI) => {

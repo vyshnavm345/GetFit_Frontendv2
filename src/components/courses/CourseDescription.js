@@ -7,6 +7,8 @@ import { getLessonsList } from "features/lessons";
 import { API_URL } from "config";
 import { followedProgram, getFollowedPrograms, unfollowProgram } from "features/program";
 import { toast } from "react-toastify";
+import ModalLayout from 'components/ModalLayout'
+import Checkout from "components/Payment/Checkout";
 
 const CourseDescription = () => {
   const dispatch = useDispatch();
@@ -16,6 +18,8 @@ const CourseDescription = () => {
   const { followedPrograms } = useSelector((state) => state.program);
   // const [showLessons,  setShowLessons] = useState(false)
   const [subscribed, setSubscribed] = useState(false);
+  const [show, setShow] = useState(false)
+  const [showWarning, setShowWarning] = useState(false)
 
   useEffect(() => {
     dispatch(getFollowedPrograms());
@@ -42,34 +46,38 @@ const CourseDescription = () => {
     }
   }, [followedPrograms]);
 
+  const handlePayment= ()=>{
+    if (user) {
+      setShow(true);
+    } else {
+      toast.error("Please Login First !");
+    }
+  }
+
   const handleClick = () => {
     if (user) {
-      setSubscribed(!subscribed);
-      if(subscribed){
-        dispatch(unfollowProgram(programme.id))
-      } else{
-
-        dispatch(followedProgram(programme.id));
-      }
+      setShowWarning(true);
+      // setSubscribed(!subscribed);
+      // if(subscribed){
+      //   dispatch(unfollowProgram(programme.id))
+      // }
     } else {
       toast.error("Please Login First !");
     }
   };
-  // if (followedPrograms) {
-  //   console.log(
-  //     "this is the user followed programms List : ",
-  //     followedPrograms
-  //   );
-  // }
-  // if (programme) {
-  //   if (followedPrograms && followedPrograms.length > 0) {
-  //     console.log(
-  //       "This is the program id : ",
-  //       programme?.id,
-  //       followedPrograms[0]?.program[0].id
-  //     );
-  //   }
-  // }
+
+  const onClose = ()=>{
+    setShow(false)
+  }
+  const handleUnsubscribe = ()=>{
+    setSubscribed(false);
+    dispatch(unfollowProgram(programme.id));
+  }
+  const onCloseWarning = ()=>{
+    setShowWarning(false)
+  }
+  
+
   return (
     <>
       <div className=" lg:mx-32 mx-auto px-4  py-24 bg-black/15 ">
@@ -81,26 +89,42 @@ const CourseDescription = () => {
         ></div>
 
         <div className="mx-5 flex justify-between items-center pb-8">
-          <h1 className="text-3xl font-blackops-one text-[#f5f5f5]">
-            {programme?.program_name}
-          </h1>
+          <div className="flex flex-col">
+            <h1 className="text-3xl font-blackops-one text-[#f5f5f5]">
+              {programme?.program_name}
+            </h1>
+            <p className="text-white font-bold text-lg">
+              Duration : {programme?.duration} Day Program
+            </p>
+          </div>
           {!user?.is_trainer && (
             <div className="flex items-center">
-              <button
-                onClick={() => {
-                  handleClick();
-                }}
-                className="px-4 py-2 bg-blue-500 text-white font-bold rounded-md shadow hover:bg-blue-700"
-              >
-                {subscribed ? (
-                  <span>UnSubscribe</span>
-                ) : (
-                  <>
-                    <p>Subscribe</p>
-                    <span className="text-xs">follow this program</span>
-                  </>
-                )}
-              </button>
+              {subscribed ? (
+                <button
+                  onClick={() => {
+                    handleClick();
+                  }}
+                  className="px-4 py-2 bg-red-500 text-white font-bold rounded-md shadow hover:bg-red-700"
+                >
+                  <span> UnSubscribe</span>
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => {
+                      handlePayment();
+                    }}
+                    className="px-4 py-2 bg-blue-500 text-white font-bold rounded-md shadow hover:bg-blue-700"
+                  >
+                    <p>
+                      Subscribe at just
+                      <span className="text-lg font-bold">
+                        ₹{programme?.price}
+                      </span>
+                    </p>
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -165,6 +189,55 @@ const CourseDescription = () => {
           )}
         </div>
       </div>
+      {show && (
+        <ModalLayout
+          title={"Payment"}
+          onClose={onClose}
+          children={
+            <div>
+              <Checkout
+                price={programme?.price}
+                id={programme.id}
+                setSubscribed={setSubscribed}
+                setShow={setShow}
+              />
+            </div>
+          }
+        />
+      )}
+      {showWarning && (
+        <ModalLayout
+          className="border-black shadow-lg"
+          title={"Warning"}
+          onClose={onCloseWarning}
+          children={
+            <div>
+              <p className="text-xl font-bold">
+                Are you sure you want to unsubscribe?
+              </p>
+              <p className="text-xl font-semibold">
+                You will have to pay again to resubscribe later.
+              </p>
+              <div className="flex justify-around">
+                <button
+                  onClick={handleUnsubscribe}
+                  className="p-2 rounded-md my-3 bg-yellow-500 text-white font-bold shadow-md hover:bg-yellow-800"
+                >
+                  Unsubscribe
+                </button>
+                <button
+                  onClick={() => {
+                    setShowWarning(false);
+                  }}
+                  className="p-2 rounded-md my-3 bg-red-500 text-white font-bold shadow-md hover:bg-red-800"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          }
+        />
+      )}
     </>
   );
 };

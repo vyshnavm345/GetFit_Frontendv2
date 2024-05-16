@@ -139,9 +139,9 @@ const ImageChatBubble = ({
               className="rounded-lg"
             />
           </div>
-          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+          {/* <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
             Delivered
-          </span>
+          </span> */}
         </div>
       </div>
       <button

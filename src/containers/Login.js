@@ -45,9 +45,12 @@ const Login = () => {
   }
   useEffect(()=>{
     if (isAuthenticated && user){
-      // ws.global = new WebSocket(`${WS_link}/ws/notification/link${user.id}/`);
       dispatch(initializeWebSocket(user.id))
-      navigate("/trainerDashboard");
+      if (user.is_superuser){
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/trainerDashboard");
+      }
     }
   }, [isAuthenticated, user])
 

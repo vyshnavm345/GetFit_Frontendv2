@@ -18,7 +18,7 @@ export default function Modal({ title, onClose, children }) {
                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 onClick={() => onClose(false)}
               >
-                <h6 className="text-black">×</h6>
+                <h6 className="text-black font-extrabold">×</h6>
               </button>
             </div>
             {/*body*/}

@@ -19,6 +19,9 @@ const initialState = {
     message: null,
     verified:false,
     selectedUser:null,
+    totalUserCount:null,
+    loggedInUsers: [],
+    allUsers:[],
 }
 
 export const register = createAsyncThunk('user/register', async ({first_name, last_name, email, password}, thunkAPI)=>{
@@ -114,6 +117,65 @@ export const getUserById = createAsyncThunk(
     }
 )
 
+// get total user count
+export const getTotalUsers = createAsyncThunk(
+  "user/getTotalUsers",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/users/getUserCount/`);
+      if (response.status === 200) {
+        console.log("Total users : ", response.data)
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+
+// get online users not trainers
+export const getLoggedInUsers = createAsyncThunk(
+  "user/getLoggedInUsers",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/api/users/getLoggedInUsers/`
+      );
+      if (response.status === 200) {
+        console.log("Total users : ", response.data);
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+
+// get all users not trainers(online and offline)
+export const getAllUsers = createAsyncThunk(
+  "user/getAllUsers",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/users/getAllUsers/`);
+      if (response.status === 200) {
+        console.log("Total users : ", response.data);
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+// get this user
 const getUser = createAsyncThunk(
 	'user/me',
 	async(_, thunkAPI) =>{
@@ -123,12 +185,17 @@ const getUser = createAsyncThunk(
 
 
 			if (response.status === 200){
+        toast.success("Successfully Logged In");
                 if (response.data.is_trainer){
                     const { dispatch } = thunkAPI;
                     dispatch(getTrainer());
                 } 
                 return response.data;
-			}
+			} else if(response.status === 403){
+        console.log("the response is : ", response.data)
+        // toast.error(response.data.error)
+        
+      }
             else {
                 return thunkAPI.rejectWithValue(response.data);
             }
@@ -165,19 +232,20 @@ export const login = createAsyncThunk('user/login', async ({email, password}, th
 
         const data = await res.json();
 
-        if (res.status === 200){
-            Cookies.set('accessToken', data.access, {expires: 7});
-            Cookies.set('refreshToken', data.refresh, { expires: 7});
+        if (res.status === 200) {
+          Cookies.set("accessToken", data.access, { expires: 7 });
+          Cookies.set("refreshToken", data.refresh, { expires: 7 });
 
-            const {dispatch} = thunkAPI;
+          const { dispatch } = thunkAPI;
 
-            dispatch(getUser());
-            toast.success("Successfully Logged In");
+          dispatch(getUser());
 
-            return data;
-        }
-        else{
-            return thunkAPI.rejectWithValue(data);
+          return data;
+        } else if (res.status === 403) {
+          console.log("the response is : ", res.data.error);
+          toast.error(res.data.error);
+        } else {
+          return thunkAPI.rejectWithValue(data);
         }
     } catch (err) {
         return thunkAPI.rejectWithValue(err.response.data)
@@ -288,90 +356,129 @@ const userSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-        .addCase(register.pending, (state, action) => {
-        state.loading = true;
-        })
-        .addCase(register.fulfilled, (state) => {
-        state.loading = false;
-        state.registered = true;
-        })
-        .addCase(register.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-        })
-        .addCase(login.pending, (state) => {
-        state.loading = true;
-        })
-        .addCase(login.fulfilled, (state) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        })
-        .addCase(login.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-        })
-        .addCase(getUser.pending, (state) => {
-        state.loading = true;
-        })
-        .addCase(getUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
-        })
-        .addCase(getUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-        // toast.error("request rejected");
-        // Cookies.remove("accessToken");
-        // Cookies.remove("refreshToken");
-        })
-        .addCase(checkAuth.pending, (state) => {
-        state.loading = true;
-        })
-        .addCase(checkAuth.fulfilled, (state) => {
-        state.loading = false;
-        state.isAuthenticated = true;
-        })
-        .addCase(checkAuth.rejected, (state) => {
-        state.loading = false;
-        })
-        .addCase(update.pending, (state) => {
-        state.loading = true;
-        state.error = "";
-        })
-        .addCase(update.fulfilled, (state, action) => {
-        state.loading = false;
-        state.message = action.payload;
-        state.error = "";
-        })
-        .addCase(update.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-        toast.error("request rejected");
-        })
-        .addCase(verifyEmail.pending, (state) => {
-        state.loading = true;
-        state.error = "";
-        })
-        .addCase(verifyEmail.fulfilled, (state, action) => {
-        state.loading = false;
-        state.message = action.payload;
-        state.verified = true;
-        })
-        .addCase(verifyEmail.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-        })
-        .addCase(getUserById.pending, (state) => {
-        state.loading = true;
-        })
-        .addCase(getUserById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.selectedUser = action.payload;
-        })
-        .addCase(getUserById.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-        });
+          .addCase(register.pending, (state, action) => {
+            state.loading = true;
+          })
+          .addCase(register.fulfilled, (state) => {
+            state.loading = false;
+            state.registered = true;
+          })
+          .addCase(register.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+          })
+          .addCase(login.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(login.fulfilled, (state) => {
+            state.loading = false;
+            state.isAuthenticated = true;
+          })
+          .addCase(login.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+          })
+          .addCase(getUser.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(getUser.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+          })
+          .addCase(getUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload.error;
+            state.isAuthenticated = false;
+            toast.error("You have been temporarly blocked by the admin");
+            
+            
+            // toast.error("request rejected");
+            // Cookies.remove("accessToken");
+            // Cookies.remove("refreshToken");
+          })
+          .addCase(checkAuth.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(checkAuth.fulfilled, (state) => {
+            state.loading = false;
+            state.isAuthenticated = true;
+          })
+          .addCase(checkAuth.rejected, (state) => {
+            state.loading = false;
+            state.isAuthenticated = false;
+            
+          })
+          .addCase(update.pending, (state) => {
+            state.loading = true;
+            state.error = "";
+          })
+          .addCase(update.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload;
+            state.error = "";
+          })
+          .addCase(update.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+            toast.error("request rejected");
+          })
+          .addCase(verifyEmail.pending, (state) => {
+            state.loading = true;
+            state.error = "";
+          })
+          .addCase(verifyEmail.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload;
+            state.verified = true;
+          })
+          .addCase(verifyEmail.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+          })
+          .addCase(getUserById.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(getUserById.fulfilled, (state, action) => {
+            state.loading = false;
+            state.selectedUser = action.payload;
+          })
+          .addCase(getUserById.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+          })
+          .addCase(getTotalUsers.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(getTotalUsers.fulfilled, (state, action) => {
+            state.loading = false;
+            state.totalUserCount = action.payload;
+          })
+          .addCase(getTotalUsers.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+          })
+          .addCase(getLoggedInUsers.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(getLoggedInUsers.fulfilled, (state, action) => {
+            state.loading = false;
+            state.loggedInUsers = action.payload;
+          })
+          .addCase(getLoggedInUsers.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+          })
+          .addCase(getAllUsers.pending, (state) => {
+            state.loading = true;
+          })
+          .addCase(getAllUsers.fulfilled, (state, action) => {
+            state.loading = false;
+            state.allUsers = action.payload;
+          })
+          .addCase(getAllUsers.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message;
+          });
     }
 });
 

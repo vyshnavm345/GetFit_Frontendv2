@@ -22,9 +22,13 @@ const Navbar = () => {
       >
         Logout
       </button>
+      
       <button
         onClick={() => {
-          navigate("/TrainerDashboard");
+          if(user?.is_superuser){
+            navigate("/admin/dashboard");
+          } else {navigate("/TrainerDashboard");}
+          
         }}
       >
         <div className="text-white font-mono flex ml-4 items-center ">
@@ -79,7 +83,11 @@ const Navbar = () => {
       navigate("/chat");
     } else if (selectedOption === "option4") {
       // toast.success('Navigated to test success')
-      navigate("/dashboard");
+      if (user?.is_superuser){
+        // navigate("/admin/dashboard");
+      } else {
+      } navigate("/dashboard");
+        
     }
   };
 

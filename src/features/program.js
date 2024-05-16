@@ -1,12 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+import { API_URL } from "config";
 import { toast } from "react-toastify";
 import axiosInstance from "utils/axiosInstance";
 
 const initialState = {
-    loading: false,
-    error: null,
-    message: null,
-    followedPrograms: null,
+  loading: false,
+  error: null,
+  message: null,
+  followedPrograms: null,
+  totalProgramCount: null,
+  popularPrograms:[]
 };
 
 
@@ -77,6 +81,50 @@ export const getFollowedPrograms = createAsyncThunk(
   }
 );
 
+// get total program count
+export const getTotalPrograms = createAsyncThunk(
+  "user/getTotalPrograms",
+  async (_, thunkAPI) => {
+    try {
+      console.log("getting program count")
+      const response = await axios.get(
+        `${API_URL}/api/fitness_programs/getProgramCount/`
+      );
+      if (response.status === 200) {
+        console.log("Total programs : ", response.data);
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+
+
+// get the most popular programms
+export const getPopularPrograms = createAsyncThunk(
+  "user/getPopularPrograms",
+  async (_, thunkAPI) => {
+    try {
+      console.log("getting program count");
+      const response = await axios.get(
+        `${API_URL}/api/fitness_programs/getPopularProgram/`
+      );
+      if (response.status === 200) {
+        console.log("Total programs : ", response.data);
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
 
 
 const programSlice = createSlice({
@@ -116,6 +164,28 @@ const programSlice = createSlice({
         toast.success(action.payload?.message);
       })
       .addCase(unfollowProgram.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload?.message);
+      })
+      .addCase(getTotalPrograms.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getTotalPrograms.fulfilled, (state, action) => {
+        state.loading = false;
+        state.totalProgramCount = action.payload;
+      })
+      .addCase(getTotalPrograms.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload?.message);
+      })
+      .addCase(getPopularPrograms.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getPopularPrograms.fulfilled, (state, action) => {
+        state.loading = false;
+        state.popularPrograms = action.payload;
+      })
+      .addCase(getPopularPrograms.rejected, (state, action) => {
         state.loading = false;
         toast.error(action.payload?.message);
       });

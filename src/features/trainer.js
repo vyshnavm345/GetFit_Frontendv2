@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import axiosInstance from "utils/axiosInstance";
 import axios from "axios";
+import { API_URL } from "config";
 
 const baseURL = "http://127.0.0.1:8000";
 
@@ -10,16 +11,19 @@ const initialState = {
   error: null,
   message: null,
   trainer: null,
-  selectedTrainer:null,
+  selectedTrainer: null,
   created: false,
   programmes: null,
   programme: null,
   trainersProgrammes: null,
-  trainerList:null,
-  userTrainers: [],  // the list of trainers of a user
+  trainerList: null,
+  userTrainers: [], // the list of trainers of a user
   programSubscribers: [], // users and their subscribed programms list, of a particular trainer.
   trainerContacts: [], // list of trainers contacts
   userContacts: [], //list of user contacts
+  totalTrainerCount: null,
+  onlineTrainers: [],
+  allTrainers: [],
 };
 
 
@@ -310,6 +314,67 @@ export const getUserContacts = createAsyncThunk(
   }
 );
 
+// get total trainer count
+export const getTotalTrainers = createAsyncThunk(
+  "user/getTotalTrainers",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(`${API_URL}/api/trainers/getTrainerCount/`);
+      if (response.status === 200) {
+        console.log("Total users : ", response.data);
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+
+// get online trainers
+export const getLoggedInTrainers = createAsyncThunk(
+  "user/getLoggedInTrainers",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        `${API_URL}/api/trainers/getLoggedInTrainers/`
+      );
+      if (response.status === 200) {
+        console.log("The logged in trainer inside thunk : ", response.data);
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+
+// get all trainers(online and offline)
+export const getAllTrainers = createAsyncThunk(
+  "user/getAllTrainers",
+  async (_, thunkAPI) => {
+    try {
+      console.log("the get trainer is being called")
+      const response = await axios.get(`${API_URL}/api/trainers/getAllTrainers/`);
+      if (response.status === 200) {
+        console.log("all Trainers : ", response.data);
+        return response.data;
+      } else {
+        console.log("error : ", response.data)
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      console.log("error : ", err.response.data);
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
 
 
 const trainerSlice = createSlice({
@@ -454,6 +519,40 @@ const trainerSlice = createSlice({
       })
       .addCase(getUserContacts.rejected, (state, action) => {
         state.loading = false;
+        toast.error(action.payload.message);
+      })
+      .addCase(getTotalTrainers.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getTotalTrainers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.totalTrainerCount = action.payload;
+      })
+      .addCase(getTotalTrainers.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload.message);
+      })
+      .addCase(getLoggedInTrainers.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getLoggedInTrainers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.onlineTrainers = action.payload;
+      })
+      .addCase(getLoggedInTrainers.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload.message);
+      })
+      .addCase(getAllTrainers.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getAllTrainers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.allTrainers = action.payload;
+      })
+      .addCase(getAllTrainers.rejected, (state, action) => {
+        state.loading = false;
+        console.log("error after rejecting : ", action.payload.message);
         toast.error(action.payload.message);
       });
   },

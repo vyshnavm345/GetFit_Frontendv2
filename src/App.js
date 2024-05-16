@@ -27,6 +27,15 @@ import ChatRoom2 from "components/test/ChatRoom2";
 import { addNotification, addOnlineusers, closeWebSocket, getOnlineUserIds, initializeWebSocket, removeOnlineusers } from "features/webSocketSlice";
 import { toast } from "react-toastify";
 import { addToPendingNotifications, getNotifications } from "features/chat";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import Checkout from "components/Payment/Checkout";
+// import AdminDashboard from "containers/AdminDashboard";
+import Dashboard from "components/MainAdmin/Dashboard";
+import Users from "components/MainAdmin/Users";
+import Trainers from "components/MainAdmin/Trainers"
+import Settings from "components/MainAdmin/Settings";
+import AdminLayout from "components/MainAdmin/AdminLayout";
+import FitnessPrograms from "components/MainAdmin/FitnessPrograms";
 
 
 function App() {
@@ -34,12 +43,14 @@ function App() {
   const { wsUrl } = useSelector((state) => state.websocket);
   const { user } = useSelector((state) => state.user);
   const { pendingNotifications } = useSelector((state) => state.chat);
+  const initialOptions = useSelector((state) => state.paypal.options);
   
   useEffect(() => {
     if (wsUrl) {
       const globalws = new WebSocket(wsUrl);
       globalws.onopen = () => {
         console.log("WebSocket connected in app.js");
+        console.log("The user", user)
       };
       globalws.onmessage = (event) => {
         const notification = JSON.parse(event.data);
@@ -73,19 +84,19 @@ function App() {
   }, [wsUrl]);
 
   useEffect(() => {
-    // console.log("checking authenticaion")
     dispatch(checkAuth());
   }, []);
   
   useEffect(() => {
-    console.log("dispatching online users")
+    console.log("dispatching get online users")
     dispatch(getOnlineUserIds());
-  }, []);
+  }, [user]);
   
 
   useEffect(() => {
-    // console.log("about to trigger getNotification")
-    dispatch(getNotifications());
+    if(user){
+      dispatch(getNotifications());
+    }
   }, [user]);
   
   useEffect(()=>{
@@ -115,41 +126,65 @@ function App() {
   }, [user])
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/trainerPage/:id" element={<DashboardPage />} />
-        {/* <Route path="/trainerDashboard" element={<TrainerDashboard />} /> */}
-        <Route
-          path="/trainerDashboard"
-          element={
-            <ProtectedRoute>
-              <TrainerDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/userProfile"
-          element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/trainerRegister" element={<TrainerRegister />} />
-        <Route path="/findTrainer" element={<FindTrainers />} />
-        <Route path="/programmes" element={<ProgrammesPage />} />
-        <Route path="/trainer/profile" element={<TrainerHomePage />} />
-        <Route path="*" element={<NotFoundPage />} />
-        {/* <Route path="/chattest" element={<Test />} /> */}
-        <Route path="/verify/:token" element={<VerifyEmail />} />
-        <Route path="/programDetails/:id" element={<ProgramDetails />} />
-        <Route path="/programLesson/:id" element={<ProgramLesson />} />
-        <Route path="/chat" element={<ChatWindow />} />
-      </Routes>
-    </Router>
+    <PayPalScriptProvider options={initialOptions}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/trainerPage/:id" element={<DashboardPage />} />
+          {/* <Route path="/trainerDashboard" element={<TrainerDashboard />} /> */}
+          <Route
+            path="/trainerDashboard"
+            element={
+              <ProtectedRoute>
+                <TrainerDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <ChatWindow />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/userProfile"
+            element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/trainerRegister" element={<TrainerRegister />} />
+          <Route path="/findTrainer" element={<FindTrainers />} />
+          <Route path="/programmes" element={<ProgrammesPage />} />
+          <Route path="/trainer/profile" element={<TrainerHomePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+          {/* <Route path="/chattest" element={<Test />} /> */}
+          <Route path="/verify/:token" element={<VerifyEmail />} />
+          <Route path="/programDetails/:id" element={<ProgramDetails />} />
+          <Route path="/programLesson/:id" element={<ProgramLesson />} />
+          {/* <Route path="/chat" element={<ChatWindow />} /> */}
+          <Route
+            path="/admin/*"
+            element={
+              <AdminLayout title="Admin Panel" content="Admin panel">
+                <Routes>
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="users" element={<Users />} />
+                  <Route path="trainers" element={<Trainers />} />
+                  <Route path="fitnessPrograms" element={<FitnessPrograms />} />
+                  <Route path="settings" element={<Settings />} />
+                </Routes>
+              </AdminLayout>
+            }
+          />
+        </Routes>
+      </Router>
+    </PayPalScriptProvider>
   );
 }
 
