@@ -150,7 +150,7 @@ const Navbar = () => {
                 </a>
               </div>
             </Link>
-            {!user?.is_trainer && (
+            {!user?.is_trainer && !user?.is_superuser && (
               <Link to="/trainerRegister">
                 <div className=" h-10 mt-5 md:mt-0 md:h-0">
                   <a

@@ -10,8 +10,8 @@ const ProgrammeCard = ({ programme }) => {
   return (
     <>
       <div
-        onClick={() => {
-          navigate(`/programDetails/${programme?.id}`);
+        onClick={() => { programme?.is_published ?
+          navigate(`/programDetails/${programme?.id}`) : alert("comming soon")
         }}
         className="w-[60px] sm:w-[200px] md:w-[240px] lg:w-[400px] inline-block cursor-pointer relative p-2"
       >

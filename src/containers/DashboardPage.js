@@ -19,7 +19,10 @@ const DashboardPage = () => {
       dispatch(getTrainerprogrammesList(id));
       
     }, []);
-
+    console.log("Trainer program list : ", trainersProgrammes);
+    console.log("beginnerPrograms : ", beginnerPrograms);
+    console.log("intermediatePrograms : ", intermediatePrograms);
+    console.log("advancedPrograms : ", advancedPrograms);
     const splitPrograms = () => {
       const beginners = trainersProgrammes?.filter(
         (program) => program.level === "Beginner"
@@ -28,7 +31,7 @@ const DashboardPage = () => {
         (program) => program.level === "Intermediate"
       );
       const advanceds = trainersProgrammes?.filter(
-        (program) => program.level === "Advanced"
+        (program) => program.level === "Advance"
       );
 
       setBeginnerPrograms(beginners);

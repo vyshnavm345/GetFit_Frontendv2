@@ -15,7 +15,7 @@ import Test from "containers/Test";
 import ProgrammesPage from "containers/ProgrammesPage";
 import TrainerHomePage from "containers/TrainerHomePage";
 import VerifyEmail from "components/VerifyEmail";
-import ProtectedRoute from "components/ProtectedRoutes";
+import ProtectedRoute, { AdminProtectedRoute } from "components/ProtectedRoutes";
 import TrainerRegister from "containers/TrainerRegister";
 import ProgramDetails from "containers/ProgramDetails";
 import ProgramLesson from "containers/ProgramLesson";
@@ -36,6 +36,7 @@ import Trainers from "components/MainAdmin/Trainers"
 import Settings from "components/MainAdmin/Settings";
 import AdminLayout from "components/MainAdmin/AdminLayout";
 import FitnessPrograms from "components/MainAdmin/FitnessPrograms";
+import ProgramApprovalRequests from "components/MainAdmin/ProgramApprovalRequests";
 
 
 function App() {
@@ -171,15 +172,23 @@ function App() {
           <Route
             path="/admin/*"
             element={
-              <AdminLayout title="Admin Panel" content="Admin panel">
-                <Routes>
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="users" element={<Users />} />
-                  <Route path="trainers" element={<Trainers />} />
-                  <Route path="fitnessPrograms" element={<FitnessPrograms />} />
-                  <Route path="settings" element={<Settings />} />
-                </Routes>
-              </AdminLayout>
+              <AdminProtectedRoute>
+                <AdminLayout title="Admin Panel" content="Admin panel">
+                  <Routes>
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="users" element={<Users />} />
+                    <Route path="trainers" element={<Trainers />} />
+                    <Route
+                      path="fitnessPrograms"
+                      element={<FitnessPrograms />}
+                    />
+                    <Route
+                      path="requestNotificaions"
+                      element={<ProgramApprovalRequests />}
+                    />
+                  </Routes>
+                </AdminLayout>
+              </AdminProtectedRoute>
             }
           />
         </Routes>

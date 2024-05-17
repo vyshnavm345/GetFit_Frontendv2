@@ -42,11 +42,11 @@ const Sidebar = () => (
         Programs
       </NavLink>
       <NavLink
-        to="/admin/settings"
+        to="/admin/requestNotificaions"
         className="hover:bg-gray-700 p-2 rounded"
         activeClassName="bg-gray-700"
       >
-        Settings
+        Notifications
       </NavLink>
     </nav>
   </div>

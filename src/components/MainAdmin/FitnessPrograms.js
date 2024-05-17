@@ -6,29 +6,19 @@ import Team4 from "assets/programmes/gethin-muscle-building-logo-header-640xh.jp
 // import FitnessProgramForm from "components/courses/FitnessProgramForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getprogrammeslist } from "features/trainer";
-// import {
-//   getTrainer,
-//   getTrainerprogrammesList,
-//   resetCreated,
-// } from "features/trainer";
-// import LessonsTable from "components/courses/LessonsTable";
+import { changePublishStatus, retrive_all_programs } from "features/admin";
+
 
 export default function FitnessPrograms() {
-  const { programmes } = useSelector((state) => state.trainer);
+  const { allPrograms } = useSelector((state) => state.admin);
   const dispatch = useDispatch();
-//   const [addProgramme, setAddProgramme] = useState(true);
   const [selectedProgramId, setSelectedProgramId] = useState(null);
 
   useEffect(() => {
-    dispatch(getprogrammeslist());
+    dispatch(retrive_all_programs());
   }, []);
 
-//   useEffect(() => {
-//     if (trainer?.id) {
-//       dispatch(getTrainerprogrammesList(trainer?.id));
-//     }
-//   }, [trainer, addProgramme]);
-
+console.log("The list of programmes inside admin : ", allPrograms);
 return (
   <div className="bg-white py-2 shadow-md rounded md:px-6 md:my-6 overflow-x-auto">
     <div className="bg-purple-500 text-white uppercase text-xl py-2 px-4 flex justify-between">
@@ -43,11 +33,11 @@ return (
             <th className="text-left py-3 px-2">Duration</th>
             {/* <th className="text-left py-3 px-2">Users</th> */}
             <th className="text-left py-3 px-2">Status</th>
-            <th className="text-center py-3 px-4">Change</th>
+            <th className="text-left py-3 px-4">Change</th>
           </tr>
         </thead>
         <tbody>
-          {programmes?.map((programme) => (
+          {allPrograms?.map((programme) => (
             <tr
               key={programme.id}
               onClick={() => {
@@ -92,10 +82,26 @@ return (
                 />
               </td> */}
               <td className="border-b border-gray-200 py-4 px-2">
-                <div className="flex justify-evenly">
-                <button className="text-white font-bold bg-yellow-500 hover:opacity-90 rounded shadow-lg px-4 py-1 border-black ml-2">publish</button>
-                <button className="text-white font-bold bg-red-500 hover:opacity-90 rounded shadow-lg px-4 py-1 border-black ml-2">Block</button>
-                </div>
+                {console.log("the programme id is : ", programme?.id)}
+                {programme?.is_published ? (
+                  <button
+                    onClick={() => {
+                      dispatch(changePublishStatus(programme?.id));
+                    }}
+                    className="text-white font-bold bg-red-500 hover:opacity-90 rounded shadow-lg px-4 py-1 border-black ml-2"
+                  >
+                    Block
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      dispatch(changePublishStatus(programme?.id));
+                    }}
+                    className="text-white font-bold bg-yellow-500 hover:opacity-90 rounded shadow-lg px-4 py-1 border-black ml-2"
+                  >
+                    publish
+                  </button>
+                )}
               </td>
             </tr>
           ))}

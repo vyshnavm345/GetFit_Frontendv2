@@ -9,6 +9,7 @@ const FitnessProgramForm = ({ setAddProgramme, addProgramme }) => {
   const [programName, setProgramName] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState(0);
+  const [price, setPrice] = useState(0);
   const [category, setCategory] = useState("Other");
   const [level, setLevel] = useState("Beginner");
   const [coverImage, setCoverImage] = useState(null);
@@ -36,6 +37,7 @@ const FitnessProgramForm = ({ setAddProgramme, addProgramme }) => {
     formData.append("duration", duration);
     formData.append("category", category);
     formData.append("level", level);
+    formData.append("price", price);
     formData.append("trainer", trainer?.id);
 
     if (coverImage) {
@@ -94,6 +96,20 @@ const FitnessProgramForm = ({ setAddProgramme, addProgramme }) => {
             min="1"
             value={duration}
             onChange={(e) => setDuration(parseInt(e.target.value))}
+            className="px-4 py-2 rounded-md border text-black border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            required
+          />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="duration" className="font-bold mb-2">
+            Price
+          </label>
+          <input
+            type="number"
+            id="price"
+            min="1"
+            value={price}
+            onChange={(e) => setPrice(parseInt(e.target.value))}
             className="px-4 py-2 rounded-md border text-black border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
             required
           />

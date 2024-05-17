@@ -10,6 +10,7 @@ import {
   getTrainer,
   getTrainerprogrammesList,
   resetCreated,
+  sendPublishRequest,
 } from "features/trainer";
 import LessonsTable from "components/courses/LessonsTable";
 
@@ -66,13 +67,16 @@ export default function CardTable() {
                   </thead>
                   <tbody>
                     {trainersProgrammes?.map((programme) => (
-                      <tr key={programme.id}
-                        onClick={() => {
-                          setSelectedProgramId(programme.id);
-                        }}
+                      <tr
+                        key={programme.id}
                         className="hover:bg-gray-50 cursor-pointer"
                       >
-                        <td className="border-b border-gray-200 py-4 px-2">
+                        <td
+                          onClick={() => {
+                            setSelectedProgramId(programme.id);
+                          }}
+                          className="border-b border-gray-200 py-4 px-2"
+                        >
                           {programme?.program_name}
                         </td>
                         <td className="border-b border-gray-200 py-4 px-2">
@@ -104,10 +108,20 @@ export default function CardTable() {
                             className="w-10 h-10 rounded-full border-2 border-white -ml-4"
                           />
                         </td>
+
                         <td className="border-b border-gray-200 py-4 px-2">
-                          <div className="w-full h-3 bg-gray-200 rounded">
-                            <div className="w-3/5 h-full bg-red-500 rounded"></div>
-                          </div>
+                          {programme?.is_published ? (
+                            <p>Published</p>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                dispatch(sendPublishRequest(programme?.id));
+                              }}
+                              className="text-white font-bold bg-yellow-500 hover:opacity-90 rounded shadow-lg px-4 py-1 border-black ml-2"
+                            >
+                              publish
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}

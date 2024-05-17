@@ -150,18 +150,6 @@ const ChatWindow = () => {
   }, [room]);
 
 
-  // const handleImageInputChange = (event) => {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       setImageData(e.target.result);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  //   console.log("the image data is ", imageData)
-  // };
-
 
   const handleImageInputChange = (event) => {
     const file = event.target.files[0];
@@ -183,8 +171,6 @@ const ChatWindow = () => {
   };
 
 
-
-
   // Function to open the forward message modal
   const openForwardModal = () => {
     setIsForwardModalOpen(true);
@@ -200,48 +186,6 @@ const ChatWindow = () => {
     console.log("The current chat is now:", currentChat);
   };
 
-
-  //   const handleForwardMessage = (selectedUsers) => {
-
-  //   //Retrieves access token
-  //   console.log("the forwardingMessage.image : ", forwardingMessage.image);
-    
-  //   const accessToken = Cookies.get("accessToken") || null; // Retrieve access token
-
-
-  //   const logoBase64 = await loadImageAndConvertToBase64(forwardingMessage.image);
-  //   console.log("the logoBase64 : ", logoBase64);
-
-  //   // reusable function to send the message
-  //   const sendMessage = (userId) => {
-  //     const newRoom = makeNewNewRoom(user?.id, userId);
-  //     const ws = new WebSocket(`${WS_link}/ws/chat/${newRoom}/`);
-
-  //     ws.onopen = () => {
-  //       const message = {
-  //         message: forwardingMessage.message,
-  //         access_token: accessToken, // Include access token
-  //         receiver: userId,
-  //         type: forwardingMessage.type,
-  //         data: logoBase64,
-  //       };
-
-  //       console.log("The message being forwarded is:", message);
-  //       ws.send(JSON.stringify(message));
-  //       ws.close(); // The WebSocket closes after sending the message
-  //     };
-
-  //     ws.onerror = (error) => {
-  //       console.error("WebSocket encountered an error:", error);
-  //     };
-  //   };
-
-  //   //Iterates through selected users and send the message
-  //   selectedUsers.forEach(sendMessage);
-
-  //   // The modal closes after forwarding the message
-  //   closeForwardModal();
-  // };
 
   const handleForwardMessage = async (selectedUsers) => {
     console.log("the forwardingMessage.image : ", forwardingMessage.image);
@@ -286,23 +230,6 @@ const ChatWindow = () => {
     closeForwardModal();
   };
 
-  // const loadImageAndConvertToBase64 = async (url) => {
-  //   const response = await fetch(url);
-  //   const blob = await response.blob();
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(blob);
-
-  //   return new Promise((resolve, reject) => {
-  //     reader.onloadend = () => {
-  //       const base64String = reader.result.split(",")[1]; // Extract base64 data
-  //       resolve(base64String);
-  //     };
-  //     reader.onerror = reject;
-  //   });
-  // };
-
-
-
   const handleOnForward = (data) => {
     setForwardingMessage(data);
     openForwardModal();
@@ -318,8 +245,6 @@ const ChatWindow = () => {
     setMessageList([]);
     const { [conver?.id]: _, ...rest } = groupedNotifications;
     setGroupedNotifications(rest);
-    // console.log("THe current one is", conver, currentChat);
-    // setMessage(""); // Clear message input on chat change
   };
 
   const toggleSidebar = () => {
@@ -338,23 +263,6 @@ const ChatWindow = () => {
     const data = JSON.parse(event.data);
     setMessageList((prevMessages) => [...prevMessages, data.message]);
   };
-
-
-  // const loadImageAndConvertToBase64 = async (url) => {
-  //   const response = await fetch(url);
-  //   const blob = await response.blob();
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(blob);
-  //   return new Promise((resolve, reject) => {
-  //     reader.onloadend = () => {
-  //       const base64String = reader.result; // Extract base64 data
-  //       console.log("the string", base64String);
-  //       resolve(base64String);
-  //       console.log("The  string after resolve",base64String);
-  //     };
-  //     reader.onerror = reject;
-  //   });
-  // };
 
 
   const loadImageAndConvertToBase64 = async (url) => {
@@ -385,20 +293,8 @@ const ChatWindow = () => {
     if (e) {
       e.preventDefault();
     }
-    // let logoBase64;
-    // const formData = new FormData();
-    // formData.append("image", img1);
-
-    // const logoURL = "/static/media/Get-fit-Logo.ef91b83babfa52916f17.png";
     try {
-      // logoBase64 = await loadImageAndConvertToBase64(logoURL);
-      // console.log("the form logoBase64 : ", logoBase64);
-      // Use the base64 string here
 
-      // if (messageInput.length < 1 && messageType !== "text") {
-      //   console.log("the state is being updated")
-      //   setMessageInput((prevInput) => `Message from ${user?.first_name}`);
-      // }
       const sendingMessage =
       messageInput.length < 1 &&
       messageType !== "text" ?
@@ -430,53 +326,6 @@ const ChatWindow = () => {
     }
   };
 
-  // const handleSendMessage = (e) => {
-  //   if (e) {
-  //     e.preventDefault();
-  //   }
-  //   console.log("the forwarded message is being sent");
-  //   // const formData = new FormData();
-  //   // formData.append("image", selectedImage);
-  //   // console.log("the form data : ", formData);
-  //   console.log("the input message is ; ", messageInput)
-  //   if (messageInput) {
-  //     console.log("the input message is ; ", ws.current, ws.current.readyState === WebSocket.OPEN)
-  //     const accessToken = Cookies.get("accessToken") || null;
-
-  //     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-  //       console.log("sending message")
-  //       // Read the image file asynchronously
-  //       const reader = new FileReader();
-  //       reader.onload = (event) => {
-  //         // Append the image data to the FormData object
-  //         // formData.append("image", event.target.result);
-
-  //         // Create the message object with image data
-  //         const message = {
-  //           message: messageInput,
-  //           access_token: accessToken,
-  //           receiver: currentChat?.user_id,
-  //           type: "text",
-  //           // data: formData,
-  //         };
-  //         console.log("The message being forwarded is  : ", message);
-  //         // Send the message over WebSocket
-  //         ws.current.send(JSON.stringify(message));
-  //       };
-
-  //       // Read the image as a data URL
-  //       // reader.readAsDataURL(selectedImage);
-
-  //       setMessageInput("");
-  //     } else {
-  //       console.error("WebSocket connection not yet established");
-  //     }
-  //   }
-  // };
-
-
-
-  
   // console.log("The image data is ", imageData)
   // console.log("This is the room", room)
   // console.log("The user is ", user)
@@ -686,25 +535,7 @@ const ChatWindow = () => {
           )}
         </div>
 
-        {/* Chat input */}
-        {/* <div>
-          <input type="file" onChange={handleFileChange} />
-          <button className="bg-red-500 hover:opacity-35 text-white font-bold" onClick={handleSendMessage}>Send Image</button>
-        </div> */}
         <div className="flex-row">
-          {/* <input
-            type="file"
-            ref={imageInputRef}
-            onChange={handleImageInputChange}
-            accept="image/*"
-            className="hidden"
-          />
-          <button
-            onClick={handleImageUpload}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full mr-2"
-          >
-            Upload Image
-          </button> */}
           <form
             className="p-4 border-t flex items-center"
             onSubmit={handleSendMessage}

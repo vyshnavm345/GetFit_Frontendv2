@@ -147,6 +147,28 @@ export const getprogrammeslist = createAsyncThunk(
 );
 
 
+export const sendPublishRequest = createAsyncThunk(
+  "trainer/sendPublishRequest",
+  async (id, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/fitness_programs/publishRequest/${id}/`
+      );
+
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        console.log("the error : ", response.data);
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (error) {
+      console.log("the catched error : ", error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 
 // create new programme
 export const createProgramme = createAsyncThunk(
@@ -551,6 +573,18 @@ const trainerSlice = createSlice({
         state.allTrainers = action.payload;
       })
       .addCase(getAllTrainers.rejected, (state, action) => {
+        state.loading = false;
+        console.log("error after rejecting : ", action.payload.message);
+        toast.error(action.payload.message);
+      })
+      .addCase(sendPublishRequest.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(sendPublishRequest.fulfilled, (state, action) => {
+        state.loading = false;
+        toast.success(action.payload.message);
+      })
+      .addCase(sendPublishRequest.rejected, (state, action) => {
         state.loading = false;
         console.log("error after rejecting : ", action.payload.message);
         toast.error(action.payload.message);
