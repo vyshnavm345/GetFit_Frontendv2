@@ -4,7 +4,9 @@ import axiosInstance from "utils/axiosInstance";
 import axios from "axios";
 import { API_URL } from "config";
 
-const baseURL = "http://127.0.0.1:8000";
+// const baseURL = "http://127.0.0.1:8000";
+const baseURL = API_URL
+
 
 const initialState = {
   loading: false,

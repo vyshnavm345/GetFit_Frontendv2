@@ -12,6 +12,8 @@ import { MdOnlinePrediction } from "react-icons/md";
 import ForwardMessageModal from "components/chat/ForwardMessageModal";
 import { RiImageAddFill } from "react-icons/ri";
 import ImageChatBubble from "components/chat/ImageChatBubble";
+import ImagePreview from "components/chat/ImagePreview";
+import img1 from "assets/heroImage.jpg"
 
 const ChatWindow = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -45,9 +47,9 @@ const ChatWindow = () => {
   const messageListRef = useRef(null);
   const [imageData, setImageData] = useState(null);
   const imageInputRef = useRef(null);
+  const [choosenImage, setChoosenImage] = useState(null)
 
   useEffect(() => {
-    console.log("the online users are", onlineusers);
   }, [onlineusers]);
   useEffect(() => {
     if (pendingNotifications) {
@@ -71,7 +73,6 @@ const ChatWindow = () => {
     if (messageListRef.current) {
       messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
     }
-    // console.log("The message list is : ",messageList)
   }, [loading, messageList]);
 
   useEffect(() => {
@@ -135,7 +136,6 @@ const ChatWindow = () => {
   
 
   useEffect(() => {
-    console.log("a new room is being connected")
     if (room) {
       console.log("the newly connected room is ", room)
       ws.current = new WebSocket(`${WS_link}/ws/chat/${room}/`);
@@ -146,13 +146,13 @@ const ChatWindow = () => {
         ws.current.close();
       };
     }
-    console.log('success fully set up the connection to forward messages')
   }, [room]);
 
 
 
   const handleImageInputChange = (event) => {
     const file = event.target.files[0];
+    setChoosenImage(event.target.files[0])
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -188,23 +188,32 @@ const ChatWindow = () => {
 
 
   const handleForwardMessage = async (selectedUsers) => {
-    console.log("the forwardingMessage.image : ", forwardingMessage.image);
-
+    console.log(
+      "the forwardingMessage : ",
+      forwardingMessage
+    );
+    console.log("the selected users", selectedUsers)
     // Retrieve access token
     const accessToken = Cookies.get("accessToken") || null;
-
+    let logoBase64 = null;
     // Load image and convert to base64
-    const logoBase64 = await loadImageAndConvertToBase64(
-      forwardingMessage.image
-    );
-    console.log("the logoBase64 : ", logoBase64);
+    if (forwardingMessage.image !== undefined){
+
+      logoBase64 = await loadImageAndConvertToBase64(
+        forwardingMessage.image
+      );
+      console.log("image converted to base64 : ", logoBase64 )
+    }
 
     // Reusable function to send the message
     const sendMessage = (userId) => {
+      console.log("message is being forwarded")
       const newRoom = makeNewNewRoom(user?.id, userId);
       const ws = new WebSocket(`${WS_link}/ws/chat/${newRoom}/`);
-
+      console.log("websocket : ", ws);
       ws.onopen = () => {
+        console.log("websocket opened");
+
         const message = {
           message: forwardingMessage.message,
           access_token: accessToken, // Include access token
@@ -212,10 +221,12 @@ const ChatWindow = () => {
           type: forwardingMessage.type,
           data: logoBase64,
         };
+        console.log("constructed message is :", message);
 
-        console.log("The message being forwarded is:", message);
         ws.send(JSON.stringify(message));
+        console.log("message sent")
         ws.close(); // The WebSocket closes after sending the message
+        console.log("websocket closed")
       };
 
       ws.onerror = (error) => {
@@ -277,9 +288,7 @@ const ChatWindow = () => {
       reader.onloadend = () => {
         const base64StringWithPrefix = reader.result; // Complete base64 string with MIME type prefix
         const base64String = base64StringWithPrefix.split(",")[1];
-        console.log("the string", base64String);
         resolve(base64String);
-        console.log("The string after resolve", base64String);
       };
       reader.onerror = reject;
     });
@@ -289,7 +298,7 @@ const ChatWindow = () => {
   
 
   const handleSendMessage = async (e) => {
-    console.log("the forwarded message is being sent");
+    setChoosenImage(null);
     if (e) {
       e.preventDefault();
     }
@@ -299,10 +308,8 @@ const ChatWindow = () => {
       messageInput.length < 1 &&
       messageType !== "text" ?
       `Message from ${user?.first_name}` : messageInput;
-      console.log("The sending message : ", sendingMessage);
       if (messageInput || sendingMessage) {
         const accessToken = Cookies.get("accessToken") || null; // Retrieve access token
-        console.log("The access token", accessToken);
         // Ensure ws.current is not null and connection is open before sending
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
           const message = {
@@ -313,7 +320,6 @@ const ChatWindow = () => {
             data: imageData ? imageData : null,
             // data: formData,
           };
-          console.log("The message being forwarded is  : ", message);
           ws.current.send(JSON.stringify(message));
           setMessageInput("");
         } else {
@@ -368,7 +374,11 @@ const ChatWindow = () => {
               {/* <ImageAndDetails user={user} /> */}
               <img
                 className="rounded-full h-10 w-10 object-cover"
-                src={`${API_URL}${user?.profile_picture}`}
+                src={
+                  user?.profile_picture
+                    ? `${API_URL}${user?.profile_picture}`
+                    : logo
+                }
                 alt="avatar"
               />
               <span className="capitalize ml-3">
@@ -393,10 +403,6 @@ const ChatWindow = () => {
                     `${conver.first_name}   ${conver.last_name}`}
                 </h1>
 
-                {/* {console.log(
-                  "The groupedNotifications are : ",
-                  groupedNotifications
-                )} */}
                 {groupedNotifications &&
                   groupedNotifications[`${conver?.id}`] && (
                     <span className="flex font-bold text-xs items-center justify-center h-6 w-6 rounded-full bg-green-500 text-white transition-opacity transform hover:scale-105">
@@ -406,9 +412,6 @@ const ChatWindow = () => {
               </div>
               <div className="flex  justify-end  ">
                 <span>
-                  {/* {console.log("The online users are : ", onlineusers)}
-                  {console.log("The conver id : ", conver?.id)}
-                  {console.log("The contacts id : ", contacts)} */}
                   {onlineusers.includes(conver?.id) ||
                   onlineusers.includes(conver?.user_id) ? (
                     <div className="flex">
@@ -445,7 +448,12 @@ const ChatWindow = () => {
           <h2 className="flex items-center text-lg font-semibold align-middle">
             <img
               className="rounded-full h-10 w-10 mr-2 object-cover"
-              src={`${API_URL}${currentChat?.profile_picture}`}
+              // src={`${API_URL}${currentChat?.profile_picture}`}
+              src={
+                user?.profile_picture
+                  ? `${API_URL}${user?.profile_picture}`
+                  : logo
+              }
               alt="Avatar"
             />
             <div>
@@ -482,95 +490,113 @@ const ChatWindow = () => {
         </div>
 
         {/* Chat messages */}
-        <div
-          ref={messageListRef}
-          className="flex-1 overflow-y-auto p-4 no-scrollbar"
-        >
-          {loading ? (
-            <p className="flex mt-72 justify-center object-center text-white">
-              Loading messages...
-            </p>
-          ) : (
-            <>
-              {messageList.map((message) => (
-                <div
-                  key={message?.id}
-                  className={` flex mb-4 ${
-                    message?.sender === user?.id
-                      ? "justify-end mr-2"
-                      : " justify-start ml-2"
-                  }`}
-                >
-                  <div>
-                    {message?.type === 'image' ? (
-                    <ImageChatBubble user={user}
-                      username={
-                        message.sender === user?.id
-                          ? user.first_name
-                          : currentChat?.username || currentChat?.first_name
-                      }
-                      key={message?.id}
-                      message={message}
-                      trainer_id={user?.id}
-                      profile_picture={currentChat?.profile_picture}
-                      onForward={handleOnForward}/>) : (<ChatBubble
-                      user={user}
-                      username={
-                        message.sender === user?.id
-                          ? user.first_name
-                          : currentChat?.username || currentChat?.first_name
-                      }
-                      key={message?.id}
-                      message={message}
-                      trainer_id={user?.id}
-                      profile_picture={currentChat?.profile_picture}
-                      onForward={handleOnForward}
-                      // onDelete={onDelete}
-                    />)}
-                    
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-
-        <div className="flex-row">
-          <form
-            className="p-4 border-t flex items-center"
-            onSubmit={handleSendMessage}
-          >
-            <div>
-              <input
-                type="file"
-                ref={imageInputRef}
-                onChange={handleImageInputChange}
-                accept="image/*"
-                className="hidden"
-              />
-              <button
-                onClick={handleImageUpload}
-                type="button"
-                className="bg-green-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full flex items-center justify-center mr-2"
-              >
-                <RiImageAddFill />
-              </button>
-            </div>
-            <input
-              type="text"
-              className="flex-1 border rounded-full px-4 py-2 mr-4"
-              placeholder="Type your message..."
-              value={messageInput}
-              onChange={(e) => setMessageInput(e.target.value)}
-            />
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full"
+        {contacts.length <= 0 ? (
+          <div className="text-white flex justify-center items-center font-bold text-5xl">
+            {user?.is_trainer
+              ? "You have no followers for your programs"
+              : "You have no conacts Join a Program and connect with Trainers"}
+          </div>
+        ) : (
+          <>
+            <div
+              ref={messageListRef}
+              className="flex-1 overflow-y-auto p-4 no-scrollbar"
             >
-              <IoSend />
-            </button>
-          </form>
-        </div>
+              {loading ? (
+                <p className="flex mt-72 justify-center object-center text-white">
+                  Loading messages...
+                </p>
+              ) : (
+                <>
+                  {messageList.map((message) => (
+                    <div
+                      key={message?.id}
+                      className={` flex mb-4 ${
+                        message?.sender === user?.id
+                          ? "justify-end mr-2"
+                          : " justify-start ml-2"
+                      }`}
+                    >
+                      <div>
+                        {message?.type === "image" ? (
+                          <ImageChatBubble
+                            user={user}
+                            username={
+                              message.sender === user?.id
+                                ? user.first_name
+                                : currentChat?.username ||
+                                  currentChat?.first_name
+                            }
+                            key={message?.id}
+                            message={message}
+                            trainer_id={user?.id}
+                            profile_picture={currentChat?.profile_picture}
+                            onForward={handleOnForward}
+                          />
+                        ) : (
+                          <ChatBubble
+                            user={user}
+                            username={
+                              message.sender === user?.id
+                                ? user.first_name
+                                : currentChat?.username ||
+                                  currentChat?.first_name
+                            }
+                            key={message?.id}
+                            message={message}
+                            trainer_id={user?.id}
+                            profile_picture={currentChat?.profile_picture}
+                            onForward={handleOnForward}
+                            // onDelete={onDelete}
+                          />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+            <div>
+              <ImagePreview image={choosenImage} />
+            </div>
+            <div className="flex-row">
+              <form
+                className="p-4 border-t flex items-center"
+                onSubmit={handleSendMessage}
+              >
+                <div>
+                  <input
+                    type="file"
+                    ref={imageInputRef}
+                    onChange={handleImageInputChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    onClick={handleImageUpload}
+                    type="button"
+                    className="bg-green-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full flex items-center justify-center mr-2"
+                  >
+                    <RiImageAddFill />
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  className="flex-1 border rounded-full px-4 py-2 mr-4"
+                  placeholder="Type your message..."
+                  value={messageInput}
+                  onChange={(e) => setMessageInput(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full"
+                >
+                  <IoSend />
+                </button>
+              </form>
+            </div>
+          </>
+        )}
       </div>
       {isForwardModalOpen && (
         <ForwardMessageModal

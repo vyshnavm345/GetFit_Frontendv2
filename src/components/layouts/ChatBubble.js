@@ -25,8 +25,13 @@ const ChatBubble = ({
     // Pass the necessary information to the parent component
     const forwardData = {
       message: message.message,
+      type: 'text',
     };
     // Call a function passed from the parent component to handle the forward action
+    console.log(
+      "the data being forwarded form the  image bubble is :",
+      forwardData
+    );
     onForward(forwardData);
   };
 

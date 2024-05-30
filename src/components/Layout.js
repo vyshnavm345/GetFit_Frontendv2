@@ -17,7 +17,7 @@ const Layout = ({ title, content, children }) => (
     </Helmet>
     <ScrollToTop />
     <Navbar3 />
-    <ToastContainer />
+    {/* <ToastContainer /> */}
     {/* <NotificationComponent> */}
     <div className=" scrollbar-hide">{children}</div>
     {/* </NotificationComponent> */}

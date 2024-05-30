@@ -6,7 +6,7 @@ import { getTotalUsers } from "features/user";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const AdminCards = ({ totalUsers, totalTrainers, totalPrograms }) => {
+const AdminCards = () => {
   
   const {totalUserCount} = useSelector(state=>state.user)
   const {totalTrainerCount} = useSelector(state=>state.trainer)

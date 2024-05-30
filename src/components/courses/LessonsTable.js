@@ -19,10 +19,9 @@ const LessonsTable = ({ programmeId, setShowLessons }) => {
       setIsModalOpen(true);
     };
     useEffect(() => {
-        if(isModalOpen){
 
           dispatch(getLessonsList(programmeId));
-        }
+        
         // console.log("in useeffect", lessonsList);
     }, [isModalOpen]);
     

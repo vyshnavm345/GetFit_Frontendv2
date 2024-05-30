@@ -46,7 +46,7 @@ const Sidebar = () => (
         className="hover:bg-gray-700 p-2 rounded"
         activeClassName="bg-gray-700"
       >
-        Notifications
+        Pending Approvals
       </NavLink>
     </nav>
   </div>

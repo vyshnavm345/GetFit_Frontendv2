@@ -5,11 +5,9 @@ import ActiveUsers from './ActiveUsers';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLoggedInUsers } from 'features/user';
 import { getLoggedInTrainers } from 'features/trainer';
+import {getUser} from 'features/user'
 
 const Dashboard = () => {
-  const totalUsers = 5000;
-  const totalTrainers = 200;
-  const totalPrograms = 150;
   const dispatch = useDispatch();
   const {loggedInUsers} = useSelector(state=>state.user)
   const { onlineTrainers } = useSelector((state) => state.trainer);
@@ -18,15 +16,12 @@ const Dashboard = () => {
     dispatch(getLoggedInUsers());
     dispatch(getLoggedInTrainers());
   }, [])
-  console.log("the trainers online are : ", onlineTrainers);
 
+  console.log("the trainers online are : ", onlineTrainers);
+  
   return (
     <div className="h-full">
-      <AdminCards
-        totalUsers={totalUsers}
-        totalTrainers={totalTrainers}
-        totalPrograms={totalPrograms}
-      />
+      <AdminCards />
       <TopProgramsTable />
       <div className="w-full flex">
         <ActiveUsers title="Online Trainers" users={onlineTrainers} />

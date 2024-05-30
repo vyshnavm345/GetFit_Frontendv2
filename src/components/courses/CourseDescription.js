@@ -166,12 +166,12 @@ const CourseDescription = () => {
           {isAuthenticated && subscribed ? (
             <div className="w-full mx-5 ">
               <h3 className="text-xl mb font-bold text-[#f5f5f5] mb-4 mt-4">
-                Course Content
+                Start Learning
               </h3>
               <ul className="list-disc text-blue-200 pl-4  ">
-                {lessonsList?.map((lesson) => (
+                {/* {lessonsList?.map((lesson, index) => (
                   <li
-                    key={lesson.id}
+                    key={index}
                     onClick={() => {
                       navigate(`/programLesson/${programme?.id}`);
                     }}
@@ -179,7 +179,16 @@ const CourseDescription = () => {
                   >
                     <button>{lesson?.title}</button>
                   </li>
-                ))}
+                ))} */}
+                <li
+                  key={programme?.id}
+                  onClick={() => {
+                    navigate(`/programLesson/${programme?.id}`);
+                  }}
+                  className="text-base border rounded p-4 w-[97%] my-2 "
+                >
+                  <button>Go to Lessons</button>
+                </li>
               </ul>
             </div>
           ) : (

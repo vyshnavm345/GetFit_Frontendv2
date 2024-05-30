@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { API_URL } from "config";
 import logo from "assets/Get-fit-Logo.png";
 import { useNavigate } from "react-router-dom";
+// import "./progress.css";
+import "../../progress.css"
+import ProgressCircle from "components/ProgressCircle";
 
 const FollowedPrograms = () => {
   const navigate = useNavigate();
@@ -23,17 +26,16 @@ const FollowedPrograms = () => {
             onClick={() => {
               navigate(`/programDetails/${program.id}`);
             }}
-            className="bg-gray-200 rounded-md overflow-hidden relative cursor-pointer"
+            className=" bg-gray-200 rounded-md overflow-hidden relative cursor-pointer"
           >
             <img
               src={
-                program?.cover_image
-                  ? `${API_URL}${program.cover_image}`
-                  : logo
+                program?.cover_image ? `${API_URL}${program.cover_image}` : logo
               }
               alt="Card"
               className="w-full h-48 object-cover"
             />
+            <ProgressCircle percentage={43}/>
             <div className="absolute top-0 left-0 w-full h-full hover:bg-black/50 opacity-0 hover:opacity-100 text-white inset-0 flex flex-col justify-center items-center">
               <h2 className="text-white text-xl font-bold mb-2">
                 {program.program_name}

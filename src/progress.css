@@ -1,0 +1,44 @@
+.radial-progress {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.radial-progress::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: white;
+}
+
+
+
+/* .radial-progress {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: conic-gradient(
+    green 0% 34%, 
+    red 34% 100%
+  );
+  position: relative;
+}
+
+.radial-progress::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: white;
+} */
+
+
+

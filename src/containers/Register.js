@@ -43,7 +43,7 @@ const Register = () => {
   if (isAuthenticated) {
     return <Navigate to="/userProfile" />;
   }
-
+ 
   return (
     <Layout title="Auth Site | Register" content="Register Page">
       <div className="w-full h-screen">

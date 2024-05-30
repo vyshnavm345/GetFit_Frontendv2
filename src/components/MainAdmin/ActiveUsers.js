@@ -18,27 +18,30 @@ const ActiveUsers = ({title, users}) => {
               ))}
             </tr>
           </thead>
-          <tbody>
-            {users?.map((user, index) => (
-              <tr key={index} className="text-left border-b">
-                <td className="px-4 py-3">
-                  <div className="flex items-center">
-                    {" "}
-                    <img
-                      className="h-10 w-10  object-cover rounded-full mr-2"
-                      src={`${API_URL}${user?.profile_picture}`}
-                      alt="img"
-                    />{" "}
-                    <p>
-                      {user?.first_name} {user?.last_name}
-                    </p>
-                  </div>
-                </td>
-                <td className="px-4 py-3">user-{user?.id}</td>
-                <td className="px-4 py-3"> {user?.email}</td>
-              </tr>
-            ))}
-          </tbody>
+          {users ? (
+            <tbody>
+              {users?.map((user, index) => (
+                <tr key={index} className="text-left border-b">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center">
+                      <img
+                        className="h-10 w-10  object-cover rounded-full mr-2"
+                        src={`${API_URL}${user?.profile_picture}`}
+                        alt="img"
+                      />
+                      <p>
+                        {user?.first_name} {user?.last_name}
+                      </p>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">user-{user?.id}</td>
+                  <td className="px-4 py-3"> {user?.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <p>Loading users...</p>
+          )}
         </table>
       </div>
     );

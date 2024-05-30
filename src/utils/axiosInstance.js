@@ -2,10 +2,11 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import { API_URL } from "config";
 
 
-
-const baseURL = "http://127.0.0.1:8000";
+const baseURL = API_URL;
+// const baseURL = "http://127.0.0.1:8000";
 
 // const getAccessToken = () => Cookies.get("accessToken") || null;
 let authToken = Cookies.get("accessToken") || null;

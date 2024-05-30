@@ -6,7 +6,8 @@ const initialState = {
   loading: false,
   error: null,
   message: null,
-  lessonsList:null
+  lessonsList:null,
+  progress:[]
 };
 
 // add a new lesson
@@ -51,6 +52,51 @@ export const getLessonsList = createAsyncThunk(
     try {
       const response = await axiosInstance.get(
         `/api/fitness_programs/getLessons/${id}/`
+      );
+
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        console.log("the error : ", response.data);
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (error) {
+      console.log("the catched error : ", error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// update the current programs lessons completed
+export const updatelessonProgress = createAsyncThunk(
+  "lessons/updatelessonProgress",
+  async ({program, lesson}, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/fitness_programs/updatelessonProgress/${lesson}/`
+      );
+
+      if (response.status === 201) {
+        return response.data;
+      } else {
+        console.log("the error : ", response.data);
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (error) {
+      console.log("the catched error : ", error.response.data);
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
+// update the current programs lessons completed
+export const getlessonProgress = createAsyncThunk(
+  "lessons/getlessonProgress",
+  async ({ user_id, program_id }, thunkAPI) => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/fitness_programs/getlessonProgress/${user_id}/${program_id}/`
       );
 
       if (response.status === 200) {
@@ -117,16 +163,39 @@ const lessonSlice = createSlice({
       })
       .addCase(getLessonsList.rejected, (state, action) => {
         state.loading = false;
-        toast.error("error");
+        // toast.error("error");
+        console.error(action.payload);
       })
       .addCase(deleteLesson.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(deleteLesson.fulfilled, (state, action) => {
         state.loading = false;
-        toast.success(action.payload.message)
+        toast.success(action.payload.message);
       })
       .addCase(deleteLesson.rejected, (state, action) => {
+        state.loading = false;
+        toast.error("error");
+      })
+      .addCase(updatelessonProgress.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(updatelessonProgress.fulfilled, (state, action) => {
+        state.loading = false;
+        toast.success(action.payload.message);
+      })
+      .addCase(updatelessonProgress.rejected, (state, action) => {
+        state.loading = false;
+        toast.error("error");
+      })
+      .addCase(getlessonProgress.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getlessonProgress.fulfilled, (state, action) => {
+        state.loading = false;
+        state.progressStatus = [...state.progressStatus, action.payload];
+      })
+      .addCase(getlessonProgress.rejected, (state, action) => {
         state.loading = false;
         toast.error("error");
       });

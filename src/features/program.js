@@ -10,7 +10,8 @@ const initialState = {
   message: null,
   followedPrograms: null,
   totalProgramCount: null,
-  popularPrograms:[]
+  popularPrograms:[],
+  lessonProgress:null,
 };
 
 
@@ -126,6 +127,28 @@ export const getPopularPrograms = createAsyncThunk(
 );
 
 
+// get lesson progress with user id
+export const getlessonProgress = createAsyncThunk(
+  "user/getlessonProgress",
+  async ({user_id, lesson_id}, thunkAPI) => {
+    try {
+      console.log("getting program count");
+      const response = await axios.get(
+        `${API_URL}/api/fitness_programs/getlessonProgress/${user_id}/${lesson_id}/`
+      );
+      if (response.status === 200) {
+        console.log("Lesson Progress : ", response.data);
+        return response.data;
+      } else {
+        return thunkAPI.rejectWithValue(response.data);
+      }
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response.data);
+    }
+  }
+);
+
+
 
 const programSlice = createSlice({
   name: "program",
@@ -143,7 +166,8 @@ const programSlice = createSlice({
       })
       .addCase(getFollowedPrograms.rejected, (state, action) => {
         state.loading = false;
-        toast.error(action.payload);
+        // toast.error(action.payload);
+        console.error(action.payload);
       })
       .addCase(followedProgram.pending, (state, action) => {
         state.loading = true;
@@ -186,6 +210,17 @@ const programSlice = createSlice({
         state.popularPrograms = action.payload;
       })
       .addCase(getPopularPrograms.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(action.payload?.message);
+      })
+      .addCase(getlessonProgress.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getlessonProgress.fulfilled, (state, action) => {
+        state.loading = false;
+        state.lessonProgress = action.payload;
+      })
+      .addCase(getlessonProgress.rejected, (state, action) => {
         state.loading = false;
         toast.error(action.payload?.message);
       });

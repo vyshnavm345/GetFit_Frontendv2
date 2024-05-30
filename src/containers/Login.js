@@ -47,7 +47,7 @@ const Login = () => {
     if (isAuthenticated && user){
       dispatch(initializeWebSocket(user.id))
       if (user.is_superuser){
-        navigate("/admin/dashboard");
+        navigate("/");
       } else {
         navigate("/trainerDashboard");
       }

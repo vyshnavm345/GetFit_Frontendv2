@@ -9,7 +9,9 @@ import { getTrainer } from "./trainer";
 import { closeWebSocket } from "./webSocketSlice";
 
 
-const REAL_API_URL = 'http://127.0.0.1:8000'
+const REAL_API_URL = API_URL
+// const REAL_API_URL = 'http://127.0.0.1:8000'
+
 const initialState = {
     isAuthenticated: false,
     user: null,
@@ -45,7 +47,7 @@ export const register = createAsyncThunk('user/register', async ({first_name, la
         // console.log("this is the response ", data)
 
         if (res.status === 201){
-            toast.success(data.message);
+          console.log("registered data : ", data.message)
             return data;
         }
         else{
@@ -186,13 +188,14 @@ const getUser = createAsyncThunk(
 
 			if (response.status === 200){
         toast.success("Successfully Logged In");
-                if (response.data.is_trainer){
-                    const { dispatch } = thunkAPI;
-                    dispatch(getTrainer());
-                } 
-                return response.data;
+          if (response.data.is_trainer){
+              const { dispatch } = thunkAPI;
+              dispatch(getTrainer());
+          } 
+          return response.data;
 			} else if(response.status === 403){
         console.log("the response is : ", response.data)
+        toast.error("You have been temporarly blocked by the user")
         // toast.error(response.data.error)
         
       }
@@ -235,6 +238,7 @@ export const login = createAsyncThunk('user/login', async ({email, password}, th
         if (res.status === 200) {
           Cookies.set("accessToken", data.access, { expires: 7 });
           Cookies.set("refreshToken", data.refresh, { expires: 7 });
+          console.log("tokens received", data.access);
 
           const { dispatch } = thunkAPI;
 
@@ -359,9 +363,11 @@ const userSlice = createSlice({
           .addCase(register.pending, (state, action) => {
             state.loading = true;
           })
-          .addCase(register.fulfilled, (state) => {
+          .addCase(register.fulfilled, (state, action) => {
             state.loading = false;
             state.registered = true;
+            toast.success(action.payload.message)
+            // state.message= action.payload.message
           })
           .addCase(register.rejected, (state, action) => {
             state.loading = false;
@@ -389,7 +395,7 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = action.payload.error;
             state.isAuthenticated = false;
-            toast.error("You have been temporarly blocked by the admin");
+            toast.error(action.payload.message);
             
             
             // toast.error("request rejected");

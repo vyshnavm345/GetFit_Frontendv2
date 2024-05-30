@@ -22,31 +22,32 @@ const ForwardMessageModal = ({ onClose, onForward, users }) => {
     };
 
     return (
-        <Modal title="Select Users to Forward Message" onClose={onClose}>
+      <Modal title="Select Users to Forward Message" onClose={onClose}>
         <div className="flex flex-col space-y-4">
-            {users.map((user) => (
+          {users.map((user) => (
             <div key={user.id} className="flex items-center">
-                <input
+              <input
                 type="checkbox"
-                checked={selectedUsers.includes(user.id)}
-                onChange={() => handleUserSelection(user.id)}
+                checked={selectedUsers.includes(user.user_id)}
+                onChange={() => handleUserSelection(user.user_id)}
                 className="mr-2"
-                />
-                <label>
+              />
+              <label>
+                {console.log("The user is : ", user)}
                 {user.username || `${user.first_name} ${user.last_name}`}
-                </label>
+              </label>
             </div>
-            ))}
+          ))}
         </div>
         <div className="flex justify-end mt-4">
-            <button
+          <button
             onClick={handleForwardMessage}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-full"
-            >
+          >
             Send
-            </button>
+          </button>
         </div>
-        </Modal>
+      </Modal>
     );
 };
 

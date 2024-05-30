@@ -24,6 +24,8 @@ const ImageChatBubble = ({
         image : message.image || message.data,
         type: message.type
       };
+      console.log("the reference message is : ", message)
+      console.log("the data being forwarded form the  image bubble is :", forwardData)
       // Call a function passed from the parent component to handle the forward action
       onForward(forwardData);
     };
