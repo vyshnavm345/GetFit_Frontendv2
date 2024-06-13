@@ -85,7 +85,7 @@ const TrainerData = ({id}) => {
                   </button>
                 </li>
               </ul>
-              <div className="mt-4 overflow-auto flex-grow">
+              <div className="mt-4 overflow-auto h-72">
                 {activeTab === "about" && (
                   <div id="tab-1" className="tab-content">
                     <h5 className="text-lg font-semibold">
