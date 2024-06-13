@@ -17,6 +17,14 @@ const TrainerData = ({id}) => {
       setActiveTab(tab);
     };
 
+    const truncateText = (text, wordLimit) => {
+      const words = text.split(" ");
+      if (words.length > wordLimit) {
+        return words.slice(0, wordLimit).join(" ") + "...";
+      }
+      return text;
+    };
+
     return (
       <div className=" px-2 container mx-auto py-16 md:px-10 ">
         <div className="mt-8 lg:flex grid grid-cols-1 lg:grid-cols-2 gap-5">
@@ -33,7 +41,10 @@ const TrainerData = ({id}) => {
               <span>Specialized In: {selectedTrainer?.specalized}</span>
             </h1>
             {console.log("The selected trainer data is : ", selectedTrainer)}
-            <p className="text-lg mb-4 text-white">{selectedTrainer?.about}</p>
+            <p className="text-lg mb-4 text-white">
+              {/* {selectedTrainer?.about} */}
+              {truncateText(selectedTrainer?.about, 20)}
+            </p>
             <div className="bg-gray-200 py-4 px-6 rounded-lg">
               <ul className="flex space-x-3">
                 <li>
