@@ -43,7 +43,8 @@ const TrainerData = ({id}) => {
             {console.log("The selected trainer data is : ", selectedTrainer)}
             <p className="text-lg mb-4 text-white">
               {/* {selectedTrainer?.about} */}
-              {truncateText(selectedTrainer?.about, 20)}
+              
+              {selectedTrainer && truncateText(selectedTrainer?.about, 20)}
             </p>
             <div className="bg-gray-200 py-4 px-6 rounded-lg">
               <ul className="flex space-x-3">
