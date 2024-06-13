@@ -25,7 +25,7 @@ const CourseMainContent = ({ lesson, isOpen }) => {
       >
         {" "}
         {/* Added responsive class for main content */}
-        <VideoPage video_url={lesson?.video_url} />
+        <VideoPage lesson={lesson} video_url={lesson?.video_url} />
         {console.log("This is the url inside parent", lesson?.video_url)}
         <div
           className="bg-cover bg-no-repeat bg-center w-full aspect-w-16 aspect-h-9 rounded-lg mb-8"

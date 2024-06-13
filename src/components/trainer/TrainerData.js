@@ -28,7 +28,7 @@ const TrainerData = ({id}) => {
     return (
       <div className=" px-2 container mx-auto py-16 md:px-10 ">
         <div className="mt-8 lg:flex grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <div className="h-96 lg:h-auto w-[1200px] md:w-[39rem]">
+          <div className="h-96 lg:h-auto w-full md:w-[39rem]">
             <img
               src={`${API_URL}${selectedTrainer?.profile_picture}`}
               className="object-cover w-full h-full"
