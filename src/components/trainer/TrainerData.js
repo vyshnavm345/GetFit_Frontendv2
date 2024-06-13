@@ -37,12 +37,6 @@ const TrainerData = ({id}) => {
             <div className="bg-gray-200 py-4 px-6 rounded-lg">
               <ul className="flex space-x-3">
                 <li>
-                  {/* <a
-                    className="py-2 px-4 bg-white text-primary font-semibold rounded-full transition duration-300 hover:bg-primary hover:text-white"
-                    href="#tab-1"
-                  >
-                    About
-                  </a> */}
                   <button
                     className={`py-2 px-4 font-semibold rounded-full transition duration-300 ${
                       activeTab === "about"
@@ -55,12 +49,6 @@ const TrainerData = ({id}) => {
                   </button>
                 </li>
                 <li>
-                  {/* <a
-                    className="py-2 px-4 bg-white text-primary font-semibold rounded-full transition duration-300 hover:bg-primary hover:text-white"
-                    href="#tab-2"
-                  >
-                    Mission
-                  </a> */}
                   <button
                     className={`py-2 px-4 font-semibold rounded-full transition duration-300 ${
                       activeTab === "mission"
@@ -69,16 +57,10 @@ const TrainerData = ({id}) => {
                     }`}
                     onClick={() => handleTabClick("mission")}
                   >
-                    Mission
+                    Credentials
                   </button>
                 </li>
                 <li>
-                  {/* <a
-                    className="py-2 px-4 bg-white text-primary font-semibold rounded-full transition duration-300 hover:bg-primary hover:text-white"
-                    href="#tab-3"
-                  >
-                    Vision
-                  </a> */}
                   <button
                     className={`py-2 px-4 font-semibold rounded-full transition duration-300 ${
                       activeTab === "vision"
@@ -91,50 +73,7 @@ const TrainerData = ({id}) => {
                   </button>
                 </li>
               </ul>
-              {/* <div className="mt-4">
-                <div id="tab-1" className="tab-content">
-                  <h5 className="text-lg font-semibold">
-                    Transforming Lives through Fitness
-                  </h5>
-                  <p className="text-lg mb-4">{selectedTrainer?.about}</p>
-                  <a
-                    className="btn btn-primary py-2 px-4 rounded-lg transition duration-300 hover:bg-primary hover:text-white"
-                    href="#"
-                  >
-                    Read More
-                  </a>
-                </div>
-                <div id="tab-2" className="tab-content hidden">
-                  <h5 className="text-lg font-semibold">Lorem Ipsum 2</h5>
-                  <p className="text-lg mb-4">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard
-                  </p>
-                  <a
-                    className="btn btn-primary py-2 px-4 rounded-lg transition duration-300 hover:bg-primary hover:text-white"
-                    href="#"
-                  >
-                    Read More
-                  </a>
-                </div>
-                <div id="tab-3" className="tab-content hidden">
-                  <h5 className="text-lg font-semibold">Lorem Ipsum 3</h5>
-                  <p className="text-lg mb-4">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s, when an unknown
-                    printer took a
-                  </p>
-                  <a
-                    className="btn btn-primary py-2 px-4 rounded-lg transition duration-300 hover:bg-primary hover:text-white"
-                    href="#"
-                  >
-                    Read More
-                  </a>
-                </div>
-              </div> */}
-              <div className="mt-4">
+              <div className="mt-4 overflow-auto h-72">
                 {activeTab === "about" && (
                   <div id="tab-1" className="tab-content">
                     <h5 className="text-lg font-semibold">
@@ -151,11 +90,11 @@ const TrainerData = ({id}) => {
                 )}
                 {activeTab === "mission" && (
                   <div id="tab-2" className="tab-content">
-                    <h5 className="text-lg font-semibold">Our Mission</h5>
+                    <h5 className="text-lg font-semibold">My Credentials</h5>
                     <p className="text-lg mb-4">
-                      Our mission is to inspire and empower individuals to
-                      achieve their best selves through dedicated training,
-                      personalized nutrition, and holistic wellness strategies.
+                      Specalized in {selectedTrainer?.specalized}
+                      <br />
+                      Certified in {selectedTrainer?.certifications}
                     </p>
                     <a
                       className="btn btn-primary py-2 px-4 rounded-lg transition duration-300 hover:bg-primary hover:text-white"
