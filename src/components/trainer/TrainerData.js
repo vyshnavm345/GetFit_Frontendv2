@@ -63,9 +63,6 @@ const TrainerData = ({id}) => {
                   <h5 className="text-lg font-semibold">Lorem Ipsum 1</h5>
                   <p className="text-lg mb-4">
                     {selectedTrainer?.about}
-                    {selectedTrainer?.about}
-                    {selectedTrainer?.about}
-                    {selectedTrainer?.about}
                   </p>
                   <a
                     className="btn btn-primary py-2 px-4 rounded-lg transition duration-300 hover:bg-primary hover:text-white"

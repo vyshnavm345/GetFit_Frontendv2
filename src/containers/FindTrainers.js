@@ -102,7 +102,7 @@ const FindTrainers = () => {
                       <div className="category-badge flex-1  h-4 w-4 m rounded-full m-1 bg-purple-100">
                         <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
                       </div>
-                      <div className="category-title flex-4 font-blackops-one text-sm">
+                      <div className="category-title flex-4  font-blackops-one text-md">
                         Specalized in {trainer?.specalized}
                       </div>
                     </div>
@@ -110,8 +110,8 @@ const FindTrainers = () => {
                       {trainer?.username}
                     </div>
 
-                    <div className="summary-post text-base text-justify">
-                      {truncateText(trainer?.about, 50)}
+                    <div className="summary-post text-sm text-justify">
+                      {truncateText(trainer?.about, 20)}
                       <button className="bg-blue-100 text-blue-500 mt-4 block rounded p-2 text-sm ">
                         <span className="">View</span>
                       </button>
