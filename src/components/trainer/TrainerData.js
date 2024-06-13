@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getTrainerByID } from 'features/trainer';
 import { API_URL } from 'config';
+import { useState } from 'react';
 
 const TrainerData = ({id}) => {
     const { selectedTrainer } = useSelector((state) => state.trainer);
