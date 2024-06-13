@@ -17,6 +17,14 @@ const FindTrainers = () => {
     dispatch(getTrainerList());
   }, [])
 
+  const truncateText = (text, wordLimit) => {
+    const words = text.split(" ");
+    if (words.length > wordLimit) {
+      return words.slice(0, wordLimit).join(" ") + "...";
+    }
+    return text;
+  };
+
     return (
       <Layout>
         <div className="w-full h-[650px] text-white no-scrollbar ">
@@ -60,11 +68,8 @@ const FindTrainers = () => {
                 Trainers
               </h1>
               <p className=" text-white lg:w-1/2 w-full leading-relaxed text-base">
-                J'aime bien partager mes connaissances et des recherche
-                intéressantes, pour le faire j'ai mis en place un blog
-                personnel. Nous abordons plusieurs sujets intéressants et je
-                donne quelques astuces et conseils aux jeunes développeurs pour
-                mieux s'en sortir.
+                These are some of the Best trainer in the world. Choose a
+                trainer that can help you with you fitness goals.
               </p>
             </div>
             <div className="flex ml-2 flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
@@ -87,8 +92,7 @@ const FindTrainers = () => {
                             : img1
                         })`,
                     }}
-                  >
-                  </div>
+                  ></div>
 
                   <div
                     className="w-70 bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5"
@@ -107,7 +111,7 @@ const FindTrainers = () => {
                     </div>
 
                     <div className="summary-post text-base text-justify">
-                      {trainer?.about}
+                      {truncateText(trainer?.about, 50)}
                       <button className="bg-blue-100 text-blue-500 mt-4 block rounded p-2 text-sm ">
                         <span className="">View</span>
                       </button>
