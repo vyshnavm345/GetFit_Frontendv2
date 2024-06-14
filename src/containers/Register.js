@@ -41,7 +41,7 @@ const Register = () => {
   if (registered) return <Navigate to='/login' />;
 
   if (isAuthenticated) {
-    return <Navigate to="/userProfile" />;
+    return <Navigate to="/TrainerDashboard" />;
   }
  
   return (

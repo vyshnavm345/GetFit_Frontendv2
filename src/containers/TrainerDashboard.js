@@ -50,7 +50,7 @@ const TrainerDashboard = () => {
       title="Get-Fit | Trainer Dashboard"
       content="Trainer Dashboard Page"
     >
-      <div className="md:mx-10 py-10">
+      <div className="md:mx-10 py-10 h-screen">
         <div className="my-10">
           {!isOpen && (
             <IoIosArrowDropright

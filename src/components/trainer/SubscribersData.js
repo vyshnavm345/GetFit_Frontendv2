@@ -58,8 +58,8 @@ const SubscribersData = () => {
     return (
       <>
         {getUniqueProgramNames().map((programName) => (
-          <div key={programName}>
-            <h2 className="text-white text-3xl font-mono">{programName}</h2>
+          <div key={programName} className="h-screen">
+            <h2 className="text-black/90 text-3xl font-bold">{programName}</h2>
             <SubscribersTable
               key={programName}
               programName={programName}

@@ -11,7 +11,7 @@ const initialState = {
   followedPrograms: null,
   totalProgramCount: null,
   popularPrograms:[],
-  lessonProgress:null,
+  lessonProgress:[],
 };
 
 

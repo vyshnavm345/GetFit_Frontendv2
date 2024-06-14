@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import { API_URL } from "config";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserById, resetSelectedUser } from "features/user";
+import { useNavigate } from "react-router-dom";
 
 const ProfileCard = ({ user_id }) => {
     const dispatch = useDispatch();
     const { selectedUser } = useSelector((state) => state.user);
+    const navigate = useNavigate();
     useEffect(() => {
       dispatch(getUserById(user_id));
       return (()=>{
@@ -33,12 +35,16 @@ const ProfileCard = ({ user_id }) => {
       </div>
       <div className="px-4 py-3 bg-gray-400 text-center">
         <button className="text-white p-2 px-6 bg-red-500 focus:outline-none m-2">
-          Block
+          cancel
         </button>
-        <button className="text-white p-2 px-6 bg-blue-700 focus:outline-none m-2">
+        <button
+          onClick={() => {
+            navigate("/chat");
+          }}
+          className="text-white p-2 px-6 bg-blue-700 focus:outline-none m-2"
+        >
           Chat
         </button>
-        
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import React from 'react'
 import backgroundImage from "assets/Homepage/Los_Angeles_Elite_Shoot_-_Day_1_-_Tawna_McCoy_Davey_Fisher_-_9-1801x1201-075bc60_837d421a-f1b0-4481-986f-99f66f5b36c2.webp";
 import trainerBanner from 'assets/Homepage/Trainer-Banner-a.webp'
+import { Link } from 'react-router-dom';
 
 const HomeTopArea = () => {
   return (
@@ -22,9 +23,11 @@ const HomeTopArea = () => {
             Select from a dozen online training programs designed to kickstart
             your transformation.
           </p>
-          <button className="font-extrabold text-sm px-4 w-48 py-2 bg-white text-black  rounded-md hover:bg-white/80">
-            START A PROGRAM
-          </button>
+          <Link to="/programmes">
+            <button className="font-extrabold text-sm px-4 w-48 py-2 bg-white text-black  rounded-md hover:bg-white/80">
+              START A PROGRAM
+            </button>
+          </Link>
         </div>
       </div>
       <div
@@ -47,9 +50,11 @@ const HomeTopArea = () => {
             gym. Use one of our Training programs below to kick start your
             routine and transform your life.
           </p>
+          <Link to="/findTrainer">
           <button className=" font-bold text-lg px-4 w-48 py-2 bg-black text-white rounded-md hover:bg-black/80">
-            Get started
+            Find a Trainer
           </button>
+          </Link>
         </div>
       </div>
       {/* <div className="container mx-auto py-16 px-4">

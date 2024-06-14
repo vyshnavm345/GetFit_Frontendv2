@@ -3,7 +3,7 @@
 import img1 from '../assets/heroImage.jpg'
 // import img4 from '../assets/hero_Image1.jpg'
 import img4 from 'assets/hero_image2.jpg'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Main = () => {
     // const [image, setImage] = useState([])
@@ -21,7 +21,9 @@ const Main = () => {
           <p className='text-sm md:text-md md:mt-2 lg:text-3xl'>Join our community of like-minded individuals and achieve your <br/> fitness goals with the help of expert trainers.</p>
           <div className='my-4 ml-1 md:ml-16'>
             <button onClick={()=>(navigate('/register'))} className='border rounded bg-gray-300 text-black border-gray-300 py-2 px-5'>Get Started</button>
+            <Link to="/findTrainer">
             <button className='border rounded text-white border-gray-300 py-2 px-5 ml-4 '>Learn More</button>
+            </Link>
           </div>
         
         </div>

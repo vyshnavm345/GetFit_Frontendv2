@@ -5,22 +5,32 @@ import Layout from "components/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { getLessonsList } from "features/lessons";
 import { useParams } from "react-router-dom";
-
+import { IoIosArrowDropleft, IoIosArrowDropright } from "react-icons/io";
 
 function ProgramLesson() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
-  const {lessonsList} =useSelector(state=> state.lesson);
+  const { lessonsList } = useSelector((state) => state.lesson);
   const { id } = useParams();
   const [lessonNo, setLessonNo] = useState(0);
+  const [nextLesson, setNextLesson] = useState(1);
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getLessonsList(id));
-  }, [])
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (lessonsList.length < lessonNo + 1) {
+      setNextLesson(null);
+    } else {
+      setNextLesson(lessonNo + 1);
+    }
+    window.scrollTo(0, 0);
+  }, [lessonNo, lessonsList]);
 
   return (
     <Layout>
-      <div className="pt-2 h-screen mx-[3%]">
+      <div className="pt-2 mx-[1%]">
         {/* Drawer */}
         <LessonSidebar
           lessonsList={lessonsList}
@@ -33,25 +43,21 @@ function ProgramLesson() {
             onClick={() => {
               setIsOpen(!isOpen);
             }}
-            className="text-blue-900 fixed"
+            className="text-blue-900 fixed mt-20"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M10 14l2.722 2.722L13 17.24V14zM4 14h16v-2l-3-3m0 0l-4 4m3.278 0l3.278-3.278L20 10.722z"
-              />
-            </svg>
+            <IoIosArrowDropright className="text-3xl font-bold text-black hover:opacity-55" />
           </button>
         )}
-        <CourseMainContent lesson={lessonsList[lessonNo]} isOpen={isOpen} />
+        {nextLesson ? (
+          <CourseMainContent
+            lesson={lessonsList[lessonNo]}
+            isOpen={isOpen}
+            setLessonNo={setLessonNo}
+            nextLesson={nextLesson}
+          />
+        ) : (
+          <div className="h-screen text-black text-4xl mt-10 py-20 ml-72 font-bold">Congrats You Finished all the Lessons In this Program</div>
+        )}
       </div>
     </Layout>
   );

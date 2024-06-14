@@ -6,8 +6,8 @@ const initialState = {
   loading: false,
   error: null,
   message: null,
-  lessonsList:null,
-  progress:[]
+  lessonsList: null,
+  progressStatus: [],
 };
 
 // add a new lesson
@@ -186,14 +186,36 @@ const lessonSlice = createSlice({
       })
       .addCase(updatelessonProgress.rejected, (state, action) => {
         state.loading = false;
-        toast.error("error");
+        toast.info(action.payload.message);
       })
       .addCase(getlessonProgress.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(getlessonProgress.fulfilled, (state, action) => {
         state.loading = false;
-        state.progressStatus = [...state.progressStatus, action.payload];
+        const newProgress = action.payload;
+
+        // Check if the new progress already exists in progressStatus
+        const existingIndex = state.progressStatus.findIndex(
+          (progress) =>
+            progress.user === newProgress.user &&
+            progress.program === newProgress.program
+        );
+
+        if (existingIndex !== -1) {
+          // Update existing progress_percentage
+          state.progressStatus[existingIndex].progress_percentage =
+            newProgress.progress_percentage;
+        } else {
+          // Add new progress entry if not already present
+          state.progressStatus = [...state.progressStatus, newProgress];
+        }
+
+        console.log("The progressStatus is : ", state.progressStatus);
+        console.log(
+          "Updated progressStatus:",
+          JSON.parse(JSON.stringify(state.progressStatus))
+        );
       })
       .addCase(getlessonProgress.rejected, (state, action) => {
         state.loading = false;

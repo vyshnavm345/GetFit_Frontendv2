@@ -4,7 +4,7 @@ const TestimonialCard = ({ image, title, text }) => {
   return (
     <div className="flex bg-white  rounded-lg border shadow-lg  mb-1 mt-0">
       <img
-        className="card-image p-3 object-cover h-32"
+        className="card-image p-3 object-cover h-32 w-28"
         src={image}
         alt={title}
       />
