@@ -2,7 +2,7 @@ import React from 'react'
 
 const TestimonialCard = ({ image, title, text }) => {
   return (
-    <div className="flex bg-blue-200  rounded-lg border shadow-lg border-blue-300 mb-1 mt-0">
+    <div className="flex bg-white  rounded-lg border shadow-lg  mb-1 mt-0">
       <img
         className="card-image p-3 object-cover h-32"
         src={image}

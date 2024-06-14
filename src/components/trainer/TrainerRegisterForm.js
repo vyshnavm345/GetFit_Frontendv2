@@ -68,7 +68,7 @@ const TrainerRegisterForm = () => {
      };
 
   return (
-    <div className="mx-1  md:mx-20 py-20 bg-black/25 text-white">
+    <div className="mx-1  md:mx-20 py-20 bg-black/85 text-white">
       <form
         onSubmit={onSubmit}
         className="px-5 py-5"

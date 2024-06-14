@@ -45,7 +45,7 @@ const DashboardPage = () => {
 
   return (
     <Layout title="Auth Site | Dashboard" content="Dashboard Page">
-      <div className="mx-2">
+      <div className="mx-0 bg-black/95">
         <h2 className="">{console.log("testing inside thr dashboard", trainersProgrammes)}</h2>
         <TrainerData id={id}/>
         <div></div>

@@ -29,7 +29,7 @@ const FindTrainers = () => {
       <Layout>
         <div className="w-full h-[650px] text-white no-scrollbar ">
           <div className="w-full h-full">
-            <div className="absolute w-full h-[650px] bg-gradient-to-r from-black xl:h-[712px]"></div>
+            <div className="absolute w-full h-[650px] bg-gradient-to-r from-black xl:h-[650px]"></div>
             <img className="w-full h-full object-cover" src={img1} alt="" />
             <div className="absolute  top-[325px] transform -translate-y-1/2 sm:left-[400px] md:left-[500px] lg:left-[650px] xl:left-[750px] lg:object-contain self-end">
               <img
@@ -62,12 +62,12 @@ const FindTrainers = () => {
           </div>
         </div>
         <section className="blog text-gray-700 body-font">
-          <div className="container px-5 py-24 mx-auto">
-            <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-              <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-white">
+          <div className="container px-5 py-2 mx-auto">
+            <div className="flex flex-wrap w-full mb-12 flex-col items-center text-center">
+              <h1 className="sm:text-3xl text-4xl font-extrabold title-font mb-2 text-black">
                 Trainers
               </h1>
-              <p className=" text-white lg:w-1/2 w-full leading-relaxed text-base">
+              <p className=" text-black/80 lg:w-1/2 w-full leading-relaxed font-semibold text-base">
                 These are some of the Best trainer in the world. Choose a
                 trainer that can help you with you fitness goals.
               </p>

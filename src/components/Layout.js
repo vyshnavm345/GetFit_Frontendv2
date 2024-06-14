@@ -6,6 +6,7 @@ import Footer from './Footer';
 import ScrollToTop from './ScrollToTop';
 import NotificationComponent from './layouts/NotificationComponent';
 import { ToastContainer } from 'react-toastify';
+import HomeFooter from './HomeFooter';
 // import NotificationComponent from './layouts/notificationComponent';
 
 
@@ -21,8 +22,8 @@ const Layout = ({ title, content, children }) => (
     {/* <NotificationComponent> */}
     <div className=" scrollbar-hide">{children}</div>
     {/* </NotificationComponent> */}
-    
-    <Footer />
+    <HomeFooter />
+    {/* <Footer /> */}
   </>
 );
 

@@ -89,7 +89,7 @@ export default function Modal() {
     return (
       <>
         <button
-          className="bg-blue-400 border-2 text-white active:bg-blue-400 hover:text-[#111] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-white hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5"
+          className="bg-black/90 border-2 text-white active:bg-black/80 hover:text-[#111] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:bg-white hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 hover:-translate-y-0.5"
           type="button"
           onClick={() => setShowModal(true)}
         >
@@ -105,7 +105,7 @@ export default function Modal() {
                   <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
                     <h3 className="text-3xl font-semibold">Update Profile</h3>
                     <button
-                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-85 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                       onClick={() => setShowModal(false)}
                     >
                       <h6 className="text-black">×</h6>

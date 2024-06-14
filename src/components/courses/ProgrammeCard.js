@@ -29,12 +29,12 @@ const ProgrammeCard = ({ programme }) => {
             {programme?.program_name}
           </p>
         </div>
-        <div className="service-link">
-          <a href="#" className="text-[#F5F5F5]">
+        <div className="service-link py-2">
+          <a href="#" className="text-[#F5F5F5] font-bold">
             {programme?.program_name}
           </a>
         </div>
-        <div className="my-4 text-blue-200">Lorem Ipsum is simply dummy</div>
+        {/* <div className="my-4 text-blue-200">Lorem Ipsum is simply dummy</div> */}
       </div>
     </>
   );

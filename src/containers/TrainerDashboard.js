@@ -54,7 +54,7 @@ const TrainerDashboard = () => {
         <div className="my-10">
           {!isOpen && (
             <IoIosArrowDropright
-              className="text-white mt-3 ml-1 text-4xl"
+              className="text-black/65 mt-3 ml-1 text-4xl"
               onClick={() => {
                 setIsOpen(!isOpen);
               }}

@@ -13,7 +13,7 @@ import ForwardMessageModal from "components/chat/ForwardMessageModal";
 import { RiImageAddFill } from "react-icons/ri";
 import ImageChatBubble from "components/chat/ImageChatBubble";
 import ImagePreview from "components/chat/ImagePreview";
-import img1 from "assets/heroImage.jpg"
+import backgroundImage from "assets/Homepage/chat_background.jpg"
 
 const ChatWindow = () => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -341,7 +341,13 @@ const ChatWindow = () => {
   // console.log("The contacts ", contacts);
   // console.log("The currentchat ", currentChat);
   return (
-    <div className="flex h-screen">
+    <div
+      className="flex h-screen "
+      style={{
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "contain",
+      }}
+    >
       {/* Sidebar */}
       <div
         className={`

@@ -14,16 +14,25 @@ import { API_URL } from "config";
 const ProgrammesPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { programmes } = useSelector((state) => state.trainer);
     
     useEffect(() => {
       dispatch(getprogrammeslist());
     }, []);
-    const { programmes } = useSelector((state) => state.trainer);
+
+    const truncateText = (text, wordLimit) => {
+      const words = text.split(" ");
+      if (words.length > wordLimit) {
+        return words.slice(0, wordLimit).join(" ") + "...";
+      }
+      return text;
+    };
+
   return (
     <Layout>
       <div className="w-full h-[650px] text-white ">
         <div className="w-full h-full">
-          <div className="absolute w-full h-[650px] bg-gradient-to-r from-black xl:h-[712px]"></div>
+          <div className="absolute w-full h-[650px] bg-gradient-to-r from-black xl:h-[650px]"></div>
           <img className="w-full h-full object-cover" src={img1} alt="" />
           <div className="absolute  top-[325px] transform -translate-y-1/2 sm:left-[400px] md:left-[500px] lg:left-[650px] xl:left-[750px] lg:object-contain self-end">
             <img
@@ -32,7 +41,7 @@ const ProgrammesPage = () => {
               className="w-full h-[650px] self-end md:self-end object-cover"
             />
           </div>
-          <div className="top-[45%] absolute w-full sm:top-[28%] md:top-[30%] p-4 md:p-4 md:pl-10 lg:pl-10 ">
+          <div className=" top-[45%] absolute w-full sm:top-[28%] md:top-[30%] p-4 md:p-4 md:pl-10 lg:pl-10 ">
             <h1 className="text-3xl md:text-5xl lg:text-7xl font-blackops-one">
               Find Programmes that
               <br /> Suits Your Goals
@@ -55,18 +64,16 @@ const ProgrammesPage = () => {
         </div>
       </div>
       <section className="blog text-gray-700 body-font">
-        <div className="container px-5 py-24 mx-auto">
+        <div className="container px-5 py-10 mx-auto">
           <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-white">
-              {" "}
+            <h1 className="sm:text-3xl text-2xl  title-font mb-2 text-black font-bold">
               Programmes
             </h1>
-            <p className=" text-white lg:w-1/2 w-full leading-relaxed text-base">
-              J'aime bien partager mes connaissances et des recherche
-              intéressantes, pour le faire j'ai mis en place un blog personnel.
-              Nous abordons plusieurs sujets intéressants et je donne quelques
-              astuces et conseils aux jeunes développeurs pour mieux s'en
-              sortir.
+            <p className=" text-black/80 lg:w-1/2 w-full leading-relaxed text-base">
+              Below are a list of our most popular training programs created to
+              help you achieve the best version of yourself. Built by world
+              renowned trainers - these programs are used daily by thousands of
+              others looking to take their fitness to the next level.
             </p>
           </div>
           <div className="flex flex-wrap sm:-m-4 -mx-4 -mb-10 -mt-4 ">
@@ -96,7 +103,7 @@ const ProgrammesPage = () => {
                           <div className="h-2 w-2 rounded-full m-1 bg-purple-500 "></div>
                         </div>
                         <div className="flex flex-row justify-between">
-                          <div className="category-title flex-4 font-blackops-one text-sm mr-20">
+                          <div className="category-title flex-4 font-blackops-one text-sm mr-2 mb-1">
                             {programme?.program_name}
                           </div>
                           <div className="title-post  text-xs font-bold ml-4 mt-1">
@@ -118,7 +125,7 @@ const ProgrammesPage = () => {
                       </div> */}
 
                       <div className="summary-post text-base text-justify">
-                        {programme?.description}
+                        {truncateText(programme?.description, 20)}
                         <br />
                         <button className="bg-blue-100 text-blue-500 mb-2 mt-4 block rounded p-2 text-sm ">
                           <span className="">View</span>

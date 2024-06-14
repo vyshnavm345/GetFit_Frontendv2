@@ -22,7 +22,7 @@ const CoursesSectionLevels = ({ title, rowId, programs }) => {
   };
 
   return (
-    <div className="m-1 mt-5 bg-slate-700 py-5 px-2 ">
+    <div className="m-1 mt-5 bg-white/10 py-5 px-2 ">
       <div className="text-center mx-auto pb-5">
         <h5 className="text-white font-blackops-one text-3xl">{title}</h5>
         <h1 className="text-[#F5F5F5] font-mono ">

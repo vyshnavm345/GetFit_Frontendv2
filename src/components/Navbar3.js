@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../assets/Get-fit-Logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "features/user";
-import { toast } from "react-toastify";
 import { API_URL } from "config";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.user);
-
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [prevScrollPos, setPrevScrollPos] = useState(window.scrollY);
+  const [visible, setVisible] = useState(true);
+
+  const handleScroll = () => {
+    const currentScrollPos = window.scrollY;
+    const isVisible = prevScrollPos > currentScrollPos;
+    setPrevScrollPos(currentScrollPos);
+    setVisible(isVisible);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [prevScrollPos, visible]);
 
   const authLinks = (
     <div className="md:ml-auto md:mr-4 flex items-center cursor-pointer ">
@@ -22,13 +36,14 @@ const Navbar = () => {
       >
         Logout
       </button>
-      
+
       <button
         onClick={() => {
-          if(user?.is_superuser){
+          if (user?.is_superuser) {
             navigate("/admin/dashboard");
-          } else {navigate("/TrainerDashboard");}
-          
+          } else {
+            navigate("/TrainerDashboard");
+          }
         }}
       >
         <div className="text-white font-mono flex ml-4 items-center ">
@@ -46,9 +61,9 @@ const Navbar = () => {
               fill="currentColor"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               />
             </svg>
           )}
@@ -57,21 +72,21 @@ const Navbar = () => {
       </button>
     </div>
   );
+
   const guestLinks = (
     <div className="md:ml-auto md:mr-4">
       <Link to="/login">
-        <button className="bg-white rounded-md mr-2 text-sm px-4 py-1 hover:bg-cyan-400">
+        <button className="bg-white font-bold rounded-md mr-2 text-sm px-4 py-1 hover:bg-black hover:text-white">
           Log In
         </button>
       </Link>
       <Link to="/register">
-        <button className="bg-white rounded-md text-sm px-4 py-1  hover:bg-cyan-400">
+        <button className="bg-white font-bold rounded-md text-sm px-4 py-1 hover:bg-black hover:text-white">
           Sign Up
         </button>
       </Link>
     </div>
   );
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleDropdownChange = (e) => {
     const selectedOption = e.target.value;
@@ -82,27 +97,30 @@ const Navbar = () => {
     } else if (selectedOption === "option3") {
       navigate("/chat");
     } else if (selectedOption === "option4") {
-      // toast.success('Navigated to test success')
-      if (user?.is_superuser){
-        // navigate("/admin/dashboard");
+      if (user?.is_superuser) {
+        navigate("/admin/dashboard");
       } else {
-      } navigate("/dashboard");
-        
+        navigate("/dashboard");
+      }
     }
   };
 
   return (
-    <div className=" sticky top-0 z-[100] w-full ">
+    <div
+      className={`sticky top-0 z-[100] w-full transition-all duration-300 ease-in-out ${
+        visible ? "opacity-100" : "opacity-0"
+      }`}
+    >
       <div className="flex h-20 flex-col md:flex-row items-start justify-between p-2 md:p-6 w-full z-[100] absolute bg-gray-600 bg-opacity-40">
         <Link to="/">
           <div className="flex items-center">
             <img className="h-12 md:h-10 mr-2" src={logo} alt="logo" />
-            <h1 className="text-white text-4xl cursor-pointer font-blackops-one  md:block hidden">
+            <h1 className="text-white text-4xl cursor-pointer font-blackops-one md:block hidden">
               GET-FIT
             </h1>
           </div>
         </Link>
-        <div className=" flex flex-auto items-end md:hidden">
+        <div className="flex flex-auto items-end md:hidden">
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="text-white focus:outline-none"
@@ -125,15 +143,15 @@ const Navbar = () => {
         </div>
 
         <div
-          className={` flex flex-col md:flex md:flex-row md:flex-grow  items-center ${
+          className={`flex flex-col md:flex md:flex-row md:flex-grow items-center ${
             isOpen ? "block" : "hidden"
           }`}
         >
           <div className="flex ml-auto flex-col md:flex-row ">
             <Link to="/findTrainer">
-              <div className="h-10 mt-5 md:mt-0 md:h-0 ">
+              <div className="h-10 mt-5 md:mt-0 md:h-0">
                 <a
-                  className=" hover:text-cyan-400 md:text-base mx-5 mb-[15px]  font-mono text-white"
+                  className="hover:text-black md:text-base mx-5 mb-[15px] font-bold text-white"
                   href="!#"
                 >
                   Find trainers
@@ -141,9 +159,9 @@ const Navbar = () => {
               </div>
             </Link>
             <Link to="/programmes">
-              <div className=" h-10 mt-5 md:mt-0 md:h-0">
+              <div className="h-10 mt-5 md:mt-0 md:h-0">
                 <a
-                  className=" hover:text-cyan-400 mx-5 font-mono text-white"
+                  className="hover:text-black mx-5 font-bold text-white"
                   href="!#"
                 >
                   Programms
@@ -152,9 +170,9 @@ const Navbar = () => {
             </Link>
             {!user?.is_trainer && !user?.is_superuser && (
               <Link to="/trainerRegister">
-                <div className=" h-10 mt-5 md:mt-0 md:h-0">
+                <div className="h-10 mt-5 md:mt-0 md:h-0">
                   <a
-                    className=" hover:text-cyan-400 mx-5 font-mono text-white"
+                    className="hover:text-black mx-5 font-bold text-white"
                     href="!#"
                   >
                     Join as Trainer
@@ -163,27 +181,27 @@ const Navbar = () => {
               </Link>
             )}
 
-            <div className=" h-10 mt-5 md:mt-0 md:h-0">
+            <div className="h-10 mt-5 md:mt-0 md:h-0">
               <div className="relative inline-block">
                 <select
-                  className="mx-5 font-mono  hover:text-cyan-400  text-white bg-transparent border-none"
+                  className="mx-5 font-bold hover:text-black text-white bg-transparent border-none"
                   defaultValue=""
                   onChange={handleDropdownChange}
                 >
-                  <option className=" text-white" value="" disabled hidden>
+                  <option className="text-white" value="" disabled hidden>
                     Community
                   </option>
-                  <option className=" text-black" value="option1">
+                  <option className="text-black" value="option1">
                     Login
                   </option>
-                  <option className=" text-black" value="option2">
+                  <option className="text-black" value="option2">
                     Sign up
                   </option>
-                  <option className=" text-black" value="option3">
+                  <option className="text-black" value="option3">
                     Chat
                   </option>
-                  <option className=" text-black" value="option4">
-                    dashboard
+                  <option className="text-black" value="option4">
+                    Dashboard
                   </option>
                 </select>
                 <svg

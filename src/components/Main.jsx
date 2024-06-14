@@ -11,7 +11,7 @@ const Main = () => {
   return (
     <div className='w-full h-[650px] text-white '>
         <div className='w-full h-full '>
-          <div className='absolute w-full h-[650px] bg-gradient-to-r from-black xl:h-[712px]'></div>
+          <div className='absolute w-full h-[650px] bg-gradient-to-r from-black xl:h-[650px]'></div>
         <img className='w-full h-full object-cover ' src={img1} alt="" />
         <div className='absolute  top-[325px] transform -translate-y-1/2 sm:left-[400px] md:left-[500px] lg:left-[650px] xl:left-[750px] lg:object-contain self-end'>
           <img src={img4} alt="hero" className='w-full h-[650px] self-end md:self-end object-cover' />

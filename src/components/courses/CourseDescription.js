@@ -80,15 +80,16 @@ const CourseDescription = () => {
 
   return (
     <>
-      <div className=" lg:mx-32 mx-auto px-4  py-24 bg-black/15 ">
+      <div className=" lg:mx-0 mx-auto px-0  py-20 bg-black/85 ">
         <div
           className="bg-cover bg-no-repeat bg-center h-64 lg:h-[450px] object-cover rounded mb-8"
           style={{
             backgroundImage: `url(${API_URL}${programme?.cover_image})`,
+          
           }}
         ></div>
 
-        <div className="mx-5 flex justify-between items-center pb-8">
+        <div className="mx-5  flex justify-between items-center pb-8">
           <div className="flex flex-col">
             <h1 className="text-3xl font-blackops-one text-[#f5f5f5]">
               {programme?.program_name}
@@ -134,7 +135,7 @@ const CourseDescription = () => {
             <h3 className="text-xl font-bold text-[#f5f5f5] mb-4">
               Program Description
             </h3>
-            <p className="text-blue-200 text-base px-4 py-2   rounded-md">
+            <p className="text-white text-base px-4 py-2   rounded-md">
               {programme?.description}
             </p>
           </div>
@@ -143,7 +144,7 @@ const CourseDescription = () => {
               <h3 className="text-xl font-bold text-[#f5f5f5] mb-4">
                 Key Benifits
               </h3>
-              <ul className="list-disc pl-4 text-blue-200">
+              <ul className="list-disc pl-4 text-white">
                 <li className=" text-base">Improve Your Stamina</li>
                 <li className=" text-base">Get Better Health</li>
                 <li className=" text-base">Achieve Peace of Mind</li>
@@ -155,7 +156,7 @@ const CourseDescription = () => {
               <h3 className="text-xl  font-bold text-[#f5f5f5] mb-4">
                 User Testimonial
               </h3>
-              <div className="bg-blue-100 no-scrollbar w-[97%]  lg:w-[540px] h-48 overflow-y-auto border rounded-md shadow-md my-4">
+              <div className="bg-white no-scrollbar w-[97%]  lg:w-[540px] h-48 overflow-y-auto border rounded-md shadow-md my-4">
                 <CardList />
               </div>
             </div>
@@ -168,7 +169,7 @@ const CourseDescription = () => {
               <h3 className="text-xl mb font-bold text-[#f5f5f5] mb-4 mt-4">
                 Start Learning
               </h3>
-              <ul className="list-disc text-blue-200 pl-4  ">
+              <ul className="list-disc text-white pl-4  ">
                 {/* {lessonsList?.map((lesson, index) => (
                   <li
                     key={index}
