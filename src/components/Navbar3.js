@@ -74,7 +74,7 @@ const Navbar = () => {
   );
 
   const guestLinks = (
-    <div className="md:ml-auto md:mr-4">
+    <div className="ml-0 md:ml-auto md:mr-4">
       <Link to="/login">
         <button className="bg-white font-bold rounded-md mr-2 text-sm px-4 py-1 hover:bg-black hover:text-white">
           Log In
@@ -144,10 +144,10 @@ const Navbar = () => {
 
         <div
           className={`flex flex-col md:flex md:flex-row md:flex-grow items-center ${
-            isOpen ? "block" : "hidden"
+            isOpen ? "block bg-black/75 w-60 " : "hidden"
           }`}
         >
-          <div className="flex ml-auto flex-col md:flex-row ">
+          <div className="flex w-full flex-col md:flex-row justify-center items-center">
             <Link to="/findTrainer">
               <div className="h-10 mt-5 md:mt-0 md:h-0">
                 <a
@@ -222,7 +222,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="h-10 mt-5 md:mt-0 md:h-0 ml-auto">
+          <div className="flex h-10 mt-5 md:mt-0 md:h-0">
             {isAuthenticated ? authLinks : guestLinks}
           </div>
         </div>

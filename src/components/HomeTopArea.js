@@ -17,7 +17,7 @@ const HomeTopArea = () => {
           backgroundPosition: "center",
         }}
       >
-        <div className="flex flex-col space-y-4 text-left mb-16 ml-16 text-white">
+        <div className=" flex flex-col space-y-4 text-left mb-16 ml-16 text-white">
           <h1 className="text-3xl font-bold">Transformation Starts Here</h1>
           <p className="text-xl">
             Select from a dozen online training programs designed to kickstart

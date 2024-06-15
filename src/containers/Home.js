@@ -7,7 +7,7 @@ import HomeMidArea from 'components/HomeMidArea'
 import HomeTopArea from 'components/HomeTopArea'
 const Home = () => {
   return (
-    <Layout title='Auth Site | Home' content='Home Page'>
+    <Layout title='Get-Fit | Home' content='Home Page'>
       <Main/>
         <HomeTopArea />
         <HomeMidArea />
