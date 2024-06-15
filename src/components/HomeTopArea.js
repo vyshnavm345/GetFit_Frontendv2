@@ -31,7 +31,7 @@ const HomeTopArea = () => {
         </div>
       </div>
       <div
-        className="my-10 h-[550px] object- flex flex-col justify-end items-start bg-cover bg-no-repeat"
+        className="my-10 h-[550px] object- flex flex-col md:justify-end items-start bg-cover bg-no-repeat"
         style={{
           backgroundImage: `linear-gradient(180deg, rgba(24, 24, 24, 0), rgba(0, 0, 0, 0.1) 30%, rgba(0, 0, 0, 0.3) 100%), url(${trainerBanner})`,
           backgroundSize: "cover", // Add this line
@@ -41,10 +41,10 @@ const HomeTopArea = () => {
         <div className="flex flex-col space-y-4 text-left mb-52 ml-16 text-white">
           <h1 className="text-3xl font-bold">Transformation Starts Here</h1>
           <p className="text-xl">
-            It's Time To{" "}
+            It's Time To
             <strong className="font-extrabold text-4xl">
-              Transform Your Life{" "}
-            </strong>{" "}
+              Transform Your Life
+            </strong>
             At Kaged, we're more than just powders and pills. We're about
             helping you become the best version of yourself in and out of the
             gym. Use one of our Training programs below to kick start your

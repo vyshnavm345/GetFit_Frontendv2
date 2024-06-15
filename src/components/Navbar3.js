@@ -74,14 +74,14 @@ const Navbar = () => {
   );
 
   const guestLinks = (
-    <div className="ml-0 md:ml-auto md:mr-4">
+    <div className="flex flex-row ml-0 md:ml-auto md:mr-4">
       <Link to="/login">
-        <button className="bg-white font-bold rounded-md mr-2 text-sm px-4 py-1 hover:bg-black hover:text-white">
+        <button className="bg-white font-bold w-24 rounded-md mr-2 text-sm px-4 py-1 hover:bg-black hover:text-white">
           Log In
         </button>
       </Link>
       <Link to="/register">
-        <button className="bg-white font-bold rounded-md text-sm px-4 py-1 hover:bg-black hover:text-white">
+        <button className="bg-white font-bold w-24 rounded-md text-sm px-4 py-1 hover:bg-black hover:text-white">
           Sign Up
         </button>
       </Link>
