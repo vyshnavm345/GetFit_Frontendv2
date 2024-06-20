@@ -1,4 +1,4 @@
-import { verifyEmail } from "features/user";
+import { logout, verifyEmail } from "features/user";
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,7 @@ const VerifyEmail = () => {
 
     useEffect(() => {
       // Dispatch the verifyEmail action with token as payload
+      dispatch(logout());
       dispatch(verifyEmail({ token }));
       navigate("/login");
     }, []);
