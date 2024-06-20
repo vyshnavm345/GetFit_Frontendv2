@@ -40,7 +40,8 @@ export default function Modal() {
     }, [user])
     const { first_name, last_name, email, password } = formData;
     const {height, weight, body_fat, age, phone} = formData.profile
-
+    
+    
 
     const onChange = (e) => {
         if (e.target.name.startsWith("profile.")) {
@@ -57,6 +58,20 @@ export default function Modal() {
             // Update top-level property
             setFormData({ ...formData, [e.target.name]: e.target.value });
         }
+    };
+
+    const validateAge = (e) => {
+      const value = parseInt(e.target.value, 10);
+      if (isNaN(value) || value < 12 || value > 120) {
+        alert("Please enter an age between 12 and 120.");
+        setFormData((prevData) => ({
+          ...prevData,
+          profile: {
+            ...prevData.profile,
+            age: "",
+          },
+        }));
+      }
     };
 
     const onSubmit = (e) => {
@@ -79,7 +94,6 @@ export default function Modal() {
         formdata.append("age", profileData.age);
         formdata.append("phone", profileData.phone);
         
-        console.log("before dispatching : ",formdata)
         setShowModal(false);
 
         dispatch(update(formdata));
@@ -109,7 +123,6 @@ export default function Modal() {
                       onClick={() => setShowModal(false)}
                     >
                       <h6 className="text-black">×</h6>
-                      
                     </button>
                   </div>
                   {/*body*/}
@@ -150,23 +163,6 @@ export default function Modal() {
                             required
                           />
                         </div>
-                        {/* <div>
-                        
-                        <label
-                        htmlFor="email"
-                        className="text-sm text-gray-700 block mb-1 font-medium"
-                        >
-                        Email Address
-                        </label>
-                        <input
-                        type="text"
-                        name="email"
-                        onChange={onChange}
-                        value={email}
-                        className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
-                        placeholder="yourmail@provider.com"
-                        />
-                    </div> */}
                         <div>
                           <label
                             htmlFor="profile-picture"
@@ -235,6 +231,7 @@ export default function Modal() {
                             type="text"
                             name="profile.age"
                             onChange={onChange}
+                            onBlur={validateAge}
                             value={age}
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your Age"
@@ -274,22 +271,6 @@ export default function Modal() {
                             required
                           />
                         </div>
-                        {/* <div>
-                    
-                    <label
-                    for="brithday"
-                    className="text-sm text-gray-700 block mb-1 font-medium"
-                    >
-                    Birthday
-                    </label>
-                    <input
-                    type="text"
-                    name="brithday"
-                    id="brithday"
-                    className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
-                    placeholder="(01/01/1993)"
-                    />
-                </div> */}
                       </div>
                       <div className="space-x-4 mt-8"> </div> {/*footer*/}
                       <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">

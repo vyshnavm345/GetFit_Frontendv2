@@ -11,7 +11,6 @@ import { useEffect } from "react";
 
 import { checkAuth } from "features/user";
 import FindTrainers from "containers/FindTrainers";
-import Test from "containers/Test";
 import ProgrammesPage from "containers/ProgrammesPage";
 import TrainerHomePage from "containers/TrainerHomePage";
 import VerifyEmail from "components/VerifyEmail";
@@ -20,19 +19,14 @@ import TrainerRegister from "containers/TrainerRegister";
 import ProgramDetails from "containers/ProgramDetails";
 import ProgramLesson from "containers/ProgramLesson";
 import TrainerDashboard from "containers/TrainerDashboard";
-import Test1 from "containers/Test1";
 import ChatWindow from "containers/ChatWindow";
-import RoomSelection from "components/test/RoomSelection";
-import ChatRoom2 from "components/test/ChatRoom2";
 import { addNotification, addOnlineusers, closeWebSocket, getOnlineUserIds, initializeWebSocket, removeOnlineusers } from "features/webSocketSlice";
 import { toast } from "react-toastify";
-import { addToPendingNotifications, getNotifications } from "features/chat";
+import { getNotifications } from "features/chat";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import Checkout from "components/Payment/Checkout";
 import Dashboard from "components/MainAdmin/Dashboard";
 import Users from "components/MainAdmin/Users";
 import Trainers from "components/MainAdmin/Trainers"
-import Settings from "components/MainAdmin/Settings";
 import AdminLayout from "components/MainAdmin/AdminLayout";
 import FitnessPrograms from "components/MainAdmin/FitnessPrograms";
 import ProgramApprovalRequests from "components/MainAdmin/ProgramApprovalRequests";
@@ -53,32 +47,23 @@ function App() {
     if (wsUrl) {
       const globalws = new WebSocket(wsUrl);
       globalws.onopen = () => {
-        console.log("WebSocket connected in app.js");
-        console.log("The user", user)
       };
       globalws.onmessage = (event) => {
         const notification = JSON.parse(event.data);
-        console.log("the notificaion", notification)
         if (notification.category === "message") {
-          console.log("the notification is a message");
           toast.success(`${notification.sender}: ${notification.payload}`);
           dispatch(addNotification(notification));
-          // dispatch(addToPendingNotifications(notification));
         } else if (notification.category === "status") {
-          console.log("the notification is a message");
           toast.success(`${notification.sender}: ${notification.payload}`);
           if (notification.payload === "user Online") {
-            console.log("User online", notification.message);
             dispatch(addOnlineusers(notification.sender));
           } else if (notification.payload === "user Offline") {
-            console.log("User offline", notification.message);
             dispatch(removeOnlineusers(notification.sender));
           }
 
         }
       };
       globalws.onclose = () => {
-        console.log("Global WebSocket disconnected");
         dispatch(closeWebSocket());
       };
       return () => {
@@ -89,7 +74,6 @@ function App() {
 
   
   useEffect(() => {
-    console.log("dispatching get online users")
     dispatch(getOnlineUserIds());
   }, [user]);
   
@@ -102,7 +86,6 @@ function App() {
   
   useEffect(()=>{
     if (pendingNotifications) {
-      console.log("this is the pending notificaions : ", pendingNotifications);
       if (pendingNotifications.length <= 3) {
         
        pendingNotifications.forEach((notification, index) => {

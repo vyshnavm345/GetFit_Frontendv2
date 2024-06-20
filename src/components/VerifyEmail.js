@@ -9,7 +9,6 @@ const VerifyEmail = () => {
     const navigate = useNavigate()
     const params = useParams();
     const { token } = params; // Destructure token directly from params object
-    console.log("This is the token received:", token);
     const {verified} = useSelector(state=> state.user)
 
     const dispatch = useDispatch();

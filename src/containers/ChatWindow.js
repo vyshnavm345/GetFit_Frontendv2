@@ -110,7 +110,6 @@ const ChatWindow = () => {
   }, [contacts]);
 
   const createNewRoom = ()=>{
-    console.log("the current chat changed and new room is being created");
     if (user?.is_trainer && trainerContacts && currentChat) {
       const idList = [currentChat?.id, user?.id].sort();
       setRoom(`chat${idList[0]}${idList[1]}`);
@@ -118,7 +117,6 @@ const ChatWindow = () => {
       const idList = [currentChat?.user, user?.id].sort();
       setRoom(`chat${idList[0]}${idList[1]}`);
     }
-    console.log("the new room is ", room);
   }
 
 
@@ -137,7 +135,6 @@ const ChatWindow = () => {
 
   useEffect(() => {
     if (room) {
-      console.log("the newly connected room is ", room)
       ws.current = new WebSocket(`${WS_link}/ws/chat/${room}/`);
       ws.current.onopen = handleOpen;
       ws.current.onclose = handleClose;
@@ -183,16 +180,11 @@ const ChatWindow = () => {
 
   const updateCurrentChat = (contact) => {
     setCurrentChat(contact);
-    console.log("The current chat is now:", currentChat);
   };
 
 
   const handleForwardMessage = async (selectedUsers) => {
-    console.log(
-      "the forwardingMessage : ",
-      forwardingMessage
-    );
-    console.log("the selected users", selectedUsers)
+    
     // Retrieve access token
     const accessToken = Cookies.get("accessToken") || null;
     let logoBase64 = null;
@@ -202,15 +194,12 @@ const ChatWindow = () => {
       logoBase64 = await loadImageAndConvertToBase64(
         forwardingMessage.image
       );
-      console.log("image converted to base64 : ", logoBase64 )
     }
 
     // Reusable function to send the message
     const sendMessage = (userId) => {
-      console.log("message is being forwarded")
       const newRoom = makeNewNewRoom(user?.id, userId);
       const ws = new WebSocket(`${WS_link}/ws/chat/${newRoom}/`);
-      console.log("websocket : ", ws);
       ws.onopen = () => {
         console.log("websocket opened");
 
@@ -221,10 +210,8 @@ const ChatWindow = () => {
           type: forwardingMessage.type,
           data: logoBase64,
         };
-        console.log("constructed message is :", message);
 
         ws.send(JSON.stringify(message));
-        console.log("message sent")
         ws.close(); // The WebSocket closes after sending the message
         console.log("websocket closed")
       };
@@ -332,14 +319,6 @@ const ChatWindow = () => {
     }
   };
 
-  // console.log("The image data is ", imageData)
-  // console.log("This is the room", room)
-  // console.log("The user is ", user)
-  // console.log("The user contact ", userContacts);
-  // console.log("The trainer contact ", trainerContacts);
-  // console.log("The conversation ", conversation);
-  // console.log("The contacts ", contacts);
-  // console.log("The currentchat ", currentChat);
   return (
     <div
       className="flex h-screen "
@@ -454,7 +433,6 @@ const ChatWindow = () => {
           <h2 className="flex items-center text-lg font-semibold align-middle">
             <img
               className="rounded-full h-10 w-10 mr-2 object-cover"
-              // src={`${API_URL}${currentChat?.profile_picture}`}
               src={
                 user?.profile_picture
                   ? `${API_URL}${user?.profile_picture}`

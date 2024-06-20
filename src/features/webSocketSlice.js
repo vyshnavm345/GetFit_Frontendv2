@@ -15,10 +15,8 @@ export const getOnlineUserIds = createAsyncThunk(
   "user/getOnlineUserIds",
   async (_, thunkAPI) => {
     try {
-        console.log("fetching online user ids")
         const response = await axiosInstance.get('api/chat/getOnlineUserIDs/');
         if (response.status === 200) {
-          console.log("The response of user ids", response.data)
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);

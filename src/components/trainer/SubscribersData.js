@@ -21,7 +21,6 @@ const SubscribersData = () => {
 
     useEffect(() => {
       if (programSubscribers.length === 0) {
-        console.log("getting subscribers", programSubscribers)
         dispatch(getSubscribers());
       } 
     }, []);
@@ -30,7 +29,6 @@ const SubscribersData = () => {
         setSelectedUser(user);
         setModalVisible(true);
     };
-    console.log("model is : ", modalVisible);
 
     const closeModal = () => {
         setModalVisible(false);

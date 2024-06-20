@@ -27,7 +27,6 @@ const CourseDescription = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("mounting course description");
     dispatch(getProgramme(id));
 
     if (isAuthenticated) {
@@ -39,7 +38,6 @@ const CourseDescription = () => {
         program.program.some((p) => p.id === programme?.id)
       )
     ) {
-      console.log("the user is a follower of the program");
       setSubscribed(true);
     } else {
       setSubscribed(false);
@@ -170,17 +168,6 @@ const CourseDescription = () => {
                 Start Learning
               </h3>
               <ul className="list-disc text-white pl-4  ">
-                {/* {lessonsList?.map((lesson, index) => (
-                  <li
-                    key={index}
-                    onClick={() => {
-                      navigate(`/programLesson/${programme?.id}`);
-                    }}
-                    className="text-base border rounded p-4 w-[97%] my-2 "
-                  >
-                    <button>{lesson?.title}</button>
-                  </li>
-                ))} */}
                 <li
                   key={programme?.id}
                   onClick={() => {

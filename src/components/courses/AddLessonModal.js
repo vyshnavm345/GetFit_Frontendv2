@@ -31,7 +31,6 @@ const AddLessonModal = ({ lesson, programmeId, setIsModalOpen }) => {
     formData.append("description", description);
     formData.append("video_url", video_url);
     formData.append("lesson_number", `${programmeId}-${lesson_number}`);
-    console.log("this is the title : ", title)
 
     if (lesson.id) {
       formData.append("id", lesson.id);
@@ -43,7 +42,6 @@ const AddLessonModal = ({ lesson, programmeId, setIsModalOpen }) => {
     dispatch(addLesson({ formData, programmeId }));
     setIsModalOpen(false);
   };
-  console.log("This is the Lesson image", lesson);
   return (
     <div className="fixed inset-0 z-60 flex items-center justify-center overflow-x-hidden overflow-y-visible outline-none focus:outline-none">
       <div className=" max-w-3xl">

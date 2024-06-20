@@ -102,11 +102,6 @@ export const changePublishStatus = createAsyncThunk(
 
         const { dispatch } = thunkAPI;
         dispatch(retrive_all_programs());
-        // if (role == "user") {
-        //   dispatch(getAllUsers());
-        // } else if (role === "trainer") {
-        //   dispatch(getAllTrainers());
-        // }
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);

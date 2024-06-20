@@ -34,13 +34,11 @@ export const getSubscribers = createAsyncThunk(
   "trainer/getSubscribers",
   async (_, thunkAPI) => {
     try {
-      console.log("inside getsubscribers")
       const response = await axiosInstance.get(
         `${baseURL}/api/trainers/get_subscribers/`
       );
 
       if (response.status === 200) {
-        console.log("the returned subscribers : ", response.data);
         return response.data;
       } else {
         console.log("the error : ", response.data);
@@ -65,7 +63,6 @@ export const getTrainerContacts = createAsyncThunk(
       );
 
       if (response.status === 200) {
-        console.log("the returned contacts of trainer: ", response.data);
         return response.data;
       } else {
         console.log("the error : ", response.data);
@@ -345,7 +342,6 @@ export const getTotalTrainers = createAsyncThunk(
     try {
       const response = await axios.get(`${API_URL}/api/trainers/getTrainerCount/`);
       if (response.status === 200) {
-        console.log("Total users : ", response.data);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);
@@ -366,7 +362,6 @@ export const getLoggedInTrainers = createAsyncThunk(
         `${API_URL}/api/trainers/getLoggedInTrainers/`
       );
       if (response.status === 200) {
-        console.log("The logged in trainer inside thunk : ", response.data);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);
@@ -383,10 +378,8 @@ export const getAllTrainers = createAsyncThunk(
   "user/getAllTrainers",
   async (_, thunkAPI) => {
     try {
-      console.log("the get trainer is being called")
       const response = await axios.get(`${API_URL}/api/trainers/getAllTrainers/`);
       if (response.status === 200) {
-        console.log("all Trainers : ", response.data);
         return response.data;
       } else {
         console.log("error : ", response.data)
@@ -576,7 +569,6 @@ const trainerSlice = createSlice({
       })
       .addCase(getAllTrainers.rejected, (state, action) => {
         state.loading = false;
-        console.log("error after rejecting : ", action.payload.message);
         toast.error(action.payload.message);
       })
       .addCase(sendPublishRequest.pending, (state, action) => {
@@ -588,7 +580,6 @@ const trainerSlice = createSlice({
       })
       .addCase(sendPublishRequest.rejected, (state, action) => {
         state.loading = false;
-        console.log("error after rejecting : ", action.payload.message);
         toast.error(action.payload.message);
       });
   },

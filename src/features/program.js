@@ -87,12 +87,10 @@ export const getTotalPrograms = createAsyncThunk(
   "user/getTotalPrograms",
   async (_, thunkAPI) => {
     try {
-      console.log("getting program count")
       const response = await axios.get(
         `${API_URL}/api/fitness_programs/getProgramCount/`
       );
       if (response.status === 200) {
-        console.log("Total programs : ", response.data);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);
@@ -110,12 +108,10 @@ export const getPopularPrograms = createAsyncThunk(
   "user/getPopularPrograms",
   async (_, thunkAPI) => {
     try {
-      console.log("getting program count");
       const response = await axios.get(
         `${API_URL}/api/fitness_programs/getPopularProgram/`
       );
       if (response.status === 200) {
-        console.log("Total programs : ", response.data);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);
@@ -132,12 +128,10 @@ export const getlessonProgress = createAsyncThunk(
   "user/getlessonProgress",
   async ({user_id, lesson_id}, thunkAPI) => {
     try {
-      console.log("getting program count");
       const response = await axios.get(
         `${API_URL}/api/fitness_programs/getlessonProgress/${user_id}/${lesson_id}/`
       );
       if (response.status === 200) {
-        console.log("Lesson Progress : ", response.data);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);

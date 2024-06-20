@@ -16,8 +16,6 @@ const ForwardMessageModal = ({ onClose, onForward, users }) => {
 
     const handleForwardMessage = () => {
         // Forward the message to selected users
-        console.log("Forwarding message to selected users:", selectedUsers);
-        // Implement logic to send the message to selected users
         onForward(selectedUsers);
     };
 
@@ -33,7 +31,6 @@ const ForwardMessageModal = ({ onClose, onForward, users }) => {
                 className="mr-2"
               />
               <label>
-                {console.log("The user is : ", user)}
                 {user.username || `${user.first_name} ${user.last_name}`}
               </label>
             </div>

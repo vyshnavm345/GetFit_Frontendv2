@@ -18,7 +18,6 @@ export default function FitnessPrograms() {
     dispatch(retrive_all_programs());
   }, []);
 
-console.log("The list of programmes inside admin : ", allPrograms);
 return (
   <div className="bg-white py-2 shadow-md rounded md:px-6 md:my-6 overflow-x-auto">
     <div className="bg-purple-500 text-white uppercase text-xl py-2 px-4 flex justify-between">
@@ -82,7 +81,6 @@ return (
                 />
               </td> */}
               <td className="border-b border-gray-200 py-4 px-2">
-                {console.log("the programme id is : ", programme?.id)}
                 {programme?.is_published ? (
                   <button
                     onClick={() => {

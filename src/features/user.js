@@ -44,24 +44,14 @@ export const register = createAsyncThunk('user/register', async ({first_name, la
         })
 
         const data = await res.json();
-        // console.log("this is the response ", data)
 
         if (res.status === 201){
-          console.log("registered data : ", data.message)
             return data;
         }
         else{
             return thunkAPI.rejectWithValue(data);
         }
     } catch (err) {
-        // console.log(
-        //     "This is the error in catch : err",
-        //     err,
-        //     "err.response",
-        //     err.response,
-        //     "err.response.data",
-        //     err.response.data
-        //     );
         return thunkAPI.rejectWithValue(err.response.data)
     }
 })
@@ -87,10 +77,7 @@ export const verifyEmail = createAsyncThunk(
         const data = await res.json();
         if (res.status === 201) {
             toast.success(data.Message);
-            // console.log("this is the message from verify email",data.Message);
-            // toast.success('Success');
-
-
+            
             return data;
         } else {
             return thunkAPI.rejectWithValue(data);
@@ -126,7 +113,6 @@ export const getTotalUsers = createAsyncThunk(
     try {
       const response = await axios.get(`${API_URL}/api/users/getUserCount/`);
       if (response.status === 200) {
-        console.log("Total users : ", response.data)
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);
@@ -147,7 +133,6 @@ export const getLoggedInUsers = createAsyncThunk(
         `${API_URL}/api/users/getLoggedInUsers/`
       );
       if (response.status === 200) {
-        console.log("Total users : ", response.data);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);
@@ -166,7 +151,6 @@ export const getAllUsers = createAsyncThunk(
     try {
       const response = await axios.get(`${API_URL}/api/users/getAllUsers/`);
       if (response.status === 200) {
-        console.log("Total users : ", response.data);
         return response.data;
       } else {
         return thunkAPI.rejectWithValue(response.data);
@@ -182,9 +166,7 @@ const getUser = createAsyncThunk(
 	'user/me',
 	async(_, thunkAPI) =>{
 		try{
-            console.log("get user triggered")
             const response = await axiosInstance.get('/api/users/me/')
-
 
 			if (response.status === 200){
         toast.success("Successfully Logged In");
@@ -203,14 +185,6 @@ const getUser = createAsyncThunk(
                 return thunkAPI.rejectWithValue(response.data);
             }
 		} catch(err) {
-            // console.log(
-            // "This is the error in catch : err",
-            // err,
-            // "err.response",
-            // err.response,
-            // "err.response.data",
-            // err.response.data
-            // );
 			return thunkAPI.rejectWithValue(err.response.data);
 		}
 	}
@@ -223,7 +197,6 @@ export const login = createAsyncThunk('user/login', async ({email, password}, th
         password
     })
     try {
-        console.log("login triggered")
         const res = await fetch(`${REAL_API_URL}/api/token/`, {
             method: "POST",
             headers: {
@@ -238,7 +211,6 @@ export const login = createAsyncThunk('user/login', async ({email, password}, th
         if (res.status === 200) {
           Cookies.set("accessToken", data.access, { expires: 7 });
           Cookies.set("refreshToken", data.refresh, { expires: 7 });
-          console.log("tokens received", data.access);
 
           const { dispatch } = thunkAPI;
 
@@ -319,10 +291,7 @@ export const checkAuth = createAsyncThunk(
     "users/verify",
     async (_, thunkAPI) => {
         try {
-            // const access = Cookies.get("accessToken");
-            // const body = {
-            //     token: access,
-            // };
+            
             const response = await axiosInstance.post("/api/token/verify/");
 
             if (response.status === 200) {
@@ -367,7 +336,6 @@ const userSlice = createSlice({
             state.loading = false;
             state.registered = true;
             toast.success(action.payload.message)
-            // state.message= action.payload.message
           })
           .addCase(register.rejected, (state, action) => {
             state.loading = false;
@@ -397,10 +365,6 @@ const userSlice = createSlice({
             state.isAuthenticated = false;
             toast.error(action.payload.message);
             
-            
-            // toast.error("request rejected");
-            // Cookies.remove("accessToken");
-            // Cookies.remove("refreshToken");
           })
           .addCase(checkAuth.pending, (state) => {
             state.loading = true;

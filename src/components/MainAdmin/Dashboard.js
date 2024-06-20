@@ -16,8 +16,6 @@ const Dashboard = () => {
     dispatch(getLoggedInUsers());
     dispatch(getLoggedInTrainers());
   }, [])
-
-  console.log("the trainers online are : ", onlineTrainers);
   
   return (
     <div className="h-full">

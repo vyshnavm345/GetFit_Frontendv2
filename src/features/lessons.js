@@ -210,12 +210,6 @@ const lessonSlice = createSlice({
           // Add new progress entry if not already present
           state.progressStatus = [...state.progressStatus, newProgress];
         }
-
-        console.log("The progressStatus is : ", state.progressStatus);
-        console.log(
-          "Updated progressStatus:",
-          JSON.parse(JSON.stringify(state.progressStatus))
-        );
       })
       .addCase(getlessonProgress.rejected, (state, action) => {
         state.loading = false;

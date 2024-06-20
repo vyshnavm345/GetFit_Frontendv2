@@ -13,7 +13,6 @@ const Trainers = () => {
       dispatch(getAllTrainers());
     }
   }, []);
-  console.log("Trainers : ", allTrainers)
   return (
     <div className="bg-white shadow-2xl rounded-lg p-6">
       <h2 className="text-2xl font-bold mb-4">Users</h2>

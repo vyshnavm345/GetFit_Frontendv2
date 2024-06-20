@@ -33,7 +33,6 @@ const ChatRoom2 = () => {
         if (messageListRef.current) {
         messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
         }
-        // console.log("The message list is : ",messageList)
     }, [messages, loading, messageList]);
 
     useEffect(() => {
@@ -93,7 +92,6 @@ const ChatRoom2 = () => {
 
     const handleClickConversation = (conver) => {
         setCurrentChat(conver);
-        console.log("THe current one is", conver, currentChat);
         // setMessage(""); // Clear message input on chat change
     };
 

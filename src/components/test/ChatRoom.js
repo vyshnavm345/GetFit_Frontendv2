@@ -103,7 +103,6 @@ const ChatRoom = () => {
                   {item.message.message} - {item.message.sender} - {item.message.timestamp}
               </li>
           ))
-          // console.log("The mapped messages : ",messages)
         )}
       </ul>
       <form onSubmit={handleSendMessage}>

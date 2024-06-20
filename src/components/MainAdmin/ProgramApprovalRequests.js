@@ -9,7 +9,6 @@ const ProgramApprovalRequests = () => {
     useEffect(()=>{
         dispatch(getPublishRequests());
     }, [])
-    console.log("publishRequests : ", publishRequests);
     return (
       <div className="bg-white py-2 shadow-md rounded md:px-6 md:my-6 overflow-x-auto">
         <div className="bg-orange-500 font-bold text-white uppercase text-xl py-2 px-4 flex justify-between">
@@ -48,7 +47,6 @@ const ProgramApprovalRequests = () => {
                     Published
                   </td>
                   <td className="border-b border-gray-200 py-4 px-2">
-                    {console.log("the programme id is : ", programme?.id)}
                     <button
                       onClick={() => {
                           dispatch(publishprogram(programme?.id));
@@ -57,25 +55,6 @@ const ProgramApprovalRequests = () => {
                     >
                       publish
                     </button>
-                    {/* {programme?.is_published ? (
-                      <button
-                        onClick={() => {
-                        //   dispatch(changePublishStatus(programme?.id));
-                        }}
-                        className="text-white font-bold bg-red-500 hover:opacity-90 rounded shadow-lg px-4 py-1 border-black ml-2"
-                      >
-                        Block
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                        //   dispatch(changePublishStatus(programme?.id));
-                        }}
-                        className="text-white font-bold bg-yellow-500 hover:opacity-90 rounded shadow-lg px-4 py-1 border-black ml-2"
-                      >
-                        publish
-                      </button>
-                    )} */}
                   </td>
                 </tr>
               ))}
@@ -87,30 +66,3 @@ const ProgramApprovalRequests = () => {
 }
 
 export default ProgramApprovalRequests
-
-
-
-// import React, { useEffect, useState } from "react";
-// import Team1 from "assets/kris gethin.jpg";
-// import Team2 from "assets/kris-gethin-coach-square-headshot.jpg";
-// import Team3 from "assets/hero_Image1.jpg";
-// import Team4 from "assets/programmes/gethin-muscle-building-logo-header-640xh.jpg";
-// // import FitnessProgramForm from "components/courses/FitnessProgramForm";
-// import { useDispatch, useSelector } from "react-redux";
-// import { getprogrammeslist } from "features/trainer";
-// import { changePublishStatus, retrive_all_programs } from "features/admin";
-
-// export default function FitnessPrograms() {
-//   const { allPrograms } = useSelector((state) => state.admin);
-//   const dispatch = useDispatch();
-//   const [selectedProgramId, setSelectedProgramId] = useState(null);
-
-//   useEffect(() => {
-//     dispatch(retrive_all_programs());
-//   }, []);
-
-//   console.log("The list of programmes inside admin : ", allPrograms);
-//   return (
-    
-//   );
-// }

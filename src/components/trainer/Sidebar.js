@@ -14,7 +14,6 @@ export default function Sidebar({ isOpen, setIsOpen, setOption }) {
   // const { trainer } = useSelector((state) => state.trainer);
 
   const handleOptionClick = (option) => {
-    console.log("this is the option", option);
     setOption(option);
   };
 

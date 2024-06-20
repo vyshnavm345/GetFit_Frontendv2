@@ -30,8 +30,6 @@ const FollowedPrograms = () => {
     }
   }, [dispatch, followedPrograms, user.id]);
 
-  // console.log("Followed programs:", followedPrograms);
-  // console.log("Progress status:", progressStatus);
 
   const getProgressForProgram = (programId) => {
     const progress = progressStatus.find((prog) => prog.program === programId);

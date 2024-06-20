@@ -28,16 +28,9 @@ const ChatBubble = ({
       type: 'text',
     };
     // Call a function passed from the parent component to handle the forward action
-    console.log(
-      "the data being forwarded form the  image bubble is :",
-      forwardData
-    );
     onForward(forwardData);
   };
 
-  // const handleDelete = ()=>{
-  //   message.deleted = true;
-  // }
 
   const handleClick = (action) => {
     setShowMenu((prevShowMenu) => !prevShowMenu);
@@ -61,9 +54,6 @@ const ChatBubble = ({
       // Handle other actions (e.g., reply, delete)
       // Add your logic here
     }
-
-    // Close the dropdown menu
-    // setShowMenu(false);
   };
 
   return (
@@ -104,8 +94,6 @@ const ChatBubble = ({
                 style={{ "margin-right": "100px" }}
                 className="text-xs font-normal text-gray-500 dark:text-gray-400"
               >
-                {/* <p>Date: {formattedDate}</p> */}
-                {/* <p>Time: {formattedTime}</p> */}
               </p>
             </div>
             <div class="flex-wrap">
@@ -149,14 +137,6 @@ const ChatBubble = ({
           className="py-2 text-sm text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownMenuIconButton"
         >
-          {/* <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Reply
-            </a>
-          </li> */}
           <li>
             <a
               href="#"
@@ -175,23 +155,6 @@ const ChatBubble = ({
               Copy
             </a>
           </li>
-          {/* <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Report
-            </a>
-          </li> */}
-          {/* <li>
-            <a
-              href="#"
-              onClick={() => handleClick("delete")}
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Delete
-            </a>
-          </li> */}
         </ul>
       </div>
     </div>

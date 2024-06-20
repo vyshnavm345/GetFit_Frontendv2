@@ -24,8 +24,6 @@ const ImageChatBubble = ({
         image : message.image || message.data,
         type: message.type
       };
-      console.log("the reference message is : ", message)
-      console.log("the data being forwarded form the  image bubble is :", forwardData)
       // Call a function passed from the parent component to handle the forward action
       onForward(forwardData);
     };
@@ -37,7 +35,6 @@ const ImageChatBubble = ({
         navigator.clipboard
           .writeText(message.message)
           .then(() => {
-            console.log("Text copied to clipboard: " + message.message);
             // alert("Text copied to clipboard: " + message.message);
           })
           .catch((error) => {
@@ -53,10 +50,7 @@ const ImageChatBubble = ({
         // Add your logic here
       }
 
-      // Close the dropdown menu
-      // setShowMenu(false);
     };
-    // console.log("the message data : ", message)
       const handleDownload = () => {
         const link = document.createElement("a");
         link.href = `${API_URL}${message.image || message.data}`;
@@ -200,22 +194,6 @@ const ImageChatBubble = ({
               Copy
             </a>
           </li>
-          {/* <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Report
-            </a>
-          </li> */}
-          {/* <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Delete
-            </a>
-          </li> */}
         </ul>
       </div>
     </div>

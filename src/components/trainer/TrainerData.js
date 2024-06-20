@@ -40,7 +40,6 @@ const TrainerData = ({id}) => {
               <p>{selectedTrainer?.username}</p>
               <span>Specialized In: {selectedTrainer?.specalized}</span>
             </h1>
-            {console.log("The selected trainer data is : ", selectedTrainer)}
             <p className="text-lg mb-4 text-white">
               {/* {selectedTrainer?.about} */}
               

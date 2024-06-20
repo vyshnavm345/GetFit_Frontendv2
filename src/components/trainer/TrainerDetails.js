@@ -11,7 +11,6 @@ const TrainerDetails = () => {
 
     useEffect(() => {
       if (user?.is_trainer !== prevIsTrainerRef.current) {
-        console.log("Dispatching getTrainer");
         dispatch(getTrainer());
         prevIsTrainerRef.current = user?.is_trainer;
       }
