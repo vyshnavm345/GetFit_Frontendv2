@@ -9,15 +9,17 @@ import Loader from 'components/Loader'
 import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from 'react'
+import { doPasswordsMatch, isEmailValid, isPasswordValid, removeSpaces } from 'utils/validation'
 
 const Register = () => {
   const dispatch = useDispatch();
   const { registered, loading, error, isAuthenticated } = useSelector(state => state.user);
   
-  useEffect(()=>{
-    const notify = () => toast.error(error?.error_message);
-    notify();
-  }, [error])
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.error_message);
+    }
+  }, [error]);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -28,15 +30,39 @@ const Register = () => {
 
   const { first_name, last_name, email, password, password2 } = formData;
 
-  const onChange = e => {
-    setFormData({...formData, [e.target.name]: e.target.value});
-  }
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    if (
+      name === "email" ||
+      name === "password" ||
+      name === "password2" ||
+      name === "first_name" ||
+      name === "last_name"
+    ) {
+      setFormData({ ...formData, [name]: removeSpaces(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
 
-  const onSubmit = e =>{
+  // const onSubmit = e =>{
+  //   e.preventDefault();
+
+  //   dispatch(register({first_name, last_name, email, password}));
+  // }
+
+  const onSubmit = (e) => {
     e.preventDefault();
-
-    dispatch(register({first_name, last_name, email, password}));
-  }
+    if (
+      isEmailValid(email) &&
+      isPasswordValid(password) &&
+      doPasswordsMatch(password, password2)
+    ) {
+      dispatch(register({ first_name, last_name, email, password }));
+    } else {
+      toast.error("Invalid input");
+    }
+  };
 
   if (registered) return <Navigate to='/login' />;
 

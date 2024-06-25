@@ -2,6 +2,7 @@ import { update } from "features/user";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { isPhoneNumberValid } from "utils/validation";
 
 
 export default function Modal() {
@@ -43,22 +44,99 @@ export default function Modal() {
     
     
 
-    const onChange = (e) => {
-        if (e.target.name.startsWith("profile.")) {
-            // Update nested property inside profile
-            const profileKey = e.target.name.split(".")[1];
-            setFormData({
-            ...formData,
+    // const onChange = (e) => {
+    //     if (e.target.name.startsWith("profile.")) {
+    //       if (e.target.name === "profile.phone") {
+    //         console.log("changing phone number");
+    //         // Validate phone number using utility function
+    //         if (isPhoneNumberValid(e.target.value)) {
+    //           setFormData({
+    //             ...formData,
+    //             profile: {
+    //               ...formData.profile,
+    //               phone: e.target.value,
+    //             },
+    //           });
+    //         } else {
+    //           alert("Please enter a valid 10-digit phone number.");
+    //         }
+    //       } else {
+            
+    //       }
+    //       // Update nested property inside profile
+    //       const profileKey = e.target.name.split(".")[1];
+    //       setFormData({
+    //         ...formData,
+    //         profile: {
+    //           ...formData.profile,
+    //           [profileKey]: e.target.value,
+    //         },
+    //       });
+    //     } else if (e.target.name === "first_name" || e.target.name === "last_name") {
+    //       console.log("changing name");
+    //       if (/^[A-Za-z]*$/.test(e.target.value)) {
+    //         setFormData({ ...formData, [e.target.name]: e.target.value });
+    //       } else {
+    //         alert("Please enter only characters from a to z");
+    //       }
+    //     } else {
+    //       // Update top-level property
+    //       setFormData({ ...formData, [e.target.name]: e.target.value });
+    //     }
+    // };
+
+
+
+      const onChange = (e) => {
+        const { name, value } = e.target;
+
+        if (name.startsWith("profile.")) {
+          // Update nested property inside profile
+          const profileKey = name.split(".")[1];
+          setFormData((prevData) => ({
+            ...prevData,
             profile: {
-                ...formData.profile,
-                [profileKey]: e.target.value,
+              ...prevData.profile,
+              [profileKey]: value,
             },
-            });
+          }));
+        } else if (name === "first_name" || name === "last_name") {
+          // Update top-level property for first_name or last_name
+          if (/^[A-Za-z]*$/.test(value)) {
+            setFormData((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
+          } else {
+            alert("Please enter only characters from a to z");
+          }
         } else {
-            // Update top-level property
-            setFormData({ ...formData, [e.target.name]: e.target.value });
+          // Update top-level property
+          setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
         }
-    };
+      };
+
+
+
+      const onBlurPhone = (e) => {
+        const { value } = e.target;
+
+        if (!isPhoneNumberValid(value)) {
+          alert("Please enter a valid 10-digit phone number.");
+          setFormData((prevData) => ({
+            ...prevData,
+            profile: {
+              ...prevData.profile,
+              phone: "",
+            },
+          }));
+        }
+      };
+
+
 
     const validateAge = (e) => {
       const value = parseInt(e.target.value, 10);
@@ -194,10 +272,12 @@ export default function Modal() {
                             Weight
                           </label>
                           <input
-                            type="text"
+                            type="number"
                             name="profile.weight"
                             onChange={onChange}
                             value={weight}
+                            min="0"
+                            max="500"
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your weight in Kg"
                             required
@@ -211,10 +291,12 @@ export default function Modal() {
                             Height
                           </label>
                           <input
-                            type="text"
+                            type="number"
                             name="profile.height"
                             onChange={onChange}
                             value={height}
+                            min="100"
+                            max="200"
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your height in cm"
                             required
@@ -266,6 +348,7 @@ export default function Modal() {
                             name="profile.phone"
                             onChange={onChange}
                             value={phone}
+                            onBlur={onBlurPhone}
                             className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
                             placeholder="Your Phone number"
                             required

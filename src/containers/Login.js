@@ -7,6 +7,7 @@ import { resetRegistered, login } from 'features/user'
 import Loader from 'components/Loader'
 import { toast } from "react-toastify";
 import { initializeWebSocket } from 'features/webSocketSlice'
+import { isEmailValid, isPasswordValid, removeSpaces } from 'utils/validation'
 // import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
@@ -33,14 +34,26 @@ const Login = () => {
 
   const {email, password} = formData;
 
-  const onChange = e => {
-    setFormData({...formData, [e.target.name]: e.target.value});
-  }
+
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "email") {
+      setFormData({ ...formData, [name]: removeSpaces(value) });
+    } else if (name === "password") {
+      setFormData({ ...formData, [name]: removeSpaces(value) });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
 
   const onSubmit = e =>{
     e.preventDefault();
 
-    dispatch(login({email, password}));
+    if (isEmailValid(email) && isPasswordValid(password)) {
+      dispatch(login({ email, password }));
+    } else {
+      toast.error("Invalid email or password");
+    }
   }
   useEffect(()=>{
     if (isAuthenticated && user){
