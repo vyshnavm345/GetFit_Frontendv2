@@ -27,7 +27,7 @@ const Navbar = () => {
   }, [prevScrollPos, visible]);
 
   const authLinks = (
-    <div className="md:ml-auto md:mr-4 flex items-center cursor-pointer ">
+    <div className="md:ml-auto md:mr-4 flex items-center cursor-pointer mt-[10px]">
       <button
         className="bg-white rounded-md mr-2 text-sm px-4 py-1 h-8 mt-2 hover:bg-cyan-400"
         onClick={() => {
