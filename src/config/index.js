@@ -1,5 +1,5 @@
-export const API_URL = "https://www.server.getfittoday.xyz";
-export const WS_link = "wss://www.server.getfittoday.xyz";
+export const API_URL = "https://www.server.getfittoday.shop";
+export const WS_link = "wss://www.server.getfittoday.shop";
 
 // export const API_URL = 'https://54.165.33.141'
 // export const WS_link = "wss://54.165.33.141";
